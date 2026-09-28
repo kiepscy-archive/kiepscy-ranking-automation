@@ -1,0 +1,38 @@
+name: Nocna Aktualizacja Ocen
+
+on:
+  schedule:
+    # Uruchomienie automatyczne o 0:01 czasu polskiego (22:01 UTC dnia poprzedniego)
+    - cron: '1 22 * * *'
+
+  # Umożliwia ręczne uruchomienie skryptu przyciskiem z poziomu GitHuba
+  workflow_dispatch:
+
+jobs:
+  update-ratings:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Pobranie kodu repozytorium
+      uses: actions/checkout@v3
+
+    - name: Konfiguracja Pythona
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Instalacja bibliotek
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests beautifulsoup4
+
+    - name: Uruchomienie skryptu
+      run: python updater.py
+
+    - name: Zapisanie zmian w baza_userow.json do Repozytorium
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add baza_userow.json
+        git diff-index --quiet HEAD || git commit -m "Automatyczna zmiana bazy ocen"
+        git push
