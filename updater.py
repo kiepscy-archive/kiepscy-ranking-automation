@@ -11,19 +11,18 @@ from bs4 import BeautifulSoup
 # KONFIGURACJA (DANE WPISANE BEZPOŚREDNIO W KODZIE)
 # ==============================================================================
 
-SUBFORUM_URL = "https://forum.kiepscy.org.pl/viewforum.php?f=8"  # Wklej link do podforum
-WP_URL = "kiepscy-test.local"                 # Adres Twojej strony WP
+SUBFORUM_URL = "https://twoje-forum.pl/viewforum.php?f=123"  # Wklej link do podforum
+WP_URL = "https://twoja-strona-wordpress.pl"                 # Adres Twojej strony WP
 WP_PAGE_ID = 6                                              # ID strony z tabelką
 
 # Dane do logowania w WordPress (Basic Auth)
-WP_USER = "kacrudy"                                       # Login konta
-WP_APP_PASS = "Reksiomiastosekretow500_game"                         # Hasło / Hasło aplikacji
+WP_USER = "TwójLogin"                                       # Login konta
+WP_APP_PASS = "xxxx xxxx xxxx xxxx"                         # Hasło / Hasło aplikacji
 
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) KiepskiUpdater/1.0'
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) KiepskiUpdater/2.0'
 }
 
-# Polskie miesiące do parsowania dat phpBB (np. "28 wrz 2026")
 MIESIACE = {
     'sty': 1, 'lut': 2, 'mar': 3, 'kwi': 4, 'maj': 5, 'cze': 6,
     'lip': 7, 'sie': 8, 'wrz': 9, 'paź': 10, 'paz': 10, 'lis': 11, 'gru': 12,
@@ -37,23 +36,15 @@ MIESIACE = {
 # ==============================================================================
 
 def czyść_bbcode(tekst):
-    """Usuwa podstawowe znaczniki BBCode (np. [b], [/b], [color=...])"""
     tekst = re.sub(r'\[/?[a-zA-Z0-9]+(=[^\]]+)?\]', '', tekst)
     return tekst.strip()
 
 def wyciągnij_ocenę_z_dołu_posta(treść_posta):
-    """
-    Sprawdza OSTATNIĄ niepustą linię posta.
-    Akceptuje tylko formaty typu: 6/10, [b]6.5/10[/b], 6-/10, 6/10. itp.
-    Zaokrągla w dół (np. 6.5 -> 6).
-    """
     linie = [l.strip() for l in treść_posta.splitlines() if l.strip()]
     if not linie:
         return None
 
     ostatnia_linia = czyść_bbcode(linie[-1])
-    
-    # Wzorzec pasujący do końca linii z oceną X/10
     wzorzec = r'^(?:.*\s)?(10|[0-9])(?:[\,\.]([0-9]))?[\-\+\*]?\s*/\s*10[\.\!\?]*$'
     m = re.match(wzorzec, ostatnia_linia, re.IGNORECASE)
     
@@ -65,9 +56,16 @@ def wyciągnij_ocenę_z_dołu_posta(treść_posta):
     return None
 
 def parsuj_datę_postu(znacznik_czasu):
-    """Próbuje wyciągnąć obiekt date z tekstu nagłówka posta w phpBB."""
+    """Parsuje datę z tekstu nagłówka posta lub kolumny ostatniego posta."""
     tekst = znacznik_czasu.lower()
     
+    # Obsługa relatywnych dat w phpBB (np. "Dzisiaj, 14:20", "Wczoraj, 22:10")
+    dzisiaj_date = datetime.now().date()
+    if "dzisiaj" in tekst:
+        return dzisiaj_date
+    if "wczoraj" in tekst:
+        return dzisiaj_date - timedelta(days=1)
+
     m = re.search(r'(\d{1,2})\s+([a-ząśężźćńł]+)\s+(\d{4})', tekst)
     if m:
         dzien = int(m.group(1))
@@ -90,21 +88,20 @@ def czysc_url(url):
     return f"{parsed.scheme}://{parsed.netloc}{parsed.path}" + (f"?{new_query}" if new_query else "")
 
 # ==============================================================================
-# SCRAPER DLA WCZORAJSZYCH POSTÓW
+# SZYBKI SCRAPER (WYŁĄCZNIE DLA AKTYWNYCH TEMATÓW)
 # ==============================================================================
 
-def pobierz_wczorajsze_oceny(url_subforum, cel_data):
+def pobierz_aktywne_tematy(url_subforum, cel_data):
     """
-    Skanuje wątki na subforum i zbiera NOWE oceny opublikowane w dniu `cel_data`.
-    Zwraca słownik: { "Tytuł Odcinka": [ (Autor, Ocena), ... ] }
+    Skanuje listy wątków i filtrowaniem odrzuca te,
+    w których ostatni post jest starszy niż szukana data.
     """
-    nowe_oceny = {}
-    
     odwiedzone = set()
     do_odwiedzenia = [url_subforum]
-    linki_tematow = []
+    aktywne_tematy = []
 
-    print("🔍 Skanowanie subforum...")
+    print("⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...")
+
     while do_odwiedzenia:
         curr = do_odwiedzenia.pop(0)
         curr_clean = czysc_url(curr)
@@ -116,19 +113,50 @@ def pobierz_wczorajsze_oceny(url_subforum, cel_data):
             res = requests.get(curr, headers=HEADERS, timeout=10)
             soup = BeautifulSoup(res.text, 'html.parser')
             
+            # Subfora / Sezony
             for a in soup.find_all('a', class_='forumtitle'):
                 do_odwiedzenia.append(urljoin(curr, a.get('href')))
             
-            for a in soup.find_all('a', class_='topictitle'):
-                href = urljoin(curr, a.get('href'))
-                if czysc_url(href) not in linki_tematow:
-                    linki_tematow.append(czysc_url(href))
+            # Przeglądanie wierszy z tematami na liście
+            wiersze_tematow = soup.find_all('li', class_=re.compile(r'row'))
+            for row in wiersze_tematow:
+                a_topic = row.find('a', class_='topictitle')
+                if not a_topic:
+                    continue
+
+                # Szukamy informacji o OSTATNIM POŚCIE w wierszu
+                lastpost_span = row.find(class_=re.compile(r'lastpost'))
+                data_ostatniego_posta = None
+                if lastpost_span:
+                    data_ostatniego_posta = parsuj_datę_postu(lastpost_span.text)
+
+                # FILTR: Bierzemy temat TYLKO jeśli data ostatniego wpisu jest równa cel_data
+                # lub ewentualnie nowsza (dzisiejsza)
+                if data_ostatniego_posta and data_ostatniego_posta >= cel_data:
+                    href = urljoin(curr, a_topic.get('href'))
+                    clean_href = czysc_url(href)
+                    if clean_href not in aktywne_tematy:
+                        aktywne_tematy.append(clean_href)
+
         except Exception as e:
-            print(f"⚠️ Błąd pobierania {curr}: {e}")
+            print(f"⚠️ Błąd pobierania listy {curr}: {e}")
 
-    print(f"📋 Znaleziono {len(linki_tematow)} tematów. Analiza wpisów z dnia: {cel_data}...")
+    return aktywne_tematy
 
+def pobierz_wczorajsze_oceny(url_subforum, cel_data):
+    # 1. Pobieramy TYLKO aktywne wątki
+    linki_tematow = pobierz_aktywne_tematy(url_subforum, cel_data)
+
+    if not linki_tematow:
+        print("⚡ Brak jakiejkolwiek aktywności w tematach z wczorajszego dnia. Koniec.")
+        return {}
+
+    print(f"🎯 Znaleziono tylko {len(linki_tematow)} temat(y) z nową aktywnością. Pobieranie postów...")
+    nowe_oceny = {}
+
+    # 2. Głębokie skanowanie wyłącznie znalezionych aktywnych tematów
     for url_t in linki_tematow:
+        # Przechodzimy od razu do OSTATNIEJ strony wątku, bo tam będą najnowsze posty
         start = 0
         tytul_odcinka = ""
         
@@ -194,10 +222,6 @@ def pobierz_wczorajsze_oceny(url_subforum, cel_data):
 # ==============================================================================
 
 def aktualizuj_tabelę_wp(slownik_aktualizacji):
-    """
-    Pobiera stronę WP_PAGE_ID, edytuje wartości w tabeli HTML
-    i wysyła zaktualizowaną treść z powrotem.
-    """
     api_url = f"{WP_URL.rstrip('/')}/wp-json/wp/v2/pages/{WP_PAGE_ID}"
     
     res = requests.get(api_url, auth=(WP_USER, WP_APP_PASS))
@@ -207,7 +231,6 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji):
     
     data = res.json()
     html_content = data['content']['rendered']
-    
     soup = BeautifulSoup(html_content, 'html.parser')
     tabela = soup.find('table')
     
@@ -216,7 +239,6 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji):
         return False
 
     zmieniono = False
-    
     wiersze = tabela.find_all('tr')
     for tr in wiersze:
         komorki = tr.find_all(['td', 'th'])
@@ -258,9 +280,7 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji):
             print(f"  • Zaktualizowano odcinek '{tytul_komorki}': Średnia={srednia_format}, Liczba ocen={nowa_liczba_ocen}")
 
     if zmieniono:
-        payload = {
-            'content': str(soup)
-        }
+        payload = {'content': str(soup)}
         res_post = requests.post(api_url, json=payload, auth=(WP_USER, WP_APP_PASS))
         if res_post.status_code == 200:
             print("✅ Pomyślnie zaktualizowano stronę na WordPressie!")
@@ -273,12 +293,12 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji):
         return True
 
 # ==============================================================================
-# GŁÓWNA LOGIKA DLA GITHUB ACTIONS
+# GŁÓWNA LOGIKA
 # ==============================================================================
 
 def main():
     wczoraj = (datetime.now() - timedelta(days=1)).date()
-    print(f"🚀 Uruchamianie aktualizatora. Szukam ocen z dnia: {wczoraj}")
+    print(f"🚀 Uruchamianie szybkiego aktualizatora. Szukam ocen z dnia: {wczoraj}")
 
     if not os.path.exists("baza_userow.json"):
         print("❌ Brak pliku baza_userow.json w repozytorium!")
