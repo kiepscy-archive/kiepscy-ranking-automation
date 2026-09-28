@@ -12,12 +12,12 @@ from bs4 import BeautifulSoup
 # ==============================================================================
 
 SUBFORUM_URL = "https://forum.kiepscy.org.pl/viewforum.php?f=8"  # Wklej link do podforum
-WP_URL = "kiepscy-test.local"                 # Adres Twojej strony WP
-WP_PAGE_ID = 6                                              # ID strony z tabelką
+WP_URL = "http://kiepscy-test.local"                 # Adres Twojej strony WP
+WP_PAGE_ID = 37                                            # ID strony z tabelką
 
 # Dane do logowania w WordPress (Basic Auth)
 WP_USER = "kacrudy"                                       # Login konta
-WP_APP_PASS = "Reksiomiastosekretow500_game"                         # Hasło / Hasło aplikacji
+WP_APP_PASS = "CCqr 7sMe 5tKw dRiE wiBj NZ6f"                         # Hasło / Hasło aplikacji
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) KiepskiUpdater/2.0'
@@ -56,27 +56,20 @@ def wyciągnij_ocenę_z_dołu_posta(treść_posta):
     return None
 
 def parsuj_datę_postu(znacznik_czasu):
-    """Parsuje datę z tekstu nagłówka posta lub kolumny ostatniego posta."""
-    tekst = znacznik_czasu.lower()
+    """
+    Parsuje datę w formacie: "2026-09-28, 13:39"
+    Zwraca obiekt date lub None w przypadku błędu.
+    """
+    if not znacznik_czasu:
+        return None
     
-    # Obsługa relatywnych dat w phpBB (np. "Dzisiaj, 14:20", "Wczoraj, 22:10")
-    dzisiaj_date = datetime.now().date()
-    if "dzisiaj" in tekst:
-        return dzisiaj_date
-    if "wczoraj" in tekst:
-        return dzisiaj_date - timedelta(days=1)
-
-    m = re.search(r'(\d{1,2})\s+([a-ząśężźćńł]+)\s+(\d{4})', tekst)
+    # Wyciągamy ciąg w formacie YYYY-MM-DD
+    m = re.search(r'(\d{4}-\d{2}-\d{2})', znacznik_czasu)
     if m:
-        dzien = int(m.group(1))
-        miesiac_str = m.group(2)
-        rok = int(m.group(3))
-        miesiac = MIESIACE.get(miesiac_str)
-        if miesiac:
-            try:
-                return datetime(rok, miesiac, dzien).date()
-            except ValueError:
-                pass
+        try:
+            return datetime.strptime(m.group(1), "%Y-%m-%d").date()
+        except ValueError:
+            pass
     return None
 
 def czysc_url(url):
@@ -221,76 +214,172 @@ def pobierz_wczorajsze_oceny(url_subforum, cel_data):
 # OBSŁUGA WORDPRESS API & EDYCJA TABELI HTML
 # ==============================================================================
 
+
+import re
+import requests
+from bs4 import BeautifulSoup
+
+def formatuj_liczbe(wartosc):
+    """Formatuje float do postaci z przecinkiem, usuwając zbędne zera na końcu (np. 5.90 -> 5,9; 6.00 -> 6)."""
+    text = f"{round(wartosc, 2):.2f}".replace('.', ',')
+    if ',' in text:
+        text = text.rstrip('0').rstrip(',')
+    return text
+
 def aktualizuj_tabelę_wp(slownik_aktualizacji):
-    api_url = f"{WP_URL.rstrip('/')}/wp-json/wp/v2/pages/{WP_PAGE_ID}"
+    TABLE_ID = 9  # Upewnij się, że masz tu prawidłowe ID z panelu (np. 9)
     
-    res = requests.get(api_url, auth=(WP_USER, WP_APP_PASS))
+    # 1. Pobieramy surowe dane bezpośrednio z bazy TablePress przez nowy endpoint GET
+    get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
+    res = requests.get(get_url, auth=(WP_USER, WP_APP_PASS))
+    
     if res.status_code != 200:
-        print(f"❌ Nie udało się pobrać strony z WP (Status: {res.status_code})")
+        print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
         return False
-    
-    data = res.json()
-    html_content = data['content']['rendered']
-    soup = BeautifulSoup(html_content, 'html.parser')
-    tabela = soup.find('table')
-    
-    if not tabela:
-        print("❌ Nie znaleziono tabeli na stronie WordPress!")
+        
+    rows = res.json().get('data', [])
+    if not rows or len(rows) < 2:
+        print("❌ Tabela jest pusta lub nie zawiera danych!")
         return False
 
+    idx_lp = 0
+    idx_srednia = 1
+    idx_tytul = 2
+    idx_liczba = 3
+
+    naglowek = rows[0]
+    wiersze_danych = rows[1:]
+
+    dane_obliczone = []
     zmieniono = False
-    wiersze = tabela.find_all('tr')
-    for tr in wiersze:
-        komorki = tr.find_all(['td', 'th'])
-        if len(komorki) < 5:
+
+    for wiersz in wiersze_danych:
+        if len(wiersz) <= idx_liczba:
             continue
-        
-        tytul_komorki = komorki[2].text.strip()
-        
-        if tytul_komorki in slownik_aktualizacji:
-            list_ocen = slownik_aktualizacji[tytul_komorki]
-            
-            try:
-                stara_liczka_ocen = int(re.sub(r'\D', '', komorki[3].text))
-                stara_suma = float(re.sub(r'[^\d\.]', '', komorki[4].text.replace(',', '.')))
-            except ValueError:
-                continue
 
-            dodatkowa_suma = sum(list_ocen)
-            dodatkowa_liczba = len(list_ocen)
+        # Wyciągamy czysty tekst z HTML tytułu, aby dopasować go do odcinka z forum
+        tytul_raw = str(wiersz[idx_tytul])
+        soup_tytul = BeautifulSoup(tytul_raw, 'html.parser')
+        tytul_tekst = soup_tytul.get_text(strip=True)
 
-            nowa_liczba_ocen = stara_liczka_ocen + dodatkowa_liczba
-            nowa_suma = stara_suma + dodatkowa_suma
-            nowa_srednia = round(nowa_suma / nowa_liczba_ocen, 2)
+        txt_srednia = str(wiersz[idx_srednia])
+        txt_liczba = str(wiersz[idx_liczba])
 
-            def podmień_treść(komórka, nowa_wartość):
-                if komórka.find():
-                    komórka.find().string = str(nowa_wartość)
-                else:
-                    komórka.string = str(nowa_wartość)
+        raw_liczba = re.sub(r'\D', '', txt_liczba)
+        stara_liczba_ocen = int(raw_liczba) if raw_liczba else 0
 
-            srednia_format = f"{nowa_srednia:.2f}".replace('.', ',')
-            suma_format = f"{nowa_suma:.2f}".replace('.', ',')
+        clean_srednia = re.sub(r'[^\d\.]', '', txt_srednia.replace(',', '.'))
+        stara_srednia = float(clean_srednia) if clean_srednia else 0.0
 
-            podmień_treść(komorki[1], srednia_format)
-            podmień_treść(komorki[3], str(nowa_liczba_ocen))
-            podmień_treść(komorki[4], suma_format)
+        stara_suma = stara_srednia * stara_liczba_ocen
 
-            zmieniono = True
-            print(f"  • Zaktualizowano odcinek '{tytul_komorki}': Średnia={srednia_format}, Liczba ocen={nowa_liczba_ocen}")
+        nowa_liczba_ocen = stara_liczba_ocen
+        nowa_suma = stara_suma
+        nowa_srednia = stara_srednia
 
-    if zmieniono:
-        payload = {'content': str(soup)}
-        res_post = requests.post(api_url, json=payload, auth=(WP_USER, WP_APP_PASS))
-        if res_post.status_code == 200:
-            print("✅ Pomyślnie zaktualizowano stronę na WordPressie!")
-            return True
-        else:
-            print(f"❌ Błąd wysyłania do WP: {res_post.status_code} - {res_post.text}")
-            return False
-    else:
-        print("ℹ️ Brak nowych zmian w tabeli HTML.")
+        for tytul_odcinka_forum, list_ocen in slownik_aktualizacji.items():
+            forum_czysty = tytul_odcinka_forum.strip()
+
+            if forum_czysty.lower() == tytul_tekst.lower() or forum_czysty.lower() in tytul_tekst.lower():
+                dodatkowa_suma = sum(list_ocen)
+                dodatkowa_liczba = len(list_ocen)
+
+                nowa_liczba_ocen = stara_liczba_ocen + dodatkowa_liczba
+                nowa_suma = stara_suma + dodatkowa_suma
+                nowa_srednia = nowa_suma / nowa_liczba_ocen if nowa_liczba_ocen > 0 else 0.0
+
+                zmieniono = True
+                print(f"🎯 PODGLĄD DANYCH dla '{tytul_odcinka_forum}':")
+                print(f"   • Przed: Liczba ocen={stara_liczba_ocen}, Średnia={stara_srednia}")
+                print(f"   • Po:    Liczba ocen={nowa_liczba_ocen}, Średnia={formatuj_liczbe(nowa_srednia)}")
+                break
+
+        dane_obliczone.append({
+            'srednia': nowa_srednia,
+            'liczba_ocen': nowa_liczba_ocen,
+            'pelny_wiersz': wiersz  # Zachowujemy cały wiersz ze wszystkimi kolumnami i ich HTML-em
+        })
+
+    if not zmieniono:
+        print("ℹ️ Brak odcinków do aktualizacji.")
         return True
+
+    # Sortowanie wyłącznie według Średniej malejąco
+    dane_obliczone.sort(key=lambda x: x['srednia'], reverse=True)
+
+    # Składamy nową tabelę z obsługą ex aequo opartą TYLKO na średniej
+    nowe_wiersze_tablepress = [naglowek]
+    
+    ostatnia_srednia = None
+    biezaca_pozycja = 1
+
+    for i, item in enumerate(dane_obliczone):
+        # Sprawdzamy remis – liczy się WYŁĄCZNIE identyczna średnia
+        if i > 0 and item['srednia'] == ostatnia_srednia:
+            # Ex aequo – ta sama pozycja co u poprzedniego odcinka
+            pozycja_w_rankingu = biezaca_pozycja
+        else:
+            # Nowa pozycja bazuje na rzeczywistym indeksie wiersza (1-based index)
+            biezaca_pozycja = i + 1
+            pozycja_w_rankingu = biezaca_pozycja
+
+        # Zapamiętujemy średnią do porównania w następnej iteracji
+        ostatnia_srednia = item['srednia']
+
+        wiersz = list(item['pelny_wiersz'])
+        
+        # 1. Aktualizujemy LP (miejsce ex aequo) z zachowaniem HTML
+        if idx_lp is not None and len(wiersz) > idx_lp:
+            wiersz[idx_lp] = bezpieczna_aktualizacja_komorki(wiersz[idx_lp], pozycja_w_rankingu)
+
+        # 2. Aktualizujemy Średnią z zachowaniem HTML
+        if len(wiersz) > idx_srednia:
+            wiersz[idx_srednia] = bezpieczna_aktualizacja_komorki(wiersz[idx_srednia], formatuj_liczbe(item['srednia']))
+
+        # 3. Aktualizujemy Liczbę ocen z zachowaniem HTML
+        if len(wiersz) > idx_liczba:
+            wiersz[idx_liczba] = bezpieczna_aktualizacja_komorki(wiersz[idx_liczba], item['liczba_ocen'])
+            
+        nowe_wiersze_tablepress.append(wiersz)
+
+    # Wysyłamy zaktualizowane dane przez endpoint POST
+    update_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/update-table"
+    payload = {
+        'table_id': TABLE_ID,
+        'data': nowe_wiersze_tablepress
+    }
+
+    res_post = requests.post(update_url, json=payload, auth=(WP_USER, WP_APP_PASS))
+    
+    if res_post.status_code == 200:
+        print("✅ Pomyślnie zaktualizowano tabelę z zachowaniem 100% HTML we wszystkich kolumnach!")
+        return True
+    else:
+        print(f"❌ Błąd zapisu do TablePress: {res_post.status_code} - {res_post.text}")
+        return False
+        
+def bezpieczna_aktualizacja_komorki(stary_html, nowa_wartosc):
+    """Podmienia pierwszą napotkaną liczbę w komórce, zachowując w 100% cały HTML i style."""
+    if not stary_html:
+        return str(nowa_wartosc)
+    
+    soup = BeautifulSoup(str(stary_html), 'html.parser')
+    replaced = False
+    
+    # Szukamy cyfr wyłącznie w tekście, ignorując tagi i atrybuty HTML (np. style="#ff0000")
+    for element in soup.find_all(string=True):
+        if re.search(r'\d', element):
+            # Podmieniamy całą liczbę/ułamek (np. 5,86 na 5,9 albo 29 na 30)
+            new_text = re.sub(r'[\d,\.]+', str(nowa_wartosc), element, count=1)
+            element.replace_with(new_text)
+            replaced = True
+            break
+            
+    # Jeśli komórka nie miała żadnego tekstu wcześniej, zwracamy nową wartość
+    if not replaced:
+        return str(nowa_wartosc)
+        
+    return str(soup)
 
 # ==============================================================================
 # GŁÓWNA LOGIKA
