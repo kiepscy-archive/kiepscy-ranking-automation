@@ -6,8 +6,8 @@ import os
 from urllib.parse import urljoin, parse_qs, urlparse
 
 # --- KONFIGURACJA ---
-URL_SUBFORUM = "TUTAJ_WKLEJ_LINK_DO_PODFORUM_ODCINKI" 
-URL_WORDPRESS = "https://TWOJA-STRONA.PL" # Zmień na domenę swojej strony
+URL_SUBFORUM = "https://forum.kiepscy.org.pl/viewforum.php?f=8" 
+URL_WORDPRESS = "kiepscy-test.local" # Zmień na domenę swojej strony
 TAJNY_TOKEN = "MojeTajneHasloKiepscy2026!" # Taki sam jak w Code Snippets
 
 HEADERS = {
