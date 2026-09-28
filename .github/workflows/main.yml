@@ -1,0 +1,26 @@
+name: Automatyczna aktualizacja rankingu
+
+on:
+  schedule:
+    # 3:00 rano czasu UTC (2:00 UTC = 3:00 w Polsce w zimie)
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Pozwala też odpać skrypt ręcznie guzikiem!
+
+jobs:
+  build:
+    runs-runs-on: ubuntu-latest
+    steps:
+      - name: Pobierz pliki z repozytorium
+        uses: actions/checkout@v3
+
+      - name: Skonfiguruj Pythona
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Zainstaluj biblioteki
+        run: |
+          pip install requests beautifulsoup4
+
+      - name: Uruchom skrypt
+        run: python bot_rankingu.py
