@@ -3,7 +3,6 @@ name: Codzienna aktualizacja rankingu Kiepskich
 on:
   schedule:
     # 0:01 czasu polskiego (dla czasu letniego UTC+2 to 22:01 UTC poprzedniego dnia)
-    # Możesz dostosować godzinę UTC według potrzeb
     - cron: '1 22 * * *'
   
   # Pozwala na ręczne uruchomienie skryptu z zakładki "Actions" w GitHubie
@@ -21,7 +20,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          cache: 'pip'
 
       - name: Instalacja zależności
         run: |
