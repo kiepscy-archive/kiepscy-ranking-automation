@@ -11,13 +11,13 @@ from bs4 import BeautifulSoup
 # KONFIGURACJA (DANE WPISANE BEZPOŚREDNIO W KODZIE)
 # ==============================================================================
 
-SUBFORUM_URL = "https://twoje-forum.pl/viewforum.php?f=123"  # Wklej link do podforum
-WP_URL = "https://twoja-strona-wordpress.pl"                 # Adres Twojej strony WP
+SUBFORUM_URL = "https://forum.kiepscy.org.pl/viewforum.php?f=8"  # Wklej link do podforum
+WP_URL = "kiepscy-test.local"                 # Adres Twojej strony WP
 WP_PAGE_ID = 6                                              # ID strony z tabelką
 
 # Dane do logowania w WordPress (Basic Auth)
-WP_USER = "TwójLogin"                                       # Login konta
-WP_APP_PASS = "xxxx xxxx xxxx xxxx"                         # Hasło / Hasło aplikacji
+WP_USER = "kacrudy"                                       # Login konta
+WP_APP_PASS = "Reksiomiastosekretow500_game"                         # Hasło / Hasło aplikacji
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) KiepskiUpdater/2.0'
