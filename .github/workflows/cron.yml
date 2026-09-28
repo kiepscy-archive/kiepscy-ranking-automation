@@ -3,7 +3,7 @@ name: Codzienna aktualizacja rankingu Kiepskich
 on:
   schedule:
     # 0:01 czasu polskiego (dla czasu letniego UTC+2 to 22:01 UTC poprzedniego dnia)
-    - cron: '1 22 * * *'
+    - cron: '9 00 * * *'
   
   # Pozwala na ręczne uruchomienie skryptu z zakładki "Actions" w GitHubie
   workflow_dispatch:
