@@ -2,6 +2,8 @@ import os
 import re
 import json
 import time
+import sys
+import argparse
 import requests
 from datetime import datetime, timedelta
 from urllib.parse import urljoin, parse_qs, urlparse
@@ -11,25 +13,30 @@ from bs4 import BeautifulSoup
 # KONFIGURACJA (DANE WPISANE BEZPOŚREDNIO W KODZIE)
 # ==============================================================================
 
-SUBFORUM_URL = "https://forum.kiepscy.org.pl/viewforum.php?f=8"  # Wklej link do podforum
-WP_URL = "http://kiepscy-test.local"                 # Adres Twojej strony WP
-WP_PAGE_ID = 37                                            # ID strony z tabelką
+SUBFORUM_URL = "https://forum.kiepscy.org.pl/viewforum.php?f=8"  
+WP_URL = "http://kiepscy-test.local"                 
+WP_PAGE_ID = 37                                            
 
-# Dane do logowania w WordPress (Basic Auth)
-WP_USER = "kacrudy"                                       # Login konta
-WP_APP_PASS = "CCqr 7sMe 5tKw dRiE wiBj NZ6f"                         # Hasło / Hasło aplikacji
+WP_USER = "kacrudy"                                       
+WP_APP_PASS = "CCqr 7sMe 5tKw dRiE wiBj NZ6f"                         
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) KiepskiUpdater/2.0'
 }
 
-MIESIACE = {
-    'sty': 1, 'lut': 2, 'mar': 3, 'kwi': 4, 'maj': 5, 'cze': 6,
-    'lip': 7, 'sie': 8, 'wrz': 9, 'paź': 10, 'paz': 10, 'lis': 11, 'gru': 12,
-    'stycznia': 1, 'lutego': 2, 'marca': 3, 'kwietnia': 4, 'maja': 5, 'czerwca': 6,
-    'lipca': 7, 'sierpnia': 8, 'września': 9, 'wrzesnia': 9, 'października': 10,
-    'listopada': 11, 'grudnia': 12
-}
+# ==============================================================================
+# SYSTEM LOGOWANIA DO PLIKU I KONSOLI
+# ==============================================================================
+
+def log_print(komunikat):
+    """Wypisuje komunikat w konsoli oraz dopisuje go do pliku log.log z znacznikiem czasu."""
+    print(komunikat)
+    timestamp = datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
+    try:
+        with open("log.log", "a", encoding="utf-8") as f:
+            f.write(f"{timestamp} {komunikat}\n")
+    except Exception as e:
+        print(f"⚠️ Nie udało się zapisać do pliku log.log: {e}")
 
 # ==============================================================================
 # HELPERY I ANALIZA OCENY
@@ -56,14 +63,8 @@ def wyciągnij_ocenę_z_dołu_posta(treść_posta):
     return None
 
 def parsuj_datę_postu(znacznik_czasu):
-    """
-    Parsuje datę w formacie: "2026-09-28, 13:39"
-    Zwraca obiekt date lub None w przypadku błędu.
-    """
     if not znacznik_czasu:
         return None
-    
-    # Wyciągamy ciąg w formacie YYYY-MM-DD
     m = re.search(r'(\d{4}-\d{2}-\d{2})', znacznik_czasu)
     if m:
         try:
@@ -80,20 +81,45 @@ def czysc_url(url):
     new_query = "&".join([f"{k}={v[0]}" for k, v in qs.items()])
     return f"{parsed.scheme}://{parsed.netloc}{parsed.path}" + (f"?{new_query}" if new_query else "")
 
+def pasuje_do_odcinka(tytul_tekst, szukany_ep_str):
+    """Sprawdza, czy tytuł odcinka pasuje do podanego argumentu (--ep).
+       Obsługuje zarówno numery (zapobiegając myleniu 22 z 220), jak i nazwy tekstowe.
+    """
+    szukany_czysty = szukany_ep_str.strip()
+    
+    # Jeśli szukana fraza jest liczbą (np. "22" lub "022")
+    if szukany_czysty.isdigit():
+        szukany_ep_int = int(szukany_czysty)
+        # Sprawdzenie liczby na samym początku tytułu
+        m = re.match(r'^0*(\d+)', tytul_tekst.strip())
+        if m:
+            try:
+                if int(m.group(1)) == szukany_ep_int:
+                    return True
+            except ValueError:
+                pass
+        
+        # Szukanie jako osobnej liczby otoczonej nie-cyframi wewnątrz ciągu
+        wzorzec = r'(?<!\d)0*' + str(szukany_ep_int) + r'(?!\d)'
+        if re.search(wzorzec, tytul_tekst):
+            return True
+    else:
+        # Jeśli to tekst (np. "Wielki bal"), szukamy dopasowania frazy w tytule (bez uwzględniania wielkości liter)
+        if szukany_czysty.lower() in tytul_tekst.lower():
+            return True
+        
+    return False
+
 # ==============================================================================
-# SZYBKI SCRAPER (WYŁĄCZNIE DLA AKTYWNYCH TEMATÓW)
+# SZYBKI SCRAPER
 # ==============================================================================
 
 def pobierz_aktywne_tematy(url_subforum, cel_data):
-    """
-    Skanuje listy wątków i filtrowaniem odrzuca te,
-    w których ostatni post jest starszy niż szukana data.
-    """
     odwiedzone = set()
     do_odwiedzenia = [url_subforum]
     aktywne_tematy = []
 
-    print("⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...")
+    log_print("⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...")
 
     while do_odwiedzenia:
         curr = do_odwiedzenia.pop(0)
@@ -106,25 +132,20 @@ def pobierz_aktywne_tematy(url_subforum, cel_data):
             res = requests.get(curr, headers=HEADERS, timeout=10)
             soup = BeautifulSoup(res.text, 'html.parser')
             
-            # Subfora / Sezony
             for a in soup.find_all('a', class_='forumtitle'):
                 do_odwiedzenia.append(urljoin(curr, a.get('href')))
             
-            # Przeglądanie wierszy z tematami na liście
             wiersze_tematow = soup.find_all('li', class_=re.compile(r'row'))
             for row in wiersze_tematow:
                 a_topic = row.find('a', class_='topictitle')
                 if not a_topic:
                     continue
 
-                # Szukamy informacji o OSTATNIM POŚCIE w wierszu
                 lastpost_span = row.find(class_=re.compile(r'lastpost'))
                 data_ostatniego_posta = None
                 if lastpost_span:
                     data_ostatniego_posta = parsuj_datę_postu(lastpost_span.text)
 
-                # FILTR: Bierzemy temat TYLKO jeśli data ostatniego wpisu jest równa cel_data
-                # lub ewentualnie nowsza (dzisiejsza)
                 if data_ostatniego_posta and data_ostatniego_posta >= cel_data:
                     href = urljoin(curr, a_topic.get('href'))
                     clean_href = czysc_url(href)
@@ -132,24 +153,21 @@ def pobierz_aktywne_tematy(url_subforum, cel_data):
                         aktywne_tematy.append(clean_href)
 
         except Exception as e:
-            print(f"⚠️ Błąd pobierania listy {curr}: {e}")
+            log_print(f"⚠️ Błąd pobierania listy {curr}: {e}")
 
     return aktywne_tematy
 
 def pobierz_wczorajsze_oceny(url_subforum, cel_data):
-    # 1. Pobieramy TYLKO aktywne wątki
     linki_tematow = pobierz_aktywne_tematy(url_subforum, cel_data)
 
     if not linki_tematow:
-        print("⚡ Brak jakiejkolwiek aktywności w tematach z wczorajszego dnia. Koniec.")
+        log_print("😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego dnia. Koniec.")
         return {}
 
-    print(f"🎯 Znaleziono tylko {len(linki_tematow)} temat(y) z nową aktywnością. Pobieranie postów...")
+    log_print(f"🎯 Znaleziono tylko {len(linki_tematow)} temat(y) z nową aktywnością. Pobieranie postów...")
     nowe_oceny = {}
 
-    # 2. Głębokie skanowanie wyłącznie znalezionych aktywnych tematów
     for url_t in linki_tematow:
-        # Przechodzimy od razu do OSTATNIEJ strony wątku, bo tam będą najnowsze posty
         start = 0
         tytul_odcinka = ""
         
@@ -193,6 +211,8 @@ def pobierz_wczorajsze_oceny(url_subforum, cel_data):
                             if tytul_odcinka not in nowe_oceny:
                                 nowe_oceny[tytul_odcinka] = []
                             nowe_oceny[tytul_odcinka].append((autor, ocena))
+                        else:
+                            log_print(f"ℹ️ Post użytkownika {autor} w temacie '{tytul_odcinka}' z dnia {data_postu} nie zawiera poprawnej oceny na końcu.")
 
                 strefa_pagi = soup.find('div', class_='pagination')
                 ma_nastepna = False
@@ -205,7 +225,7 @@ def pobierz_wczorajsze_oceny(url_subforum, cel_data):
                 time.sleep(0.2)
 
             except Exception as e:
-                print(f"⚠️ Błąd podczas skanowania {url_page}: {e}")
+                log_print(f"⚠️ Błąd podczas skanowania {url_page}: {e}")
                 break
 
     return nowe_oceny
@@ -214,32 +234,121 @@ def pobierz_wczorajsze_oceny(url_subforum, cel_data):
 # OBSŁUGA WORDPRESS API & EDYCJA TABELI HTML
 # ==============================================================================
 
-
-import re
-import requests
-from bs4 import BeautifulSoup
-
 def formatuj_liczbe(wartosc):
-    """Formatuje float do postaci z przecinkiem, usuwając zbędne zera na końcu (np. 5.90 -> 5,9; 6.00 -> 6)."""
     text = f"{round(wartosc, 2):.2f}".replace('.', ',')
     if ',' in text:
         text = text.rstrip('0').rstrip(',')
     return text
 
-def aktualizuj_tabelę_wp(slownik_aktualizacji):
-    TABLE_ID = 9  # Upewnij się, że masz tu prawidłowe ID z panelu (np. 9)
-    
-    # 1. Pobieramy surowe dane bezpośrednio z bazy TablePress przez nowy endpoint GET
+def testuj_polaczenie_wp():
+    TABLE_ID = 9
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
-    res = requests.get(get_url, auth=(WP_USER, WP_APP_PASS))
+    log_print(f"🔍 Testowanie połączenia z WordPress API (Adres: {WP_URL}, Tabela ID: {TABLE_ID})...")
     
+    try:
+        res = requests.get(get_url, auth=(WP_USER, WP_APP_PASS), timeout=10)
+        if res.status_code == 200:
+            log_print("✅ Sukces! Połączenie nawiązane, uwierzytelnianie poprawne (Status 200).")
+            data = res.json().get('data', [])
+            log_print(f"📊 Pobrano tabelę pomyślnie. Liczba wierszy w tabeli: {len(data)}")
+            return True
+        elif res.status_code == 401:
+            log_print("❌ Błąd 401: Nieautoryzowany dostęp. Sprawdź hasło aplikacji.")
+            return False
+        else:
+            log_print(f"❌ Otrzymano kod statusu: {res.status_code} - {res.text}")
+            return False
+    except Exception as e:
+        log_print(f"❌ Błąd połączenia: {e}")
+        return False
+
+def napraw_pozycje_w_wp():
+    """Pobiera tabelę z WordPressa, przelicza pozycje ex aequo na podstawie obecnych średnich i zapisuje."""
+    TABLE_ID = 9  
+    get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
+    log_print("🛠️ Uruchamianie weryfikacji i naprawy pozycji ex aequo w tabeli WP...")
+    
+    res = requests.get(get_url, auth=(WP_USER, WP_APP_PASS))
     if res.status_code != 200:
-        print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
+        log_print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
         return False
         
     rows = res.json().get('data', [])
     if not rows or len(rows) < 2:
-        print("❌ Tabela jest pusta lub nie zawiera danych!")
+        log_print("❌ Tabela jest pusta lub nie zawiera danych!")
+        return False
+
+    idx_lp = 0
+    idx_srednia = 1
+    idx_liczba = 3
+
+    naglowek = rows[0]
+    wiersze_danych = rows[1:]
+
+    dane_obliczone = []
+
+    for wiersz in wiersze_danych:
+        if len(wiersz) <= idx_liczba:
+            continue
+
+        txt_srednia = str(wiersz[idx_srednia])
+        clean_srednia = re.sub(r'[^\d\.]', '', txt_srednia.replace(',', '.'))
+        srednia_val = round(float(clean_srednia), 2) if clean_srednia else 0.0
+
+        dane_obliczone.append({
+            'srednia': srednia_val,
+            'pelny_wiersz': wiersz  
+        })
+
+    # Sortowanie malejąco po zaokrąglonej średniej
+    dane_obliczone.sort(key=lambda x: x['srednia'], reverse=True)
+
+    nowe_wiersze_tablepress = [naglowek]
+    ostatnia_srednia = None
+    biezaca_pozycja = 1
+
+    for i, item in enumerate(dane_obliczone):
+        if i > 0 and item['srednia'] == ostatnia_srednia:
+            pozycja_w_rankingu = biezaca_pozycja
+        else:
+            biezaca_pozycja = i + 1
+            pozycja_w_rankingu = biezaca_pozycja
+
+        ostatnia_srednia = item['srednia']
+        wiersz = list(item['pelny_wiersz'])
+        
+        if idx_lp is not None and len(wiersz) > idx_lp:
+            wiersz[idx_lp] = bezpieczna_aktualizacja_komorki(wiersz[idx_lp], pozycja_w_rankingu)
+            
+        nowe_wiersze_tablepress.append(wiersz)
+
+    update_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/update-table"
+    payload = {'table_id': TABLE_ID, 'data': nowe_wiersze_tablepress}
+
+    res_post = requests.post(update_url, json=payload, auth=(WP_USER, WP_APP_PASS))
+    
+    if res_post.status_code == 200:
+        log_print("✅ Pomyślnie zweryfikowano i naprawiono pozycje ex aequo w tabeli WordPress!")
+        return True
+    else:
+        log_print(f"❌ Błąd zapisu pozycji do TablePress: {res_post.status_code} - {res_post.text}")
+        return False
+
+def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manualne_dodanie_oceny=None):
+    TABLE_ID = 9  
+    if slownik_aktualizacji is None:
+        slownik_aktualizacji = {}
+    
+    get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
+    res = requests.get(get_url, auth=(WP_USER, WP_APP_PASS))
+    
+    if res.status_code != 200:
+        log_print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
+        return False
+        
+    rows = res.json().get('data', [])
+    if not rows or len(rows) < 2:
+        log_print("❌ Tabela jest pusta lub nie zawiera danych!")
         return False
 
     idx_lp = 0
@@ -257,7 +366,6 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji):
         if len(wiersz) <= idx_liczba:
             continue
 
-        # Wyciągamy czysty tekst z HTML tytułu, aby dopasować go do odcinka z forum
         tytul_raw = str(wiersz[idx_tytul])
         soup_tytul = BeautifulSoup(tytul_raw, 'html.parser')
         tytul_tekst = soup_tytul.get_text(strip=True)
@@ -277,6 +385,27 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji):
         nowa_suma = stara_suma
         nowa_srednia = stara_srednia
 
+        # 1. RĘCZNA KOREKTA CAŁEJ ŚREDNIEJ I LICZBY OCEN (--ep, --newavg, --ratnr)
+        if manualna_korekta:
+            szukany_ep_str = str(manualna_korekta['ep'])
+            if pasuje_do_odcinka(tytul_tekst, szukany_ep_str):
+                nowa_srednia = round(manualna_korekta['newavg'], 2)
+                nowa_liczba_ocen = manualna_korekta['ratnr']
+                zmieniono = True
+                log_print(f"🛠️ RĘCZNA KOREKTA dla odcinka '{tytul_tekst}': Ustawiono średnią na {formatuj_liczbe(nowa_srednia)} i liczbę ocen na {nowa_liczba_ocen}")
+
+        # 2. RĘCZNE DOLICZENIE POJEDYNCZEJ OCENY (--ep, --newrate)
+        if manualne_dodanie_oceny:
+            szukany_ep_str = str(manualne_dodanie_oceny['ep'])
+            if pasuje_do_odcinka(tytul_tekst, szukany_ep_str):
+                dodatkowa_ocena = manualne_dodanie_oceny['rate']
+                nowa_liczba_ocen = stara_liczba_ocen + 1
+                nowa_suma = stara_suma + dodatkowa_ocena
+                nowa_srednia = round((nowa_suma / nowa_liczba_ocen) if nowa_liczba_ocen > 0 else 0.0, 2)
+                zmieniono = True
+                log_print(f"➕ RĘCZNE DOLICZENIE OCENY dla odcinka '{tytul_tekst}': Doliczono ocenę {dodatkowa_ocena}. Nowa liczba ocen: {nowa_liczba_ocen}, Nowa średnia: {formatuj_liczbe(nowa_srednia)}")
+
+        # 3. STANDARDOWA AKTUALIZACJA Z FORUM
         for tytul_odcinka_forum, list_ocen in slownik_aktualizacji.items():
             forum_czysty = tytul_odcinka_forum.strip()
 
@@ -286,99 +415,75 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji):
 
                 nowa_liczba_ocen = stara_liczba_ocen + dodatkowa_liczba
                 nowa_suma = stara_suma + dodatkowa_suma
-                nowa_srednia = nowa_suma / nowa_liczba_ocen if nowa_liczba_ocen > 0 else 0.0
+                nowa_srednia = round((nowa_suma / nowa_liczba_ocen) if nowa_liczba_ocen > 0 else 0.0, 2)
 
                 zmieniono = True
-                print(f"🎯 PODGLĄD DANYCH dla '{tytul_odcinka_forum}':")
-                print(f"   • Przed: Liczba ocen={stara_liczba_ocen}, Średnia={stara_srednia}")
-                print(f"   • Po:    Liczba ocen={nowa_liczba_ocen}, Średnia={formatuj_liczbe(nowa_srednia)}")
+                log_print(f"🎯 PODGLĄD DANYCH dla '{tytul_odcinka_forum}':")
+                log_print(f"   • Przed: Liczba ocen={stara_liczba_ocen}, Średnia={stara_srednia}, Suma={stara_suma:.2f}")
+                log_print(f"   • Po:    Liczba ocen={nowa_liczba_ocen}, Średnia={formatuj_liczbe(nowa_srednia)}, Suma={nowa_suma:.2f}")
                 break
 
         dane_obliczone.append({
             'srednia': nowa_srednia,
             'liczba_ocen': nowa_liczba_ocen,
-            'pelny_wiersz': wiersz  # Zachowujemy cały wiersz ze wszystkimi kolumnami i ich HTML-em
+            'pelny_wiersz': wiersz  
         })
 
-    if not zmieniono:
-        print("ℹ️ Brak odcinków do aktualizacji.")
+    if not zmieniono and not manualna_korekta and not manualne_dodanie_oceny:
+        log_print("ℹ️ Brak odcinków do aktualizacji.")
         return True
 
-    # Sortowanie wyłącznie według Średniej malejąco
+    # Sortowanie ex aequo po zaokrąglonej średniej
     dane_obliczone.sort(key=lambda x: x['srednia'], reverse=True)
 
-    # Składamy nową tabelę z obsługą ex aequo opartą TYLKO na średniej
     nowe_wiersze_tablepress = [naglowek]
-    
     ostatnia_srednia = None
     biezaca_pozycja = 1
 
     for i, item in enumerate(dane_obliczone):
-        # Sprawdzamy remis – liczy się WYŁĄCZNIE identyczna średnia
         if i > 0 and item['srednia'] == ostatnia_srednia:
-            # Ex aequo – ta sama pozycja co u poprzedniego odcinka
             pozycja_w_rankingu = biezaca_pozycja
         else:
-            # Nowa pozycja bazuje na rzeczywistym indeksie wiersza (1-based index)
             biezaca_pozycja = i + 1
             pozycja_w_rankingu = biezaca_pozycja
 
-        # Zapamiętujemy średnią do porównania w następnej iteracji
         ostatnia_srednia = item['srednia']
-
         wiersz = list(item['pelny_wiersz'])
         
-        # 1. Aktualizujemy LP (miejsce ex aequo) z zachowaniem HTML
         if idx_lp is not None and len(wiersz) > idx_lp:
             wiersz[idx_lp] = bezpieczna_aktualizacja_komorki(wiersz[idx_lp], pozycja_w_rankingu)
-
-        # 2. Aktualizujemy Średnią z zachowaniem HTML
         if len(wiersz) > idx_srednia:
             wiersz[idx_srednia] = bezpieczna_aktualizacja_komorki(wiersz[idx_srednia], formatuj_liczbe(item['srednia']))
-
-        # 3. Aktualizujemy Liczbę ocen z zachowaniem HTML
         if len(wiersz) > idx_liczba:
             wiersz[idx_liczba] = bezpieczna_aktualizacja_komorki(wiersz[idx_liczba], item['liczba_ocen'])
             
         nowe_wiersze_tablepress.append(wiersz)
 
-    # Wysyłamy zaktualizowane dane przez endpoint POST
     update_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/update-table"
-    payload = {
-        'table_id': TABLE_ID,
-        'data': nowe_wiersze_tablepress
-    }
+    payload = {'table_id': TABLE_ID, 'data': nowe_wiersze_tablepress}
 
     res_post = requests.post(update_url, json=payload, auth=(WP_USER, WP_APP_PASS))
     
     if res_post.status_code == 200:
-        print("✅ Pomyślnie zaktualizowano tabelę z zachowaniem 100% HTML we wszystkich kolumnach!")
+        log_print("✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!")
         return True
     else:
-        print(f"❌ Błąd zapisu do TablePress: {res_post.status_code} - {res_post.text}")
+        log_print(f"❌ Błąd zapisu do TablePress: {res_post.status_code} - {res_post.text}")
         return False
         
 def bezpieczna_aktualizacja_komorki(stary_html, nowa_wartosc):
-    """Podmienia pierwszą napotkaną liczbę w komórce, zachowując w 100% cały HTML i style."""
     if not stary_html:
         return str(nowa_wartosc)
-    
     soup = BeautifulSoup(str(stary_html), 'html.parser')
     replaced = False
-    
-    # Szukamy cyfr wyłącznie w tekście, ignorując tagi i atrybuty HTML (np. style="#ff0000")
     for element in soup.find_all(string=True):
         if re.search(r'\d', element):
-            # Podmieniamy całą liczbę/ułamek (np. 5,86 na 5,9 albo 29 na 30)
             new_text = re.sub(r'[\d,\.]+', str(nowa_wartosc), element, count=1)
             element.replace_with(new_text)
             replaced = True
             break
-            
-    # Jeśli komórka nie miała żadnego tekstu wcześniej, zwracamy nową wartość
     if not replaced:
         return str(nowa_wartosc)
-        
     return str(soup)
 
 # ==============================================================================
@@ -386,15 +491,69 @@ def bezpieczna_aktualizacja_komorki(stary_html, nowa_wartosc):
 # ==============================================================================
 
 def main():
+    parser = argparse.ArgumentParser(description="Kiepscy Ranking Updater")
+    parser.add_argument("--onlycheck", action="store_true", help="Tylko test połączenia z WP API")
+    parser.add_argument("--fixrank", action="store_true", help="Sprawdza i naprawia pozycje ex aequo w tabeli WP bez zmiany ocen")
+    parser.add_argument("--ep", type=str, help="Numer lub tytuł odcinka (np. 22, 552 lub 'Wielki bal')")
+    parser.add_argument("--newavg", type=str, help="Nowa średnia ocena (np. 8,82)")
+    parser.add_argument("--ratnr", type=int, help="Nowa liczba ocen (np. 14)")
+    parser.add_argument("--newrate", type=str, help="Pojedyncza ocena do doliczenia (np. 7)")
+    
+    args = parser.parse_args()
+
+    if args.onlycheck:
+        testuj_polaczenie_wp()
+        return
+
+    if args.fixrank:
+        napraw_pozycje_w_wp()
+        return
+
+    # Obsługa ręcznego doliczenia pojedynczej oceny (--ep, --newrate)
+    if args.ep is not None and args.newrate is not None:
+        try:
+            rate_val = float(args.newrate.replace(',', '.'))
+        except ValueError:
+            log_print("❌ Błąd: Parametr --newrate musi być poprawną liczbą (np. 7)")
+            return
+
+        log_print(f"➕ Uruchamianie doliczenia oceny {rate_val} dla odcinka '{args.ep}'...")
+        dodanie = {
+            'ep': args.ep,
+            'rate': rate_val
+        }
+        aktualizuj_tabelę_wp(manualne_dodanie_oceny=dodanie)
+        return
+
+    # Obsługa ręcznej korekty całej średniej i liczby ocen (--ep, --newavg, --ratnr)
+    if args.ep is not None and args.newavg is not None and args.ratnr is not None:
+        try:
+            avg_val = float(args.newavg.replace(',', '.'))
+        except ValueError:
+            log_print("❌ Błąd: Parametr --newavg musi być poprawną liczbą (np. 8,82 lub 8.82)")
+            return
+
+        log_print(f"🛠️ Uruchamianie ręcznej korekty dla odcinka '{args.ep}'...")
+        korekta = {
+            'ep': args.ep,
+            'newavg': avg_val,
+            'ratnr': args.ratnr
+        }
+        aktualizuj_tabelę_wp(manualna_korekta=korekta)
+        return
+
+    # Standardowy obieg automatyczny
     wczoraj = (datetime.now() - timedelta(days=1)).date()
-    print(f"🚀 Uruchamianie szybkiego aktualizatora. Szukam ocen z dnia: {wczoraj}")
+    log_print(f"🚀 Uruchamianie szybkiego aktualizatora. Szukam ocen z dnia: {wczoraj}")
 
     if not os.path.exists("baza_userow.json"):
-        print("❌ Brak pliku baza_userow.json w repozytorium!")
+        log_print("❌ Brak pliku baza_userow.json w repozytorium!")
         return
 
     with open("baza_userow.json", "r", encoding="utf-8") as f:
         baza_userow = json.load(f)
+
+    wzorcowa_lista_odcinków = baza_userow.get("bazowa_lista_odcinków", [])
 
     znalezione_oceny = pobierz_wczorajsze_oceny(SUBFORUM_URL, wczoraj)
     
@@ -403,31 +562,47 @@ def main():
 
     for tytul_odc, lista_postow in znalezione_oceny.items():
         for autor, ocena in lista_postow:
-            if autor in baza_userow:
-                nieocenione = baza_userow[autor].get("nieocenione", [])
-                
-                dopasowany_tytul = next((t for t in nieocenione if t.lower() == tytul_odc.lower()), None)
+            if autor == "bazowa_lista_odcinków":
+                continue
 
-                if dopasowany_tytul:
-                    baza_userow[autor]["nieocenione"].remove(dopasowany_tytul)
-                    baza_userow[autor]["ocenione"].append(dopasowany_tytul)
-                    zmieniono_bazę_json = True
-                    
-                    if dopasowany_tytul not in do_aktualizacji_wp:
-                        do_aktualizacji_wp[dopasowany_tytul] = []
-                    do_aktualizacji_wp[dopasowany_tytul].append(ocena)
-                    
-                    print(f"✨ Akceptacja oceny: {autor} ocenił '{dopasowany_tytul}' na {ocena}/10")
+            if autor not in baza_userow:
+                log_print(f"🆕 Wykryto nowego użytkownika: '{autor}'. Automatyczne dodawanie do bazy z bazową pulą odcinków.")
+                baza_userow[autor] = {
+                    "nieocenione": list(wzorcowa_lista_odcinków),
+                    "ocenione": []
+                }
+                zmieniono_bazę_json = True
+
+            nieocenione = baza_userow[autor].get("nieocenione", [])
+            ocenione = baza_userow[autor].get("ocenione", [])
+            
+            dopasowany_nieoceniony = next((t for t in nieocenione if t.lower() == tytul_odc.lower()), None)
+            dopasowany_oceniony = next((t for t in ocenione if t.lower() == tytul_odc.lower()), None)
+
+            if dopasowany_nieoceniony:
+                baza_userow[autor]["nieocenione"].remove(dopasowany_nieoceniony)
+                baza_userow[autor]["ocenione"].append(dopasowany_nieoceniony)
+                zmieniono_bazę_json = True
+                
+                if dopasowany_nieoceniony not in do_aktualizacji_wp:
+                    do_aktualizacji_wp[dopasowany_nieoceniony] = []
+                do_aktualizacji_wp[dopasowany_nieoceniony].append(ocena)
+                
+                log_print(f"✨ Akceptacja oceny: {autor} ocenił '{dopasowany_nieoceniony}' na {ocena}/10")
+            elif dopasowany_oceniony:
+                log_print(f"⚠️ Odrzucono ocenę: {autor} ocenił wczoraj '{tytul_odc}', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).")
+            else:
+                log_print(f"ℹ️ Użytkownik {autor} napisał post w temacie '{tytul_odc}', ale ten odcinek nie figuruje w bazie wzorcowej.")
 
     if zmieniono_bazę_json:
         with open("baza_userow.json", "w", encoding="utf-8") as f:
             json.dump(baza_userow, f, ensure_ascii=False, indent=4)
-        print("💾 Zapisano zaktualizowany plik baza_userow.json.")
+        log_print("💾 Zapisano zaktualizowany plik baza_userow.json.")
 
         if do_aktualizacji_wp:
-            aktualizuj_tabelę_wp(do_aktualizacji_wp)
+            aktualizuj_tabelę_wp(slownik_aktualizacji=do_aktualizacji_wp)
     else:
-        print("😴 Brak nowych, ważnych ocen z wczorajszego dnia.")
+        log_print("😴 Brak nowych, ważnych ocen z wczorajszego dnia.")
 
 if __name__ == "__main__":
     main()
