@@ -114,7 +114,7 @@ def pasuje_do_odcinka(tytul_tekst, szukany_ep_str):
 # SZYBKI SCRAPER
 # ==============================================================================
 
-def pobierz_aktywne_tematy(url_subforum, cel_data):
+def pobierz_aktywne_tematy(url_subforum, data_od, data_do):
     odwiedzone = set()
     do_odwiedzenia = [url_subforum]
     aktywne_tematy = []
@@ -146,7 +146,7 @@ def pobierz_aktywne_tematy(url_subforum, cel_data):
                 if lastpost_span:
                     data_ostatniego_posta = parsuj_datę_postu(lastpost_span.text)
 
-                if data_ostatniego_posta and data_ostatniego_posta >= cel_data:
+                if data_ostatniego_posta and data_ostatniego_posta >= data_od:
                     href = urljoin(curr, a_topic.get('href'))
                     clean_href = czysc_url(href)
                     if clean_href not in aktywne_tematy:
@@ -157,14 +157,14 @@ def pobierz_aktywne_tematy(url_subforum, cel_data):
 
     return aktywne_tematy
 
-def pobierz_wczorajsze_oceny(url_subforum, cel_data):
-    linki_tematow = pobierz_aktywne_tematy(url_subforum, cel_data)
+def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
+    linki_tematow = pobierz_aktywne_tematy(url_subforum, data_od, data_do)
 
     if not linki_tematow:
-        log_print("😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego dnia. Koniec.")
+        log_print("😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.")
         return {}
 
-    log_print(f"🎯 Znaleziono tylko {len(linki_tematow)} temat(y) z nową aktywnością. Pobieranie postów...")
+    log_print(f"🎯 Znaleziono {len(linki_tematow)} temat(y) z nową aktywnością. Pobieranie postów...")
     nowe_oceny = {}
 
     for url_t in linki_tematow:
@@ -193,7 +193,8 @@ def pobierz_wczorajsze_oceny(url_subforum, cel_data):
                     p_author = post.find('p', class_='author')
                     data_postu = parsuj_datę_postu(p_author.text) if p_author else None
                     
-                    if data_postu != cel_data:
+                    # Sprawdzamy czy post mieści się w buforze (od wczoraj do dzisiaj)
+                    if not data_postu or not (data_od <= data_postu <= data_do):
                         continue
 
                     autor_tag = post.find(class_=re.compile(r'username'))
@@ -542,9 +543,11 @@ def main():
         aktualizuj_tabelę_wp(manualna_korekta=korekta)
         return
 
-    # Standardowy obieg automatyczny
-    wczoraj = (datetime.now() - timedelta(days=1)).date()
-    log_print(f"🚀 Uruchamianie szybkiego aktualizatora. Szukam ocen z dnia: {wczoraj}")
+    # Standardowy obieg automatyczny (bufor: wczoraj oraz dzisiaj)
+    dzis = datetime.now().date()
+    wczoraj = dzis - timedelta(days=1)
+    
+    log_print(f"🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: {wczoraj} do {dzis}")
 
     if not os.path.exists("baza_userow.json"):
         log_print("❌ Brak pliku baza_userow.json w repozytorium!")
@@ -555,7 +558,7 @@ def main():
 
     wzorcowa_lista_odcinków = baza_userow.get("bazowa_lista_odcinków", [])
 
-    znalezione_oceny = pobierz_wczorajsze_oceny(SUBFORUM_URL, wczoraj)
+    znalezione_oceny = pobierz_dzisiejsze_i_wczorajsze_oceny(SUBFORUM_URL, wczoraj, dzis)
     
     do_aktualizacji_wp = {}
     zmieniono_bazę_json = False
@@ -590,7 +593,7 @@ def main():
                 
                 log_print(f"✨ Akceptacja oceny: {autor} ocenił '{dopasowany_nieoceniony}' na {ocena}/10")
             elif dopasowany_oceniony:
-                log_print(f"⚠️ Odrzucono ocenę: {autor} ocenił wczoraj '{tytul_odc}', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).")
+                log_print(f"⚠️ Odrzucono ocenę: {autor} ocenił '{tytul_odc}', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).")
             else:
                 log_print(f"ℹ️ Użytkownik {autor} napisał post w temacie '{tytul_odc}', ale ten odcinek nie figuruje w bazie wzorcowej.")
 
@@ -602,7 +605,7 @@ def main():
         if do_aktualizacji_wp:
             aktualizuj_tabelę_wp(slownik_aktualizacji=do_aktualizacji_wp)
     else:
-        log_print("😴 Brak nowych, ważnych ocen z wczorajszego dnia.")
+        log_print("😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.")
 
 if __name__ == "__main__":
     main()
