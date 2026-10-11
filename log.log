@@ -257,3 +257,14 @@
 [2026-10-11 11:40:56] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
 [2026-10-11 11:40:58] ⚠️ Odrzucono ocenę: kafel ocenił '253 Salomon Baba', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-11 11:40:58] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-11 11:45:35] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-10 do 2026-10-11
+[2026-10-11 11:45:35] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-11 11:45:56] 🎯 Znaleziono 2 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-11 11:46:01] ✨ Akceptacja oceny: kacrudy ocenił '045 Przezorny zawsze ubezpieczony' na 4/10
+[2026-10-11 11:46:01] ⚠️ Odrzucono ocenę: kafel ocenił '253 Salomon Baba', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-11 11:46:01] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-10-11 11:46:02] 🎯 PODGLĄD DANYCH dla '045 Przezorny zawsze ubezpieczony':
+[2026-10-11 11:46:02]    • Przed: Liczba ocen=53, Średnia=9.38, Suma=497.14
+[2026-10-11 11:46:02]    • Po:    Liczba ocen=54, Średnia=9,28, Suma=501.14
+[2026-10-11 11:46:02] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-11 11:46:04] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
