@@ -371,6 +371,11 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
         log_print("❌ Tabela jest pusta lub nie zawiera danych!")
         return False
 
+    # SPRAWDZENIE: Jeśli brakuje pliku backupu w repo, utwórz go od razu jako stan początkowy
+    if not os.path.exists("tabela_backup.json"):
+        log_print("ℹ️ Nie znaleziono pliku kopii zapasowej w repozytorium. Tworzę początkowy backup tabeli...")
+        zrob_backup_przed_zmiana(rows)
+
     idx_lp = 0
     idx_srednia = 1
     idx_tytul = 2
@@ -628,6 +633,17 @@ def main():
             aktualizuj_tabelę_wp(slownik_aktualizacji=do_aktualizacji_wp)
     else:
         log_print("😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.")
+        
+        # Nawet jeśli nie ma nowych ocen, sprawdzamy czy w repo jest backup. 
+        # Jeśli go brakuje, wymuszamy jego utworzenie poprzez pobranie stanu z WP.
+        if not os.path.exists("tabela_backup.json"):
+            log_print("🛡️ Wykryto brak pliku 'tabela_backup.json'. Pobieram stan początkowy z WP...")
+            get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}" if 'TABLE_ID' in globals() else f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/116"
+            res = requests.get(get_url, headers=API_HEADERS)
+            if res.status_code == 200:
+                rows = res.json().get('data', [])
+                if rows:
+                    zrob_backup_przed_zmiana(rows)
 
 if __name__ == "__main__":
     main()
