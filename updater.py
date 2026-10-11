@@ -14,14 +14,20 @@ from bs4 import BeautifulSoup
 # ==============================================================================
 
 SUBFORUM_URL = "https://forum.kiepscy.org.pl/viewforum.php?f=8"  
-WP_URL = "http://kiepscy-test.local"                 
+WP_URL = "http://kiepscy.org.pl"               
 WP_PAGE_ID = 37                                            
 
 WP_USER = "kacrudy"                                       
-WP_APP_PASS = "CCqr 7sMe 5tKw dRiE wiBj NZ6f"                         
+# Niestandardowy token bezpieczeństwa omijający blokady nagłówków serwera
+WP_CUSTOM_TOKEN = "fba8U57HyTvulhlJRh5uMdRe"                         
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) KiepskiUpdater/2.0'
+}
+
+# Pomocniczy słownik nagłówków autoryzacyjnych do zapytań HTTP
+API_HEADERS = {
+    'X-Auth-Token': WP_CUSTOM_TOKEN
 }
 
 # ==============================================================================
@@ -241,20 +247,30 @@ def formatuj_liczbe(wartosc):
         text = text.rstrip('0').rstrip(',')
     return text
 
+def zrob_backup_przed_zmiana(rows_data):
+    """Zapisuje lub nadpisuje plik kopii zapasowej przed zmodyfikowaniem tabeli."""
+    backup_filename = "tabela_backup.json"
+    try:
+        with open(backup_filename, "w", encoding="utf-8") as f:
+            json.dump(rows_data, f, ensure_ascii=False, indent=4)
+        log_print(f"💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: {backup_filename}")
+    except Exception as e:
+        log_print(f"⚠️ Nie udało się zapisać kopii zapasowej: {e}")
+
 def testuj_polaczenie_wp():
-    TABLE_ID = 9
+    TABLE_ID = 116
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
     log_print(f"🔍 Testowanie połączenia z WordPress API (Adres: {WP_URL}, Tabela ID: {TABLE_ID})...")
     
     try:
-        res = requests.get(get_url, auth=(WP_USER, WP_APP_PASS), timeout=10)
+        res = requests.get(get_url, headers=API_HEADERS, timeout=10)
         if res.status_code == 200:
             log_print("✅ Sukces! Połączenie nawiązane, uwierzytelnianie poprawne (Status 200).")
             data = res.json().get('data', [])
             log_print(f"📊 Pobrano tabelę pomyślnie. Liczba wierszy w tabeli: {len(data)}")
             return True
         elif res.status_code == 401:
-            log_print("❌ Błąd 401: Nieautoryzowany dostęp. Sprawdź hasło aplikacji.")
+            log_print("❌ Błąd 401: Nieautoryzowany dostęp. Sprawdź poprawność tokena w nagłówku.")
             return False
         else:
             log_print(f"❌ Otrzymano kod statusu: {res.status_code} - {res.text}")
@@ -265,11 +281,11 @@ def testuj_polaczenie_wp():
 
 def napraw_pozycje_w_wp():
     """Pobiera tabelę z WordPressa, przelicza pozycje ex aequo na podstawie obecnych średnich i zapisuje."""
-    TABLE_ID = 9  
+    TABLE_ID = 116
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
     log_print("🛠️ Uruchamianie weryfikacji i naprawy pozycji ex aequo w tabeli WP...")
     
-    res = requests.get(get_url, auth=(WP_USER, WP_APP_PASS))
+    res = requests.get(get_url, headers=API_HEADERS)
     if res.status_code != 200:
         log_print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
         return False
@@ -278,6 +294,9 @@ def napraw_pozycje_w_wp():
     if not rows or len(rows) < 2:
         log_print("❌ Tabela jest pusta lub nie zawiera danych!")
         return False
+
+    # Tworzymy backup przed nadpisaniem pozycji
+    zrob_backup_przed_zmiana(rows)
 
     idx_lp = 0
     idx_srednia = 1
@@ -326,7 +345,7 @@ def napraw_pozycje_w_wp():
     update_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/update-table"
     payload = {'table_id': TABLE_ID, 'data': nowe_wiersze_tablepress}
 
-    res_post = requests.post(update_url, json=payload, auth=(WP_USER, WP_APP_PASS))
+    res_post = requests.post(update_url, json=payload, headers=API_HEADERS)
     
     if res_post.status_code == 200:
         log_print("✅ Pomyślnie zweryfikowano i naprawiono pozycje ex aequo w tabeli WordPress!")
@@ -336,12 +355,12 @@ def napraw_pozycje_w_wp():
         return False
 
 def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manualne_dodanie_oceny=None):
-    TABLE_ID = 9  
+    TABLE_ID = 116
     if slownik_aktualizacji is None:
         slownik_aktualizacji = {}
     
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
-    res = requests.get(get_url, auth=(WP_USER, WP_APP_PASS))
+    res = requests.get(get_url, headers=API_HEADERS)
     
     if res.status_code != 200:
         log_print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
@@ -434,6 +453,9 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
         log_print("ℹ️ Brak odcinków do aktualizacji.")
         return True
 
+    # Tworzymy kopię zapasową przed faktycznym nadpisaniem danych w WP
+    zrob_backup_przed_zmiana(rows)
+
     # Sortowanie ex aequo po zaokrąglonej średniej
     dane_obliczone.sort(key=lambda x: x['srednia'], reverse=True)
 
@@ -463,7 +485,7 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
     update_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/update-table"
     payload = {'table_id': TABLE_ID, 'data': nowe_wiersze_tablepress}
 
-    res_post = requests.post(update_url, json=payload, auth=(WP_USER, WP_APP_PASS))
+    res_post = requests.post(update_url, json=payload, headers=API_HEADERS)
     
     if res_post.status_code == 200:
         log_print("✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!")
