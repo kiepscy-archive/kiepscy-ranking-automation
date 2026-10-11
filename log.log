@@ -917,3 +917,9 @@
 [2026-10-11 20:46:17] ⚠️ Błąd podczas skanowania https://forum.kiepscy.org.pl/viewtopic.php?t=1247&start=25: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
 [2026-10-11 20:46:17] ⚠️ Odrzucono ocenę: kacrudy ocenił '045 Przezorny zawsze ubezpieczony', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-11 20:46:17] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-11 20:50:34] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-10 do 2026-10-11
+[2026-10-11 20:50:34] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-11 20:50:54] 🎯 Znaleziono 2 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-11 20:50:59] ⚠️ Odrzucono ocenę: kacrudy ocenił '045 Przezorny zawsze ubezpieczony', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-11 20:50:59] ⚠️ Odrzucono ocenę: kafel ocenił '253 Salomon Baba', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-11 20:50:59] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
