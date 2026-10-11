@@ -5,6 +5,10 @@ on:
     types: [run-updater]
   workflow_dispatch: # Pozwala też na ręczne odpalenie z poziomu strony GitHuba
 
+# Wymagane uprawnienia, aby akcja mogła wykonać commit i push
+permissions:
+  contents: write
+
 jobs:
   update-ranking:
     runs-on: ubuntu-latest
@@ -25,8 +29,8 @@ jobs:
         run: |
           python updater.py
 
-      - name: Automatyczny commit zaktualizowanej bazy i logów
+      - name: Automatyczny commit zaktualizowanej bazy, logów i backupu
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Automatyczna aktualizacje rankingu i bazy użytkowników"
-          file_pattern: baza_userow.json log.log
+          commit_message: "Automatyczna aktualizacja rankingu, bazy użytkowników i kopii zapasowej"
+          file_pattern: baza_userow.json log.log tabela_backup.json
