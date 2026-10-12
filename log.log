@@ -1799,3 +1799,14 @@
 [2026-10-12 10:51:12] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
 [2026-10-12 10:51:16] ⚠️ Odrzucono ocenę: kacrudy ocenił '045 Przezorny zawsze ubezpieczony', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-12 10:51:16] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-12 10:55:28] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-11 do 2026-10-12
+[2026-10-12 10:55:28] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-12 10:55:51] 🎯 Znaleziono 2 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-12 10:55:56] ✨ Akceptacja oceny: kacrudy ocenił '087 Protest szoł' na 0/10
+[2026-10-12 10:55:56] ⚠️ Odrzucono ocenę: kacrudy ocenił '045 Przezorny zawsze ubezpieczony', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-12 10:55:56] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-10-12 10:55:57] 🎯 PODGLĄD DANYCH dla '087 Protest szoł':
+[2026-10-12 10:55:57]    • Przed: Liczba ocen=39, Średnia=8.92, Suma=347.88
+[2026-10-12 10:55:57]    • Po:    Liczba ocen=40, Średnia=8,7, Suma=347.88
+[2026-10-12 10:55:57] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-12 10:55:59] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
