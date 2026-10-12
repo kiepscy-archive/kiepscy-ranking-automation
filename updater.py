@@ -31,7 +31,7 @@ API_HEADERS = {
 }
 
 # ==============================================================================
-# SYSTEM LOGOWANIA DO PLIKU I KONSOLI
+# SYSTEM LOGOWANIA DO PLIKU I KONSOLI ORAZ AUTOCZYSZCZENIE
 # ==============================================================================
 
 def log_print(komunikat):
@@ -43,6 +43,36 @@ def log_print(komunikat):
             f.write(f"{timestamp} {komunikat}\n")
     except Exception as e:
         print(f"⚠️ Nie udało się zapisać do pliku log.log: {e}")
+
+def wyczysc_stare_logi(dni_wstecz=3):
+    """Usuwa z pliku log.log wpisy starsze niż określona liczba dni (domyślnie 3)."""
+    if not os.path.exists("log.log"):
+        return
+    
+    dzis = datetime.now().date()
+    zostawione_linie = []
+    
+    try:
+        with open("log.log", "r", encoding="utf-8") as f:
+            for linia in f:
+                # Szukamy daty na początku linii w formacie [YYYY-MM-DD ...]
+                m = re.match(r'^\[(\d{4}-\d{2}-\d{2})', linia)
+                if m:
+                    try:
+                        data_wpisu = datetime.strptime(m.group(1), "%Y-%m-%d").date()
+                        # Jeśli wpis jest w dopuszczalnym zakresie dni, zachowujemy go
+                        if (dzis - data_wpisu).days <= dni_wstecz:
+                            zostawione_linie.append(linia)
+                    except ValueError:
+                        zostawione_linie.append(linia)
+                else:
+                    # Linie pomocnicze bez daty zostawiamy
+                    zostawione_linie.append(linia)
+                    
+        with open("log.log", "w", encoding="utf-8") as f:
+            f.writelines(zostawione_linie)
+    except Exception as e:
+        print(f"⚠️ Błąd podczas autoczyszczenia logów: {e}")
 
 # ==============================================================================
 # HELPERY I ANALIZA OCENY
@@ -295,7 +325,6 @@ def napraw_pozycje_w_wp():
         log_print("❌ Tabela jest pusta lub nie zawiera danych!")
         return False
 
-    # Tworzymy backup przed nadpisaniem pozycji
     zrob_backup_przed_zmiana(rows)
 
     idx_lp = 0
@@ -320,7 +349,6 @@ def napraw_pozycje_w_wp():
             'pelny_wiersz': wiersz  
         })
 
-    # Sortowanie malejąco po zaokrąglonej średniej
     dane_obliczone.sort(key=lambda x: x['srednia'], reverse=True)
 
     nowe_wiersze_tablepress = [naglowek]
@@ -371,7 +399,6 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
         log_print("❌ Tabela jest pusta lub nie zawiera danych!")
         return False
 
-    # SPRAWDZENIE: Jeśli brakuje pliku backupu w repo, utwórz go od razu jako stan początkowy
     if not os.path.exists("tabela_backup.json"):
         log_print("ℹ️ Nie znaleziono pliku kopii zapasowej w repozytorium. Tworzę początkowy backup tabeli...")
         zrob_backup_przed_zmiana(rows)
@@ -410,7 +437,6 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
         nowa_suma = stara_suma
         nowa_srednia = stara_srednia
 
-        # 1. RĘCZNA KOREKTA CAŁEJ ŚREDNIEJ I LICZBY OCEN (--ep, --newavg, --ratnr)
         if manualna_korekta:
             szukany_ep_str = str(manualna_korekta['ep'])
             if pasuje_do_odcinka(tytul_tekst, szukany_ep_str):
@@ -419,7 +445,6 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
                 zmieniono = True
                 log_print(f"🛠️ RĘCZNA KOREKTA dla odcinka '{tytul_tekst}': Ustawiono średnią na {formatuj_liczbe(nowa_srednia)} i liczbę ocen na {nowa_liczba_ocen}")
 
-        # 2. RĘCZNE DOLICZENIE POJEDYNCZEJ OCENY (--ep, --newrate)
         if manualne_dodanie_oceny:
             szukany_ep_str = str(manualne_dodanie_oceny['ep'])
             if pasuje_do_odcinka(tytul_tekst, szukany_ep_str):
@@ -430,7 +455,6 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
                 zmieniono = True
                 log_print(f"➕ RĘCZNE DOLICZENIE OCENY dla odcinka '{tytul_tekst}': Doliczono ocenę {dodatkowa_ocena}. Nowa liczba ocen: {nowa_liczba_ocen}, Nowa średnia: {formatuj_liczbe(nowa_srednia)}")
 
-        # 3. STANDARDOWA AKTUALIZACJA Z FORUM
         for tytul_odcinka_forum, list_ocen in slownik_aktualizacji.items():
             forum_czysty = tytul_odcinka_forum.strip()
 
@@ -458,10 +482,8 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
         log_print("ℹ️ Brak odcinków do aktualizacji.")
         return True
 
-    # Tworzymy kopię zapasową przed faktycznym nadpisaniem danych w WP
     zrob_backup_przed_zmiana(rows)
 
-    # Sortowanie ex aequo po zaokrąglonej średniej
     dane_obliczone.sort(key=lambda x: x['srednia'], reverse=True)
 
     nowe_wiersze_tablepress = [naglowek]
@@ -519,6 +541,9 @@ def bezpieczna_aktualizacja_komorki(stary_html, nowa_wartosc):
 # ==============================================================================
 
 def main():
+    # Na samym starcie uruchamiamy czyszczenie logów starszych niż 3 dni
+    wyczysc_stare_logi(dni_wstecz=3)
+
     parser = argparse.ArgumentParser(description="Kiepscy Ranking Updater")
     parser.add_argument("--onlycheck", action="store_true", help="Tylko test połączenia z WP API")
     parser.add_argument("--fixrank", action="store_true", help="Sprawdza i naprawia pozycje ex aequo w tabeli WP bez zmiany ocen")
@@ -537,7 +562,6 @@ def main():
         napraw_pozycje_w_wp()
         return
 
-    # Obsługa ręcznego doliczenia pojedynczej oceny (--ep, --newrate)
     if args.ep is not None and args.newrate is not None:
         try:
             rate_val = float(args.newrate.replace(',', '.'))
@@ -553,7 +577,6 @@ def main():
         aktualizuj_tabelę_wp(manualne_dodanie_oceny=dodanie)
         return
 
-    # Obsługa ręcznej korekty całej średniej i liczby ocen (--ep, --newavg, --ratnr)
     if args.ep is not None and args.newavg is not None and args.ratnr is not None:
         try:
             avg_val = float(args.newavg.replace(',', '.'))
@@ -570,7 +593,6 @@ def main():
         aktualizuj_tabelę_wp(manualna_korekta=korekta)
         return
 
-    # Standardowy obieg automatyczny (bufor: wczoraj oraz dzisiaj)
     dzis = datetime.now().date()
     wczoraj = dzis - timedelta(days=1)
     
@@ -634,11 +656,9 @@ def main():
     else:
         log_print("😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.")
         
-        # Nawet jeśli nie ma nowych ocen, sprawdzamy czy w repo jest backup. 
-        # Jeśli go brakuje, wymuszamy jego utworzenie poprzez pobranie stanu z WP.
         if not os.path.exists("tabela_backup.json"):
             log_print("🛡️ Wykryto brak pliku 'tabela_backup.json'. Pobieram stan początkowy z WP...")
-            get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}" if 'TABLE_ID' in globals() else f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/116"
+            get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/116"
             res = requests.get(get_url, headers=API_HEADERS)
             if res.status_code == 200:
                 rows = res.json().get('data', [])
