@@ -5030,3 +5030,9 @@
 [2026-10-14 07:50:55] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
 [2026-10-14 07:50:58] ℹ️ Post użytkownika kafel w temacie '254 Bazar' z dnia 2026-10-13 nie zawiera poprawnej oceny na końcu.
 [2026-10-14 07:50:58] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-14 07:51:58] ➕ Uruchamianie doliczenia oceny 9.0 dla odcinka '254' od użytkownika 'kafel'...
+[2026-10-14 07:52:00] ➕ RĘCZNE DOLICZENIE OCENY dla odcinka '254 Bazar': Doliczono ocenę 9.0. Nowa liczba ocen: 41, Nowa średnia: 7,9
+[2026-10-14 07:52:00] ✨ Przeniesiono odcinek '254 Bazar' z nieocenionych do ocenionych dla użytkownika 'kafel'.
+[2026-10-14 07:52:00] 💾 Zaktualizowano plik baza_userow.json o wpis użytkownika.
+[2026-10-14 07:52:00] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-14 07:52:02] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
