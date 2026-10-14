@@ -3,9 +3,21 @@ name: Kiepscy Ranking Auto-Updater
 on:
   repository_dispatch:
     types: [run-updater]
-  workflow_dispatch: # Pozwala też na ręczne odpalenie z poziomu strony GitHuba
+  workflow_dispatch:
+    inputs:
+      ep:
+        description: 'Numer lub tytuł odcinka (np. 254)'
+        required: false
+        type: string
+      newrate:
+        description: 'Nowa ocena do doliczenia (np. 9)'
+        required: false
+        type: string
+      fromuser:
+        description: 'Użytkownik (np. kafel)'
+        required: false
+        type: string
 
-# Wymagane uprawnienia, aby akcja mogła wykonać commit i push
 permissions:
   contents: write
 
@@ -27,10 +39,21 @@ jobs:
 
       - name: Uruchomienie skryptu
         run: |
-          python updater.py
+          CMD="python updater.py"
+          if [ -n "${{ github.event.inputs.ep }}" ]; then
+            CMD="$CMD --ep '${{ github.event.inputs.ep }}'"
+          fi
+          if [ -n "${{ github.event.inputs.newrate }}" ]; then
+            CMD="$CMD --newrate '${{ github.event.inputs.newrate }}'"
+          fi
+          if [ -n "${{ github.event.inputs.fromuser }}" ]; then
+            CMD="$CMD --fromuser '${{ github.event.inputs.fromuser }}'"
+          fi
+          echo "Wykonuję: $CMD"
+          eval $CMD
 
       - name: Automatyczny commit zaktualizowanej bazy, logów i backupu
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Automatyczna aktualizacja rankingu, bazy użytkowników i kopii zapasowej"
+          commit_message: "Ręczna aktualizacja z GitHub Actions"
           file_pattern: baza_userow.json log.log tabela_backup.json
