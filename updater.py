@@ -55,18 +55,15 @@ def wyczysc_stare_logi(dni_wstecz=3):
     try:
         with open("log.log", "r", encoding="utf-8") as f:
             for linia in f:
-                # Szukamy daty na początku linii w formacie [YYYY-MM-DD ...]
                 m = re.match(r'^\[(\d{4}-\d{2}-\d{2})', linia)
                 if m:
                     try:
                         data_wpisu = datetime.strptime(m.group(1), "%Y-%m-%d").date()
-                        # Jeśli wpis jest w dopuszczalnym zakresie dni, zachowujemy go
                         if (dzis - data_wpisu).days <= dni_wstecz:
                             zostawione_linie.append(linia)
                     except ValueError:
                         zostawione_linie.append(linia)
                 else:
-                    # Linie pomocnicze bez daty zostawiamy
                     zostawione_linie.append(linia)
                     
         with open("log.log", "w", encoding="utf-8") as f:
@@ -123,10 +120,8 @@ def pasuje_do_odcinka(tytul_tekst, szukany_ep_str):
     """
     szukany_czysty = szukany_ep_str.strip()
     
-    # Jeśli szukana fraza jest liczbą (np. "22" lub "022")
     if szukany_czysty.isdigit():
         szukany_ep_int = int(szukany_czysty)
-        # Sprawdzenie liczby na samym początku tytułu
         m = re.match(r'^0*(\d+)', tytul_tekst.strip())
         if m:
             try:
@@ -135,12 +130,10 @@ def pasuje_do_odcinka(tytul_tekst, szukany_ep_str):
             except ValueError:
                 pass
         
-        # Szukanie jako osobnej liczby otoczonej nie-cyframi wewnątrz ciągu
         wzorzec = r'(?<!\d)0*' + str(szukany_ep_int) + r'(?!\d)'
         if re.search(wzorzec, tytul_tekst):
             return True
     else:
-        # Jeśli to tekst (np. "Wielki bal"), szukamy dopasowania frazy w tytule (bez uwzględniania wielkości liter)
         if szukany_czysty.lower() in tytul_tekst.lower():
             return True
         
@@ -229,7 +222,6 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
                     p_author = post.find('p', class_='author')
                     data_postu = parsuj_datę_postu(p_author.text) if p_author else None
                     
-                    # Sprawdzamy czy post mieści się w buforze (od wczoraj do dzisiaj)
                     if not data_postu or not (data_od <= data_postu <= data_do):
                         continue
 
@@ -455,6 +447,42 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
                 zmieniono = True
                 log_print(f"➕ RĘCZNE DOLICZENIE OCENY dla odcinka '{tytul_tekst}': Doliczono ocenę {dodatkowa_ocena}. Nowa liczba ocen: {nowa_liczba_ocen}, Nowa średnia: {formatuj_liczbe(nowa_srednia)}")
 
+                # Obsługa przypisania oceny do konkretnego użytkownika (--fromuser)
+                from_user = manualne_dodanie_oceny.get('from_user')
+                if from_user:
+                    if os.path.exists("baza_userow.json"):
+                        with open("baza_userow.json", "r", encoding="utf-8") as bf:
+                            baza_userow = json.load(bf)
+                        
+                        wzorcowa_lista = baza_userow.get("bazowa_lista_odcinków", [])
+                        
+                        if from_user not in baza_userow:
+                            log_print(f"🆕 Użytkownik '{from_user}' nie istnieje w bazie. Tworzę jego profil.")
+                            baza_userow[from_user] = {
+                                "nieocenione": list(wzorcowa_lista),
+                                "ocenione": []
+                            }
+                        
+                        nieocenione = baza_userow[from_user].get("nieocenione", [])
+                        ocenione = baza_userow[from_user].get("ocenione", [])
+                        
+                        dopasowany_nieoceniony = next((t for t in nieocenione if t.lower() == tytul_tekst.lower() or pasuje_do_odcinka(t, szukany_ep_str)), None)
+                        dopasowany_oceniony = next((t for t in ocenione if t.lower() == tytul_tekst.lower() or pasuje_do_odcinka(t, szukany_ep_str)), None)
+                        
+                        if dopasowany_nieoceniony:
+                            baza_userow[from_user]["nieocenione"].remove(dopasowany_nieoceniony)
+                            baza_userow[from_user]["ocenione"].append(dopasowany_nieoceniony)
+                            log_print(f"✨ Przeniesiono odcinek '{dopasowany_nieoceniony}' z nieocenionych do ocenionych dla użytkownika '{from_user}'.")
+                        elif dopasowany_oceniony:
+                            log_print(f"⚠️ Użytkownik '{from_user}' miał już ten odcinek na liście ocenionych.")
+                        else:
+                            baza_userow[from_user]["ocenione"].append(tytul_tekst)
+                            log_print(f"✨ Dodano odcinek '{tytul_tekst}' do ocenionych dla użytkownika '{from_user}'.")
+                        
+                        with open("baza_userow.json", "w", encoding="utf-8") as bf:
+                            json.dump(baza_userow, bf, ensure_ascii=False, indent=4)
+                        log_print("💾 Zaktualizowano plik baza_userow.json o wpis użytkownika.")
+
         for tytul_odcinka_forum, list_ocen in slownik_aktualizacji.items():
             forum_czysty = tytul_odcinka_forum.strip()
 
@@ -541,7 +569,6 @@ def bezpieczna_aktualizacja_komorki(stary_html, nowa_wartosc):
 # ==============================================================================
 
 def main():
-    # Na samym starcie uruchamiamy czyszczenie logów starszych niż 3 dni
     wyczysc_stare_logi(dni_wstecz=3)
 
     parser = argparse.ArgumentParser(description="Kiepscy Ranking Updater")
@@ -551,6 +578,7 @@ def main():
     parser.add_argument("--newavg", type=str, help="Nowa średnia ocena (np. 8,82)")
     parser.add_argument("--ratnr", type=int, help="Nowa liczba ocen (np. 14)")
     parser.add_argument("--newrate", type=str, help="Pojedyncza ocena do doliczenia (np. 7)")
+    parser.add_argument("--fromuser", type=str, help="Nazwa użytkownika, któremu należy przypisać ocenę przy użyciu --newrate")
     
     args = parser.parse_args()
 
@@ -569,10 +597,11 @@ def main():
             log_print("❌ Błąd: Parametr --newrate musi być poprawną liczbą (np. 7)")
             return
 
-        log_print(f"➕ Uruchamianie doliczenia oceny {rate_val} dla odcinka '{args.ep}'...")
+        log_print(f"➕ Uruchamianie doliczenia oceny {rate_val} dla odcinka '{args.ep}'" + (f" od użytkownika '{args.fromuser}'" if args.fromuser else "") + "...")
         dodanie = {
             'ep': args.ep,
-            'rate': rate_val
+            'rate': rate_val,
+            'from_user': args.fromuser
         }
         aktualizuj_tabelę_wp(manualne_dodanie_oceny=dodanie)
         return
