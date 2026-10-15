@@ -49,6 +49,8 @@ jobs:
             EP="${{ github.event.client_payload.ep }}"
             VAL="${{ github.event.client_payload.val }}"
             USER="${{ github.event.client_payload.user }}"
+            # Pobieramy nasz JSON bazy użytkowników wysłany z GUI
+            SAVEJSON="${{ github.event.client_payload.saveuserjson }}"
 
             if [ "$ACT" = "add" ]; then
               python updater.py --ep "$EP" --newrate "$VAL" --fromuser "$USER"
@@ -56,6 +58,8 @@ jobs:
               python updater.py --ep "$EP" --deleterate "$VAL" --fromuser "$USER"
             elif [ "$ACT" = "avg" ]; then
               python updater.py --ep "$EP" --newavg "$VAL" --ratnr "$USER"
+            elif [ "$ACT" = "save_users" ]; then
+              python updater.py --saveuserjson "$SAVEJSON"
             fi
           elif [ -n "${{ github.event.inputs.ep }}" ]; then
             # Ręczne uruchomienie z poziomu strony GitHuba z inputami
