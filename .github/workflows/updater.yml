@@ -2,19 +2,19 @@ name: Kiepscy Ranking Auto-Updater
 
 on:
   repository_dispatch:
-    types: [run-updater]
+    types: [run-updater, gui-action]
   workflow_dispatch:
     inputs:
       ep:
-        description: 'Numer lub tytuł odcinka (np. 254)'
+        description: 'Numer lub tytuł odcinka'
         required: false
         type: string
       newrate:
-        description: 'Nowa ocena do doliczenia (np. 9)'
+        description: 'Nowa ocena do doliczenia'
         required: false
         type: string
       fromuser:
-        description: 'Użytkownik (np. kafel)'
+        description: 'Użytkownik'
         required: false
         type: string
 
@@ -39,21 +39,41 @@ jobs:
 
       - name: Uruchomienie skryptu
         run: |
-          CMD="python updater.py"
-          if [ -n "${{ github.event.inputs.ep }}" ]; then
-            CMD="$CMD --ep '${{ github.event.inputs.ep }}'"
+          # Obsługa zdalnego wywołania z aplikacji GUI (client_payload)
+          ACTION="${{ github.event.client_payload.action }}"
+          EP="${{ github.event.client_payload.client_payload.ep || github.event.inputs.ep }}"
+          
+          # Sprawdzamy czy to wywołanie z GUI czy standardowe
+          if [ -n "${{ github.event.client_payload.action }}" ]; then
+            ACT="${{ github.event.client_payload.action }}"
+            EP="${{ github.event.client_payload.ep }}"
+            VAL="${{ github.event.client_payload.val }}"
+            USER="${{ github.event.client_payload.user }}"
+
+            if [ "$ACT" = "add" ]; then
+              python updater.py --ep "$EP" --newrate "$VAL" --fromuser "$USER"
+            elif [ "$ACT" = "delete" ]; then
+              python updater.py --ep "$EP" --deleterate "$VAL" --fromuser "$USER"
+            elif [ "$ACT" = "avg" ]; then
+              python updater.py --ep "$EP" --newavg "$VAL" --ratnr "$USER"
+            fi
+          elif [ -n "${{ github.event.inputs.ep }}" ]; then
+            # Ręczne uruchomienie z poziomu strony GitHuba z inputami
+            CMD="python updater.py --ep '${{ github.event.inputs.ep }}'"
+            if [ -n "${{ github.event.inputs.newrate }}" ]; then
+              CMD="$CMD --newrate '${{ github.event.inputs.newrate }}'"
+            fi
+            if [ -n "${{ github.event.inputs.fromuser }}" ]; then
+              CMD="$CMD --fromuser '${{ github.event.inputs.fromuser }}'"
+            fi
+            eval $CMD
+          else
+            # Standardowy obieg automatyczny
+            python updater.py
           fi
-          if [ -n "${{ github.event.inputs.newrate }}" ]; then
-            CMD="$CMD --newrate '${{ github.event.inputs.newrate }}'"
-          fi
-          if [ -n "${{ github.event.inputs.fromuser }}" ]; then
-            CMD="$CMD --fromuser '${{ github.event.inputs.fromuser }}'"
-          fi
-          echo "Wykonuję: $CMD"
-          eval $CMD
 
       - name: Automatyczny commit zaktualizowanej bazy, logów i backupu
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Ręczna aktualizacja z GitHub Actions"
+          commit_message: "Aktualizacja przez aplikację GUI / automatyczna"
           file_pattern: baza_userow.json log.log tabela_backup.json
