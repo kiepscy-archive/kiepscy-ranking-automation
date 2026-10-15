@@ -5809,3 +5809,7 @@
 [2026-10-15 13:31:28] ⚠️ Odrzucono ocenę: kacrudy ocenił '031 Perpetum mobile', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-15 13:31:28] ⚠️ Odrzucono ocenę: kafel ocenił '255 Cząstki elementarne', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-15 13:31:28] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-15 13:31:56] ➕ Uruchamianie doliczenia oceny 10.0 dla odcinka '205'...
+[2026-10-15 13:31:58] ➕ RĘCZNE DOLICZENIE OCENY dla odcinka '205 Afera kryminalna': Doliczono ocenę 10.0. Nowa liczba ocen: 64, Nowa średnia: 9,47
+[2026-10-15 13:31:58] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-15 13:32:00] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
