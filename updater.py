@@ -18,14 +18,12 @@ WP_URL = "http://kiepscy.org.pl"
 WP_PAGE_ID = 37                                            
 
 WP_USER = "kacrudy"                                       
-# Niestandardowy token bezpieczeństwa omijający blokady nagłówków serwera
 WP_CUSTOM_TOKEN = "fba8U57HyTvulhlJRh5uMdRe"                         
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) KiepskiUpdater/2.0'
 }
 
-# Pomocniczy słownik nagłówków autoryzacyjnych do zapytań HTTP
 API_HEADERS = {
     'X-Auth-Token': WP_CUSTOM_TOKEN
 }
@@ -35,7 +33,6 @@ API_HEADERS = {
 # ==============================================================================
 
 def log_print(komunikat):
-    """Wypisuje komunikat w konsoli oraz dopisuje go do pliku log.log z znacznikiem czasu."""
     print(komunikat)
     timestamp = datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
     try:
@@ -45,7 +42,6 @@ def log_print(komunikat):
         print(f"⚠️ Nie udało się zapisać do pliku log.log: {e}")
 
 def wyczysc_stare_logi(dni_wstecz=3):
-    """Usuwa z pliku log.log wpisy starsze niż określona liczba dni (domyślnie 3)."""
     if not os.path.exists("log.log"):
         return
     
@@ -237,8 +233,6 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
                             if tytul_odcinka not in nowe_oceny:
                                 nowe_oceny[tytul_odcinka] = []
                             nowe_oceny[tytul_odcinka].append((autor, ocena))
-                        else:
-                            log_print(f"ℹ️ Post użytkownika {autor} w temacie '{tytul_odcinka}' z dnia {data_postu} nie zawiera poprawnej oceny na końcu.")
 
                 strefa_pagi = soup.find('div', class_='pagination')
                 ma_nastepna = False
@@ -284,12 +278,7 @@ def testuj_polaczenie_wp():
         res = requests.get(get_url, headers=API_HEADERS, timeout=10)
         if res.status_code == 200:
             log_print("✅ Sukces! Połączenie nawiązane, uwierzytelnianie poprawne (Status 200).")
-            data = res.json().get('data', [])
-            log_print(f"📊 Pobrano tabelę pomyślnie. Liczba wierszy w tabeli: {len(data)}")
             return True
-        elif res.status_code == 401:
-            log_print("❌ Błąd 401: Nieautoryzowany dostęp. Sprawdź poprawność tokena w nagłówku.")
-            return False
         else:
             log_print(f"❌ Otrzymano kod statusu: {res.status_code} - {res.text}")
             return False
@@ -304,40 +293,27 @@ def napraw_pozycje_w_wp():
     
     res = requests.get(get_url, headers=API_HEADERS)
     if res.status_code != 200:
-        log_print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
+        log_print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code})")
         return False
         
     rows = res.json().get('data', [])
     if not rows or len(rows) < 2:
-        log_print("❌ Tabela jest pusta lub nie zawiera danych!")
         return False
 
     zrob_backup_przed_zmiana(rows)
-
-    idx_lp = 0
-    idx_srednia = 1
-    idx_liczba = 3
-
     naglowek = rows[0]
     wiersze_danych = rows[1:]
 
     dane_obliczone = []
-
     for wiersz in wiersze_danych:
-        if len(wiersz) <= idx_liczba:
+        if len(wiersz) <= 3:
             continue
-
-        txt_srednia = str(wiersz[idx_srednia])
+        txt_srednia = str(wiersz[1])
         clean_srednia = re.sub(r'[^\d\.]', '', txt_srednia.replace(',', '.'))
         srednia_val = round(float(clean_srednia), 2) if clean_srednia else 0.0
-
-        dane_obliczone.append({
-            'srednia': srednia_val,
-            'pelny_wiersz': wiersz  
-        })
+        dane_obliczone.append({'srednia': srednia_val, 'pelny_wiersz': wiersz})
 
     dane_obliczone.sort(key=lambda x: x['srednia'], reverse=True)
-
     nowe_wiersze_tablepress = [naglowek]
     ostatnia_srednia = None
     biezaca_pozycja = 1
@@ -351,23 +327,13 @@ def napraw_pozycje_w_wp():
 
         ostatnia_srednia = item['srednia']
         wiersz = list(item['pelny_wiersz'])
-        
-        if idx_lp is not None and len(wiersz) > idx_lp:
-            wiersz[idx_lp] = bezpieczna_aktualizacja_komorki(wiersz[idx_lp], pozycja_w_rankingu)
-            
+        wiersz[0] = bezpieczna_aktualizacja_komorki(wiersz[0], pozycja_w_rankingu)
         nowe_wiersze_tablepress.append(wiersz)
 
     update_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/update-table"
     payload = {'table_id': TABLE_ID, 'data': nowe_wiersze_tablepress}
-
     res_post = requests.post(update_url, json=payload, headers=API_HEADERS)
-    
-    if res_post.status_code == 200:
-        log_print("✅ Pomyślnie zweryfikowano i naprawiono pozycje ex aequo w tabeli WordPress!")
-        return True
-    else:
-        log_print(f"❌ Błąd zapisu pozycji do TablePress: {res_post.status_code} - {res_post.text}")
-        return False
+    return res_post.status_code == 200
 
 def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manualne_dodanie_oceny=None, manualne_usunięcie_oceny=None):
     TABLE_ID = 116
@@ -378,16 +344,13 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
     res = requests.get(get_url, headers=API_HEADERS)
     
     if res.status_code != 200:
-        log_print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
         return False
         
     rows = res.json().get('data', [])
     if not rows or len(rows) < 2:
-        log_print("❌ Tabela jest pusta lub nie zawiera danych!")
         return False
 
     if not os.path.exists("tabela_backup.json"):
-        log_print("ℹ️ Nie znaleziono pliku kopii zapasowej w repozytorium. Tworzę początkowy backup tabeli...")
         zrob_backup_przed_zmiana(rows)
 
     idx_lp = 0
@@ -430,7 +393,6 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
                 nowa_srednia = round(manualna_korekta['newavg'], 2)
                 nowa_liczba_ocen = manualna_korekta['ratnr']
                 zmieniono = True
-                log_print(f"🛠️ RĘCZNA KOREKTA dla odcinka '{tytul_tekst}': Ustawiono średnią na {formatuj_liczbe(nowa_srednia)} i liczbę ocen na {nowa_liczba_ocen}")
 
         if manualne_dodanie_oceny:
             szukany_ep_str = str(manualne_dodanie_oceny['ep'])
@@ -440,44 +402,31 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
                 nowa_suma = stara_suma + dodatkowa_ocena
                 nowa_srednia = round((nowa_suma / nowa_liczba_ocen) if nowa_liczba_ocen > 0 else 0.0, 2)
                 zmieniono = True
-                log_print(f"➕ RĘCZNE DOLICZENIE OCENY dla odcinka '{tytul_tekst}': Doliczono ocenę {dodatkowa_ocena}. Nowa liczba ocen: {nowa_liczba_ocen}, Nowa średnia: {formatuj_liczbe(nowa_srednia)}")
 
                 from_user = manualne_dodanie_oceny.get('from_user')
-                if from_user:
-                    if os.path.exists("baza_userow.json"):
-                        with open("baza_userow.json", "r", encoding="utf-8") as bf:
-                            baza_userow = json.load(bf)
-                        
-                        wzorcowa_lista = baza_userow.get("bazowa_lista_odcinków", [])
-                        
-                        if from_user not in baza_userow:
-                            log_print(f"🆕 Użytkownik '{from_user}' nie istnieje w bazie. Tworzę jego profil.")
-                            baza_userow[from_user] = {
-                                "nieocenione": list(wzorcowa_lista),
-                                "ocenione": []
-                            }
-                        
-                        nieocenione = baza_userow[from_user].get("nieocenione", [])
-                        ocenione = baza_userow[from_user].get("ocenione", [])
-                        
-                        dopasowany_nieoceniony = next((t for t in nieocenione if t.lower() == tytul_tekst.lower() or pasuje_do_odcinka(t, szukany_ep_str)), None)
-                        dopasowany_oceniony = next((t for t in ocenione if t.lower() == tytul_tekst.lower() or pasuje_do_odcinka(t, szukany_ep_str)), None)
-                        
-                        if dopasowany_nieoceniony:
-                            baza_userow[from_user]["nieocenione"].remove(dopasowany_nieoceniony)
+                if from_user and os.path.exists("baza_userow.json"):
+                    with open("baza_userow.json", "r", encoding="utf-8") as bf:
+                        baza_userow = json.load(bf)
+                    
+                    wzorcowa_lista = baza_userow.get("bazowa_lista_odcinków", [])
+                    if from_user not in baza_userow:
+                        baza_userow[from_user] = {"nieocenione": list(wzorcowa_lista), "ocenione": []}
+                    
+                    nieocenione = baza_userow[from_user].get("nieocenione", [])
+                    ocenione = baza_userow[from_user].get("ocenione", [])
+                    
+                    dopasowany_nieoceniony = next((t for t in nieocenione if pasuje_do_odcinka(t, szukany_ep_str)), None)
+                    if dopasowany_nieoceniony:
+                        baza_userow[from_user]["nieocenione"].remove(dopasowany_nieoceniony)
+                        if dopasowany_nieoceniony not in baza_userow[from_user]["ocenione"]:
                             baza_userow[from_user]["ocenione"].append(dopasowany_nieoceniony)
-                            log_print(f"✨ Przeniesiono odcinek '{dopasowany_nieoceniony}' z nieocenionych do ocenionych dla użytkownika '{from_user}'.")
-                        elif dopasowany_oceniony:
-                            log_print(f"⚠️ Użytkownik '{from_user}' miał już ten odcinek na liście ocenionych.")
-                        else:
+                    else:
+                        if tytul_tekst not in baza_userow[from_user]["ocenione"]:
                             baza_userow[from_user]["ocenione"].append(tytul_tekst)
-                            log_print(f"✨ Dodano odcinek '{tytul_tekst}' do ocenionych dla użytkownika '{from_user}'.")
-                        
-                        with open("baza_userow.json", "w", encoding="utf-8") as bf:
-                            json.dump(baza_userow, bf, ensure_ascii=False, indent=4)
-                        log_print("💾 Zaktualizowano plik baza_userow.json o wpis użytkownika.")
+                    
+                    with open("baza_userow.json", "w", encoding="utf-8") as bf:
+                        json.dump(baza_userow, bf, ensure_ascii=False, indent=4)
 
-        # OBSŁUGA RĘCZNEGO USUNIĘCIA OCENY (--deleterate)
         if manualne_usunięcie_oceny:
             szukany_ep_str = str(manualne_usunięcie_oceny['ep'])
             if pasuje_do_odcinka(tytul_tekst, szukany_ep_str):
@@ -487,7 +436,6 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
                     nowa_suma = max(0.0, stara_suma - ocena_do_usuniecia)
                     nowa_srednia = round((nowa_suma / nowa_liczba_ocen) if nowa_liczba_ocen > 0 else 0.0, 2)
                     zmieniono = True
-                    log_print(f"➖ USUNIĘCIE OCENY dla odcinka '{tytul_tekst}': Usunięto ocenę {ocena_do_usuniecia}. Nowa liczba ocen: {nowa_liczba_ocen}, Nowa średnia: {formatuj_liczbe(nowa_srednia)}")
                 
                 from_user = manualne_usunięcie_oceny.get('from_user')
                 if from_user and os.path.exists("baza_userow.json"):
@@ -502,27 +450,18 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
                             baza_userow[from_user]["ocenione"].remove(dopasowany_oceniony)
                             if dopasowany_oceniony not in baza_userow[from_user]["nieocenione"]:
                                 baza_userow[from_user]["nieocenione"].append(dopasowany_oceniony)
-                            log_print(f"🔄 Przeniesiono odcinek '{dopasowany_oceniony}' z powrotem do nieocenionych dla użytkownika '{from_user}'.")
                             
                             with open("baza_userow.json", "w", encoding="utf-8") as bf:
                                 json.dump(baza_userow, bf, ensure_ascii=False, indent=4)
-                            log_print("💾 Zaktualizowano plik baza_userow.json po usunięciu oceny użytkownika.")
 
         for tytul_odcinka_forum, list_ocen in slownik_aktualizacji.items():
-            forum_czysty = tytul_odcinka_forum.strip()
-
-            if forum_czysty.lower() == tytul_tekst.lower() or forum_czysty.lower() in tytul_tekst.lower():
+            if tytul_odcinka_forum.strip().lower() in tytul_tekst.lower():
                 dodatkowa_suma = sum(list_ocen)
                 dodatkowa_liczba = len(list_ocen)
-
                 nowa_liczba_ocen = stara_liczba_ocen + dodatkowa_liczba
                 nowa_suma = stara_suma + dodatkowa_suma
                 nowa_srednia = round((nowa_suma / nowa_liczba_ocen) if nowa_liczba_ocen > 0 else 0.0, 2)
-
                 zmieniono = True
-                log_print(f"🎯 PODGLĄD DANYCH dla '{tytul_odcinka_forum}':")
-                log_print(f"   • Przed: Liczba ocen={stara_liczba_ocen}, Średnia={stara_srednia}, Suma={stara_suma:.2f}")
-                log_print(f"   • Po:    Liczba ocen={nowa_liczba_ocen}, Średnia={formatuj_liczbe(nowa_srednia)}, Suma={nowa_suma:.2f}")
                 break
 
         dane_obliczone.append({
@@ -532,11 +471,9 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
         })
 
     if not zmieniono and not manualna_korekta and not manualne_dodanie_oceny and not manualne_usunięcie_oceny:
-        log_print("ℹ️ Brak odcinków do aktualizacji.")
         return True
 
     zrob_backup_przed_zmiana(rows)
-
     dane_obliczone.sort(key=lambda x: x['srednia'], reverse=True)
 
     nowe_wiersze_tablepress = [naglowek]
@@ -553,26 +490,16 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
         ostatnia_srednia = item['srednia']
         wiersz = list(item['pelny_wiersz'])
         
-        if idx_lp is not None and len(wiersz) > idx_lp:
-            wiersz[idx_lp] = bezpieczna_aktualizacja_komorki(wiersz[idx_lp], pozycja_w_rankingu)
-        if len(wiersz) > idx_srednia:
-            wiersz[idx_srednia] = bezpieczna_aktualizacja_komorki(wiersz[idx_srednia], formatuj_liczbe(item['srednia']))
-        if len(wiersz) > idx_liczba:
-            wiersz[idx_liczba] = bezpieczna_aktualizacja_komorki(wiersz[idx_liczba], item['liczba_ocen'])
+        wiersz[idx_lp] = bezpieczna_aktualizacja_komorki(wiersz[idx_lp], pozycja_w_rankingu)
+        wiersz[idx_srednia] = bezpieczna_aktualizacja_komorki(wiersz[idx_srednia], formatuj_liczbe(item['srednia']))
+        wiersz[idx_liczba] = bezpieczna_aktualizacja_komorki(wiersz[idx_liczba], item['liczba_ocen'])
             
         nowe_wiersze_tablepress.append(wiersz)
 
     update_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/update-table"
     payload = {'table_id': TABLE_ID, 'data': nowe_wiersze_tablepress}
-
     res_post = requests.post(update_url, json=payload, headers=API_HEADERS)
-    
-    if res_post.status_code == 200:
-        log_print("✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!")
-        return True
-    else:
-        log_print(f"❌ Błąd zapisu do TablePress: {res_post.status_code} - {res_post.text}")
-        return False
+    return res_post.status_code == 200
         
 def bezpieczna_aktualizacja_komorki(stary_html, nowa_wartosc):
     if not stary_html:
@@ -598,13 +525,14 @@ def main():
 
     parser = argparse.ArgumentParser(description="Kiepscy Ranking Updater")
     parser.add_argument("--onlycheck", action="store_true", help="Tylko test połączenia z WP API")
-    parser.add_argument("--fixrank", action="store_true", help="Sprawdza i naprawia pozycje ex aequo w tabeli WP bez zmiany ocen")
-    parser.add_argument("--ep", type=str, help="Numer lub tytuł odcinka (np. 22, 552 lub 'Wielki bal')")
-    parser.add_argument("--newavg", type=str, help="Nowa średnia ocena (np. 8,82)")
-    parser.add_argument("--ratnr", type=int, help="Nowa liczba ocen (np. 14)")
-    parser.add_argument("--newrate", type=str, help="Pojedyncza ocena do doliczenia (np. 7)")
-    parser.add_argument("--deleterate", type=str, help="Pojedyncza ocena do usunięcia/cofnięcia (np. 7)")
-    parser.add_argument("--fromuser", type=str, help="Nazwa użytkownika powiązana z operacją --newrate lub --deleterate")
+    parser.add_argument("--fixrank", action="store_true", help="Naprawia pozycje ex aequo w tabeli WP")
+    parser.add_argument("--ep", type=str, help="Numer lub tytuł odcinka")
+    parser.add_argument("--newavg", type=str, help="Nowa średnia ocena")
+    parser.add_argument("--ratnr", type=int, help="Nowa liczba ocen")
+    parser.add_argument("--newrate", type=str, help="Ocena do doliczenia")
+    parser.add_argument("--deleterate", type=str, help="Ocena do usunięcia")
+    parser.add_argument("--fromuser", type=str, help="Nazwa użytkownika")
+    parser.add_argument("--saveuserjson", type=str, help="Zapisuje zmodyfikowany JSON użytkownika bezpośrednio do pliku baza_userow.json")
     
     args = parser.parse_args()
 
@@ -616,19 +544,31 @@ def main():
         napraw_pozycje_w_wp()
         return
 
+    # Obsługa zapisu zmodyfikowanej bazy użytkowników przesłanej z GUI
+    if args.saveuserjson is not None:
+        try:
+            dane_wejsciowe = json.loads(args.saveuserjson)
+            if os.path.exists("baza_userow.json"):
+                with open("baza_userow.json", "r", encoding="utf-8") as bf:
+                    pelna_baza = json.load(bf)
+                
+                # Aktualizujemy dane konkretnego usera
+                for username, info in dane_wejsciowe.items():
+                    pelna_baza[username] = info
+                
+                with open("baza_userow.json", "w", encoding="utf-8") as bf:
+                    json.dump(pelna_baza, bf, ensure_ascii=False, indent=4)
+                log_print(f"💾 Pomyślnie zaktualizowano bazę użytkowników w pliku baza_userow.json przez GitHub Actions!")
+        except Exception as e:
+            log_print(f"❌ Błąd podczas zapisu bazy użytkowników: {e}")
+        return
+
     if args.ep is not None and args.newrate is not None:
         try:
             rate_val = float(args.newrate.replace(',', '.'))
         except ValueError:
-            log_print("❌ Błąd: Parametr --newrate musi być poprawną liczbą (np. 7)")
             return
-
-        log_print(f"➕ Uruchamianie doliczenia oceny {rate_val} dla odcinka '{args.ep}'" + (f" od użytkownika '{args.fromuser}'" if args.fromuser else "") + "...")
-        dodanie = {
-            'ep': args.ep,
-            'rate': rate_val,
-            'from_user': args.fromuser
-        }
+        dodanie = {'ep': args.ep, 'rate': rate_val, 'from_user': args.fromuser}
         aktualizuj_tabelę_wp(manualne_dodanie_oceny=dodanie)
         return
 
@@ -636,15 +576,8 @@ def main():
         try:
             rate_val = float(args.deleterate.replace(',', '.'))
         except ValueError:
-            log_print("❌ Błąd: Parametr --deleterate musi być poprawną liczbą (np. 7)")
             return
-
-        log_print(f"➖ Uruchamianie usunięcia oceny {rate_val} dla odcinka '{args.ep}'" + (f" dla użytkownika '{args.fromuser}'" if args.fromuser else "") + "...")
-        usuniecie = {
-            'ep': args.ep,
-            'rate': rate_val,
-            'from_user': args.fromuser
-        }
+        usuniecie = {'ep': args.ep, 'rate': rate_val, 'from_user': args.fromuser}
         aktualizuj_tabelę_wp(manualne_usunięcie_oceny=usuniecie)
         return
 
@@ -652,32 +585,21 @@ def main():
         try:
             avg_val = float(args.newavg.replace(',', '.'))
         except ValueError:
-            log_print("❌ Błąd: Parametr --newavg musi być poprawną liczbą (np. 8,82 lub 8.82)")
             return
-
-        log_print(f"🛠️ Uruchamianie ręcznej korekty dla odcinka '{args.ep}'...")
-        korekta = {
-            'ep': args.ep,
-            'newavg': avg_val,
-            'ratnr': args.ratnr
-        }
+        korekta = {'ep': args.ep, 'newavg': avg_val, 'ratnr': args.ratnr}
         aktualizuj_tabelę_wp(manualna_korekta=korekta)
         return
 
     dzis = datetime.now().date()
     wczoraj = dzis - timedelta(days=1)
-    
-    log_print(f"🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: {wczoraj} do {dzis}")
 
     if not os.path.exists("baza_userow.json"):
-        log_print("❌ Brak pliku baza_userow.json w repozytorium!")
         return
 
     with open("baza_userow.json", "r", encoding="utf-8") as f:
         baza_userow = json.load(f)
 
     wzorcowa_lista_odcinków = baza_userow.get("bazowa_lista_odcinków", [])
-
     znalezione_oceny = pobierz_dzisiejsze_i_wczorajsze_oceny(SUBFORUM_URL, wczoraj, dzis)
     
     do_aktualizacji_wp = {}
@@ -689,7 +611,6 @@ def main():
                 continue
 
             if autor not in baza_userow:
-                log_print(f"🆕 Wykryto nowego użytkownika: '{autor}'. Automatyczne dodawanie do bazy z bazową pulą odcinków.")
                 baza_userow[autor] = {
                     "nieocenione": list(wzorcowa_lista_odcinków),
                     "ocenione": []
@@ -710,31 +631,12 @@ def main():
                 if dopasowany_nieoceniony not in do_aktualizacji_wp:
                     do_aktualizacji_wp[dopasowany_nieoceniony] = []
                 do_aktualizacji_wp[dopasowany_nieoceniony].append(ocena)
-                
-                log_print(f"✨ Akceptacja oceny: {autor} ocenił '{dopasowany_nieoceniony}' na {ocena}/10")
-            elif dopasowany_oceniony:
-                log_print(f"⚠️ Odrzucono ocenę: {autor} ocenił '{tytul_odc}', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).")
-            else:
-                log_print(f"ℹ️ Użytkownik {autor} napisał post w temacie '{tytul_odc}', ale ten odcinek nie figuruje w bazie wzorcowej.")
 
     if zmieniono_bazę_json:
         with open("baza_userow.json", "w", encoding="utf-8") as f:
             json.dump(baza_userow, f, ensure_ascii=False, indent=4)
-        log_print("💾 Zapisano zaktualizowany plik baza_userow.json.")
-
         if do_aktualizacji_wp:
             aktualizuj_tabelę_wp(slownik_aktualizacji=do_aktualizacji_wp)
-    else:
-        log_print("😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.")
-        
-        if not os.path.exists("tabela_backup.json"):
-            log_print("🛡️ Wykryto brak pliku 'tabela_backup.json'. Pobieram stan początkowy z WP...")
-            get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/116"
-            res = requests.get(get_url, headers=API_HEADERS)
-            if res.status_code == 200:
-                rows = res.json().get('data', [])
-                if rows:
-                    zrob_backup_przed_zmiana(rows)
 
 if __name__ == "__main__":
     main()
