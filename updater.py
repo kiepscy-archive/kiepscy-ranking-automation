@@ -115,9 +115,6 @@ def czysc_url(url):
     return f"{parsed.scheme}://{parsed.netloc}{parsed.path}" + (f"?{new_query}" if new_query else "")
 
 def pasuje_do_odcinka(tytul_tekst, szukany_ep_str):
-    """Sprawdza, czy tytuł odcinka pasuje do podanego argumentu (--ep).
-       Obsługuje zarówno numery (zapobiegając myleniu 22 z 220), jak i nazwy tekstowe.
-    """
     szukany_czysty = szukany_ep_str.strip()
     
     if szukany_czysty.isdigit():
@@ -270,7 +267,6 @@ def formatuj_liczbe(wartosc):
     return text
 
 def zrob_backup_przed_zmiana(rows_data):
-    """Zapisuje lub nadpisuje plik kopii zapasowej przed zmodyfikowaniem tabeli."""
     backup_filename = "tabela_backup.json"
     try:
         with open(backup_filename, "w", encoding="utf-8") as f:
@@ -302,7 +298,6 @@ def testuj_polaczenie_wp():
         return False
 
 def napraw_pozycje_w_wp():
-    """Pobiera tabelę z WordPressa, przelicza pozycje ex aequo na podstawie obecnych średnich i zapisuje."""
     TABLE_ID = 116
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
     log_print("🛠️ Uruchamianie weryfikacji i naprawy pozycji ex aequo w tabeli WP...")
@@ -374,7 +369,7 @@ def napraw_pozycje_w_wp():
         log_print(f"❌ Błąd zapisu pozycji do TablePress: {res_post.status_code} - {res_post.text}")
         return False
 
-def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manualne_dodanie_oceny=None):
+def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manualne_dodanie_oceny=None, manualne_usunięcie_oceny=None):
     TABLE_ID = 116
     if slownik_aktualizacji is None:
         slownik_aktualizacji = {}
@@ -447,7 +442,6 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
                 zmieniono = True
                 log_print(f"➕ RĘCZNE DOLICZENIE OCENY dla odcinka '{tytul_tekst}': Doliczono ocenę {dodatkowa_ocena}. Nowa liczba ocen: {nowa_liczba_ocen}, Nowa średnia: {formatuj_liczbe(nowa_srednia)}")
 
-                # Obsługa przypisania oceny do konkretnego użytkownika (--fromuser)
                 from_user = manualne_dodanie_oceny.get('from_user')
                 if from_user:
                     if os.path.exists("baza_userow.json"):
@@ -483,6 +477,37 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
                             json.dump(baza_userow, bf, ensure_ascii=False, indent=4)
                         log_print("💾 Zaktualizowano plik baza_userow.json o wpis użytkownika.")
 
+        # OBSŁUGA RĘCZNEGO USUNIĘCIA OCENY (--deleterate)
+        if manualne_usunięcie_oceny:
+            szukany_ep_str = str(manualne_usunięcie_oceny['ep'])
+            if pasuje_do_odcinka(tytul_tekst, szukany_ep_str):
+                ocena_do_usuniecia = manualne_usunięcie_oceny['rate']
+                if stara_liczba_ocen > 0:
+                    nowa_liczba_ocen = stara_liczba_ocen - 1
+                    nowa_suma = max(0.0, stara_suma - ocena_do_usuniecia)
+                    nowa_srednia = round((nowa_suma / nowa_liczba_ocen) if nowa_liczba_ocen > 0 else 0.0, 2)
+                    zmieniono = True
+                    log_print(f"➖ USUNIĘCIE OCENY dla odcinka '{tytul_tekst}': Usunięto ocenę {ocena_do_usuniecia}. Nowa liczba ocen: {nowa_liczba_ocen}, Nowa średnia: {formatuj_liczbe(nowa_srednia)}")
+                
+                from_user = manualne_usunięcie_oceny.get('from_user')
+                if from_user and os.path.exists("baza_userow.json"):
+                    with open("baza_userow.json", "r", encoding="utf-8") as bf:
+                        baza_userow = json.load(bf)
+                    
+                    if from_user in baza_userow:
+                        ocenione = baza_userow[from_user].get("ocenione", [])
+                        dopasowany_oceniony = next((t for t in ocenione if pasuje_do_odcinka(t, szukany_ep_str)), None)
+                        
+                        if dopasowany_oceniony:
+                            baza_userow[from_user]["ocenione"].remove(dopasowany_oceniony)
+                            if dopasowany_oceniony not in baza_userow[from_user]["nieocenione"]:
+                                baza_userow[from_user]["nieocenione"].append(dopasowany_oceniony)
+                            log_print(f"🔄 Przeniesiono odcinek '{dopasowany_oceniony}' z powrotem do nieocenionych dla użytkownika '{from_user}'.")
+                            
+                            with open("baza_userow.json", "w", encoding="utf-8") as bf:
+                                json.dump(baza_userow, bf, ensure_ascii=False, indent=4)
+                            log_print("💾 Zaktualizowano plik baza_userow.json po usunięciu oceny użytkownika.")
+
         for tytul_odcinka_forum, list_ocen in slownik_aktualizacji.items():
             forum_czysty = tytul_odcinka_forum.strip()
 
@@ -506,7 +531,7 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
             'pelny_wiersz': wiersz  
         })
 
-    if not zmieniono and not manualna_korekta and not manualne_dodanie_oceny:
+    if not zmieniono and not manualna_korekta and not manualne_dodanie_oceny and not manualne_usunięcie_oceny:
         log_print("ℹ️ Brak odcinków do aktualizacji.")
         return True
 
@@ -578,7 +603,8 @@ def main():
     parser.add_argument("--newavg", type=str, help="Nowa średnia ocena (np. 8,82)")
     parser.add_argument("--ratnr", type=int, help="Nowa liczba ocen (np. 14)")
     parser.add_argument("--newrate", type=str, help="Pojedyncza ocena do doliczenia (np. 7)")
-    parser.add_argument("--fromuser", type=str, help="Nazwa użytkownika, któremu należy przypisać ocenę przy użyciu --newrate")
+    parser.add_argument("--deleterate", type=str, help="Pojedyncza ocena do usunięcia/cofnięcia (np. 7)")
+    parser.add_argument("--fromuser", type=str, help="Nazwa użytkownika powiązana z operacją --newrate lub --deleterate")
     
     args = parser.parse_args()
 
@@ -604,6 +630,22 @@ def main():
             'from_user': args.fromuser
         }
         aktualizuj_tabelę_wp(manualne_dodanie_oceny=dodanie)
+        return
+
+    if args.ep is not None and args.deleterate is not None:
+        try:
+            rate_val = float(args.deleterate.replace(',', '.'))
+        except ValueError:
+            log_print("❌ Błąd: Parametr --deleterate musi być poprawną liczbą (np. 7)")
+            return
+
+        log_print(f"➖ Uruchamianie usunięcia oceny {rate_val} dla odcinka '{args.ep}'" + (f" dla użytkownika '{args.fromuser}'" if args.fromuser else "") + "...")
+        usuniecie = {
+            'ep': args.ep,
+            'rate': rate_val,
+            'from_user': args.fromuser
+        }
+        aktualizuj_tabelę_wp(manualne_usunięcie_oceny=usuniecie)
         return
 
     if args.ep is not None and args.newavg is not None and args.ratnr is not None:
