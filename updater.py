@@ -210,7 +210,8 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
                 
                 if not tytul_odcinka:
                     h2 = soup.find('h2', class_='topic-title')
-                    tytul_odcinka = h2.text.strip() if h2 else "Nieznany"
+                    # Normalizacja białych znaków i tabulacji w tytule
+                    tytul_odcinka = re.sub(r'\s+', ' ', h2.text).strip() if h2 else "Nieznany"
                     if "ogólnie o sezonie" in tytul_odcinka.lower():
                         break
 
