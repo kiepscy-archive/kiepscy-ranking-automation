@@ -1,16 +1,26 @@
 name: Kiepscy Ranking Auto-Updater
 
 on:
+  schedule:
+    - cron: '0 */6 * * *'
   repository_dispatch:
-    types: [run-updater, gui-action]
+    types: [run-updater]
   workflow_dispatch:
     inputs:
+      act:
+        description: 'Akcja z GUI (opcjonalnie)'
+        required: false
+        type: string
       ep:
         description: 'Numer lub tytuł odcinka'
         required: false
         type: string
       newrate:
         description: 'Nowa ocena do doliczenia'
+        required: false
+        type: string
+      deleterate:
+        description: 'Ocena do usunięcia'
         required: false
         type: string
       fromuser:
@@ -27,9 +37,6 @@ jobs:
     steps:
       - name: Klonowanie repozytorium
         uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Konfiguracja Pythona
         uses: actions/setup-python@v5
@@ -41,49 +48,34 @@ jobs:
           pip install requests beautifulsoup4
 
       - name: Uruchomienie skryptu
+        env:
+          ACT_INPUT: ${{ github.event.inputs.act }}
+          EP_INPUT: ${{ github.event.inputs.ep }}
+          RATE_INPUT: ${{ github.event.inputs.newrate }}
+          DEL_INPUT: ${{ github.event.inputs.deleterate }}
+          USER_INPUT: ${{ github.event.inputs.fromuser }}
         run: |
-          ACT="${{ github.event.client_payload.action }}"
-          EP="${{ github.event.client_payload.ep }}"
-          VAL="${{ github.event.client_payload.val }}"
-          USER="${{ github.event.client_payload.user }}"
-          SAVEJSON="${{ github.event.client_payload.saveuserjson }}"
-
-          INPUT_EP="${{ github.event.inputs.ep }}"
-          INPUT_NEWRATE="${{ github.event.inputs.newrate }}"
-          INPUT_USER="${{ github.event.inputs.fromuser }}"
-
-          if [ -n "$ACT" ]; then
-            echo "Wywołanie z GUI: akcja = $ACT"
-            if [ "$ACT" = "add" ]; then
-              python updater.py --ep "$EP" --newrate "$VAL" --fromuser "$USER"
-            elif [ "$ACT" = "delete" ]; then
-              python updater.py --ep "$EP" --deleterate "$VAL" --fromuser "$USER"
-            elif [ "$ACT" = "avg" ]; then
-              python updater.py --ep "$EP" --newavg "$VAL" --ratnr "$USER"
-            elif [ "$ACT" = "save_users" ]; then
-              python updater.py --saveuserjson "$SAVEJSON"
+          # Jeśli wywołanie pochodzi z aplikacji EXE (jest ustawiony act lub ep)
+          if [ -n "$ACT_INPUT" ]; then
+            echo "Wywołanie z GUI (ACT): $ACT_INPUT"
+            if [ "$ACT_INPUT" = "add" ]; then
+              python updater.py --ep "$EP_INPUT" --newrate "$RATE_INPUT" --fromuser "$USER_INPUT"
+            elif [ "$ACT_INPUT" = "delete" ]; then
+              python updater.py --ep "$DEL_INPUT" --deleterate "$RATE_INPUT" --fromuser "$USER_INPUT"
             fi
-          elif [ -n "$INPUT_EP" ]; then
+          elif [ -n "$EP_INPUT" ]; then
             echo "Ręczne uruchomienie z inputami"
-            CMD="python updater.py --ep '$INPUT_EP'"
-            if [ -n "$INPUT_NEWRATE" ]; then
-              CMD="$CMD --newrate '$INPUT_NEWRATE'"
-            fi
-            if [ -n "$INPUT_USER" ]; then
-              CMD="$CMD --fromuser '$INPUT_USER'"
-            fi
+            CMD="python updater.py --ep '$EP_INPUT'"
+            [ -n "$RATE_INPUT" ] && CMD="$CMD --newrate '$RATE_INPUT'"
+            [ -n "$USER_INPUT" ] && CMD="$CMD --fromuser '$USER_INPUT'"
             eval $CMD
           else
-            echo "Automatyczny obieg cykliczny"
+            echo "Automatyczny obieg cykliczny - czysty start"
             python updater.py
           fi
 
       - name: Automatyczny commit zaktualizowanej bazy, logów i backupu
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Automatyczna aktualizacja bazy i logów przez GitHub Actions"
+          commit_message: "Automatyczna / GUI aktualizacja rankingu"
           file_pattern: baza_userow.json log.log tabela_backup.json
-          commit_user_name: "github-actions[bot]"
-          commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
