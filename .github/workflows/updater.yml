@@ -27,6 +27,9 @@ jobs:
     steps:
       - name: Klonowanie repozytorium
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Konfiguracja Pythona
         uses: actions/setup-python@v5
@@ -39,19 +42,18 @@ jobs:
 
       - name: Uruchomienie skryptu
         run: |
-          # Obsługa zdalnego wywołania z aplikacji GUI (client_payload)
-          ACTION="${{ github.event.client_payload.action }}"
-          EP="${{ github.event.client_payload.client_payload.ep || github.event.inputs.ep }}"
-          
-          # Sprawdzamy czy to wywołanie z GUI czy standardowe
-          if [ -n "${{ github.event.client_payload.action }}" ]; then
-            ACT="${{ github.event.client_payload.action }}"
-            EP="${{ github.event.client_payload.ep }}"
-            VAL="${{ github.event.client_payload.val }}"
-            USER="${{ github.event.client_payload.user }}"
-            # Pobieramy nasz JSON bazy użytkowników wysłany z GUI
-            SAVEJSON="${{ github.event.client_payload.saveuserjson }}"
+          ACT="${{ github.event.client_payload.action }}"
+          EP="${{ github.event.client_payload.ep }}"
+          VAL="${{ github.event.client_payload.val }}"
+          USER="${{ github.event.client_payload.user }}"
+          SAVEJSON="${{ github.event.client_payload.saveuserjson }}"
 
+          INPUT_EP="${{ github.event.inputs.ep }}"
+          INPUT_NEWRATE="${{ github.event.inputs.newrate }}"
+          INPUT_USER="${{ github.event.inputs.fromuser }}"
+
+          if [ -n "$ACT" ]; then
+            echo "Wywołanie z GUI: akcja = $ACT"
             if [ "$ACT" = "add" ]; then
               python updater.py --ep "$EP" --newrate "$VAL" --fromuser "$USER"
             elif [ "$ACT" = "delete" ]; then
@@ -61,23 +63,27 @@ jobs:
             elif [ "$ACT" = "save_users" ]; then
               python updater.py --saveuserjson "$SAVEJSON"
             fi
-          elif [ -n "${{ github.event.inputs.ep }}" ]; then
-            # Ręczne uruchomienie z poziomu strony GitHuba z inputami
-            CMD="python updater.py --ep '${{ github.event.inputs.ep }}'"
-            if [ -n "${{ github.event.inputs.newrate }}" ]; then
-              CMD="$CMD --newrate '${{ github.event.inputs.newrate }}'"
+          elif [ -n "$INPUT_EP" ]; then
+            echo "Ręczne uruchomienie z inputami"
+            CMD="python updater.py --ep '$INPUT_EP'"
+            if [ -n "$INPUT_NEWRATE" ]; then
+              CMD="$CMD --newrate '$INPUT_NEWRATE'"
             fi
-            if [ -n "${{ github.event.inputs.fromuser }}" ]; then
-              CMD="$CMD --fromuser '${{ github.event.inputs.fromuser }}'"
+            if [ -n "$INPUT_USER" ]; then
+              CMD="$CMD --fromuser '$INPUT_USER'"
             fi
             eval $CMD
           else
-            # Standardowy obieg automatyczny
+            echo "Automatyczny obieg cykliczny"
             python updater.py
           fi
 
       - name: Automatyczny commit zaktualizowanej bazy, logów i backupu
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Aktualizacja przez aplikację GUI / automatyczna"
+          commit_message: "Automatyczna aktualizacja bazy i logów przez GitHub Actions"
           file_pattern: baza_userow.json log.log tabela_backup.json
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
