@@ -3734,3 +3734,7 @@
 [2026-10-17 18:41:36] 💾 Zaktualizowano plik baza_userow.json o wpis użytkownika.
 [2026-10-17 18:41:36] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-10-17 18:41:38] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-10-17 18:42:21] ➖ Uruchamianie usunięcia oceny 10.0 dla odcinka '481' (użytkownik: Patt)...
+[2026-10-17 18:42:22] ➖ RĘCZNE USUNIĘCIE OCENY dla odcinka '481 Dziwadło': Usunięto ocenę 10.0. Nowa liczba ocen: 37, Nowa średnia: 6,54
+[2026-10-17 18:42:22] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-17 18:42:24] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
