@@ -233,6 +233,8 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
                             if tytul_odcinka not in nowe_oceny:
                                 nowe_oceny[tytul_odcinka] = []
                             nowe_oceny[tytul_odcinka].append((autor, ocena))
+                        else:
+                            log_print(f"ℹ️ Post użytkownika {autor} w temacie '{tytul_odcinka}' z dnia {data_postu} nie zawiera poprawnej oceny na końcu.")
 
                 strefa_pagi = soup.find('div', class_='pagination')
                 ma_nastepna = False
