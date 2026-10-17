@@ -7,24 +7,20 @@ on:
     types: [run-updater]
   workflow_dispatch:
     inputs:
-      act:
-        description: 'Akcja (add / delete)'
+      action:
+        description: 'Akcja (add / delete / avg)'
         required: false
         type: string
       ep:
         description: 'Numer lub tytuł odcinka'
         required: false
         type: string
-      newrate:
-        description: 'Nowa ocena do doliczenia'
+      val:
+        description: 'Wartość (ocena lub nowa średnia)'
         required: false
         type: string
-      deleterate:
-        description: 'Ocena do usunięcia'
-        required: false
-        type: string
-      fromuser:
-        description: 'Użytkownik'
+      user:
+        description: 'Użytkownik lub liczba ocen'
         required: false
         type: string
 
@@ -47,32 +43,26 @@ jobs:
         run: |
           pip install requests beautifulsoup4
 
-      - name: Uruchomienie skryptu (Tryb GUI / EXE z parametrami)
-        if: ${{ (github.event.inputs.act != '' && github.event.inputs.act != null) || (github.event.inputs.ep != '' && github.event.inputs.ep != null) || github.event.client_payload.ep != null }}
+      - name: Uruchomienie skryptu (Wywołanie z GUI / EXE)
+        if: ${{ github.event.client_payload.action != null || github.event.inputs.action != '' }}
         env:
-          ACT_INPUT: ${{ github.event.inputs.act }}
-          EP_INPUT: ${{ github.event.inputs.ep || github.event.client_payload.ep }}
-          RATE_INPUT: ${{ github.event.inputs.newrate || github.event.client_payload.newrate }}
-          DEL_INPUT: ${{ github.event.inputs.deleterate || github.event.client_payload.deleterate }}
-          USER_INPUT: ${{ github.event.inputs.fromuser || github.event.client_payload.fromuser }}
+          ACTION: ${{ github.event.inputs.action || github.event.client_payload.action }}
+          EP: ${{ github.event.inputs.ep || github.event.client_payload.ep }}
+          VAL: ${{ github.event.inputs.val || github.event.client_payload.val }}
+          USER: ${{ github.event.inputs.user || github.event.client_payload.user }}
         run: |
-          echo "Wywołanie z zewnętrznego źródła (EXE/GUI)"
-          echo "Akcja: $ACT_INPUT, Odcinek: $EP_INPUT, NewRate: $RATE_INPUT, DelRate: $DEL_INPUT, User: $USER_INPUT"
+          echo "Wywołanie z GUI/EXE -> Akcja: $ACTION, Odcinek: $EP, Val: $VAL, User/Ratnr: $USER"
           
-          if [ "$ACT_INPUT" = "add" ]; then
-            python updater.py --ep "$EP_INPUT" --newrate "$RATE_INPUT" --fromuser "$USER_INPUT"
-          elif [ "$ACT_INPUT" = "delete" ]; then
-            python updater.py --ep "$EP_INPUT" --deleterate "$DEL_INPUT" --fromuser "$USER_INPUT"
-          elif [ -n "$RATE_INPUT" ]; then
-            python updater.py --ep "$EP_INPUT" --newrate "$RATE_INPUT" --fromuser "$USER_INPUT"
-          elif [ -n "$DEL_INPUT" ]; then
-            python updater.py --ep "$EP_INPUT" --deleterate "$DEL_INPUT" --fromuser "$USER_INPUT"
-          elif [ -n "$EP_INPUT" ]; then
-            python updater.py --ep "$EP_INPUT"
+          if [ "$ACTION" = "add" ]; then
+            python updater.py --ep "$EP" --newrate "$VAL" --fromuser "$USER"
+          elif [ "$ACTION" = "delete" ]; then
+            python updater.py --ep "$EP" --deleterate "$VAL" --fromuser "$USER"
+          elif [ "$ACTION" = "avg" ]; then
+            python updater.py --ep "$EP" --newavg "$VAL" --ratnr "$USER"
           fi
 
-      - name: Uruchomienie skryptu (Tylko automatyczny Cron)
-        if: ${{ github.event.schedule != '' || (github.event.inputs.act == '' && github.event.inputs.ep == '' && github.event.client_payload.ep == null) }}
+      - name: Uruchomienie skryptu (Automatyczny Cron / Czysty Start)
+        if: ${{ github.event.schedule != '' || (github.event.client_payload.action == null && github.event.inputs.action == '') }}
         run: |
           echo "Automatyczny obieg cykliczny - czysty start"
           python updater.py
@@ -80,5 +70,5 @@ jobs:
       - name: Automatyczny commit zaktualizowanej bazy, logów i backupu
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Aktualizacja rankingu (Cron / GUI)"
+          commit_message: "Aktualizacja rankingu (Automatyczna / GUI)"
           file_pattern: baza_userow.json log.log tabela_backup.json
