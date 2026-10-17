@@ -3750,3 +3750,15 @@
 [2026-10-17 18:50:56] ℹ️ Post użytkownika Patt w temacie '481 Dziwadło' z dnia 2026-10-16 nie zawiera poprawnej oceny na końcu.
 [2026-10-17 18:50:56] ⚠️ Odrzucono ocenę: kafel ocenił '256 Marsz', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-17 18:50:56] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-17 18:55:26] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-16 do 2026-10-17
+[2026-10-17 18:55:26] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-17 18:55:49] 🎯 Znaleziono 3 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-17 18:55:56] ℹ️ Post użytkownika Patt w temacie '481 Dziwadło' z dnia 2026-10-16 nie zawiera poprawnej oceny na końcu.
+[2026-10-17 18:55:56] ✨ Akceptacja oceny: kacrudy ocenił '097 Kara Mustafa' na 6/10
+[2026-10-17 18:55:56] ⚠️ Odrzucono ocenę: kafel ocenił '256 Marsz', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-17 18:55:56] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-10-17 18:55:58] 🎯 PODGLĄD DANYCH dla '097 Kara Mustafa':
+[2026-10-17 18:55:58]    • Przed: Liczba ocen=48, Średnia=9.44, Suma=453.12
+[2026-10-17 18:55:58]    • Po:    Liczba ocen=49, Średnia=9,37, Suma=459.12
+[2026-10-17 18:55:58] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-17 18:55:59] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
