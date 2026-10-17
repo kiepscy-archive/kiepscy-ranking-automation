@@ -3728,3 +3728,9 @@
 [2026-10-17 18:38:54] ℹ️ Post użytkownika Patt w temacie '481 Dziwadło' z dnia 2026-10-16 nie zawiera poprawnej oceny na końcu.
 [2026-10-17 18:38:54] ⚠️ Odrzucono ocenę: kafel ocenił '256 Marsz', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-17 18:38:54] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-17 18:41:34] ➕ Uruchamianie doliczenia oceny 10.0 dla odcinka '481' od użytkownika 'Patt'...
+[2026-10-17 18:41:35] ➕ RĘCZNE DOLICZENIE OCENY dla odcinka '481 Dziwadło': Doliczono ocenę 10.0. Nowa liczba ocen: 38, Nowa średnia: 6,63
+[2026-10-17 18:41:36] ✨ Przeniesiono odcinek '481 Dziwadło' z nieocenionych do ocenionych dla użytkownika 'Patt'.
+[2026-10-17 18:41:36] 💾 Zaktualizowano plik baza_userow.json o wpis użytkownika.
+[2026-10-17 18:41:36] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-17 18:41:38] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
