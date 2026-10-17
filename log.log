@@ -3738,3 +3738,9 @@
 [2026-10-17 18:42:22] ➖ RĘCZNE USUNIĘCIE OCENY dla odcinka '481 Dziwadło': Usunięto ocenę 10.0. Nowa liczba ocen: 37, Nowa średnia: 6,54
 [2026-10-17 18:42:22] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-10-17 18:42:24] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-10-17 18:45:36] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-16 do 2026-10-17
+[2026-10-17 18:45:36] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-17 18:46:06] 🎯 Znaleziono 2 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-17 18:46:10] ℹ️ Post użytkownika Patt w temacie '481 Dziwadło' z dnia 2026-10-16 nie zawiera poprawnej oceny na końcu.
+[2026-10-17 18:46:10] ⚠️ Odrzucono ocenę: kafel ocenił '256 Marsz', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-17 18:46:10] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
