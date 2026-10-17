@@ -190,17 +190,22 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
     nowe_oceny = {}
 
     for url_t in linki_tematow:
-        start = 0
+        # Kolejka stron do odwiedzenia w danym temacie (zaczynamy od linku bez start=)
+        pages_to_visit = [url_t]
+        visited = set()
         tytul_odcinka = ""
-        
-        while True:
-            sep = "&" if "?" in url_t else "?"
-            url_page = f"{url_t}{sep}start={start}" if start > 0 else url_t
-            
+
+        while pages_to_visit:
+            curr_page = pages_to_visit.pop(0)
+            curr_clean = czysc_url(curr_page)
+            if curr_clean in visited:
+                continue
+            visited.add(curr_clean)
+
             try:
-                res = requests.get(url_page, headers=HEADERS, timeout=10)
+                res = requests.get(curr_page, headers=HEADERS, timeout=10)
                 soup = BeautifulSoup(res.text, 'html.parser')
-                
+
                 if not tytul_odcinka:
                     h2 = soup.find('h2', class_='topic-title')
                     tytul_odcinka = h2.text.strip() if h2 else "Nieznany"
@@ -209,18 +214,19 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
 
                 posty_html = soup.find_all('div', class_='post', id=re.compile(r'^p\d+'))
                 if not posty_html:
-                    break
+                    # brak postów na stronie - przejdź dalej
+                    pass
 
                 for post in posty_html:
                     p_author = post.find('p', class_='author')
                     data_postu = parsuj_datę_postu(p_author.text) if p_author else None
-                    
+
                     if not data_postu or not (data_od <= data_postu <= data_do):
                         continue
 
                     autor_tag = post.find(class_=re.compile(r'username'))
                     autor = autor_tag.text.strip() if autor_tag else None
-                    
+
                     tresc_tag = post.find('div', class_='content')
                     if tresc_tag and autor:
                         for q in tresc_tag.find_all(['blockquote', 'cite']):
@@ -236,18 +242,22 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
                         else:
                             log_print(f"ℹ️ Post użytkownika {autor} w temacie '{tytul_odcinka}' z dnia {data_postu} nie zawiera poprawnej oceny na końcu.")
 
+                # Znajdź linki paginacji i dodaj je do kolejki (tylko linki do stron tematu)
                 strefa_pagi = soup.find('div', class_='pagination')
-                ma_nastepna = False
-                if strefa_pagi and (strefa_pagi.find('a', text=re.compile(r'Następna|Next|>', re.I)) or f"start={start + 25}" in res.text):
-                    ma_nastepna = True
+                if strefa_pagi:
+                    for a in strefa_pagi.find_all('a', href=True):
+                        href = urljoin(curr_page, a['href'])
+                        # filtrowanie: tylko linki prowadzące do tego tematu (zwykle viewtopic.php lub start=)
+                        if 'viewtopic.php' in href or 'start=' in href:
+                            href_clean = czysc_url(href)
+                            if href_clean not in visited and href_clean not in pages_to_visit:
+                                pages_to_visit.append(href_clean)
 
-                if not ma_nastepna:
-                    break
-                start += 25
+                # Krótkie opóźnienie żeby nie obciążać serwera
                 time.sleep(0.2)
 
             except Exception as e:
-                log_print(f"⚠️ Błąd podczas skanowania {url_page}: {e}")
+                log_print(f"⚠️ Błąd podczas skanowania {curr_page}: {e}")
                 break
 
     return nowe_oceny
