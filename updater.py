@@ -637,8 +637,21 @@ def main():
     if zmieniono_bazę_json:
         with open("baza_userow.json", "w", encoding="utf-8") as f:
             json.dump(baza_userow, f, ensure_ascii=False, indent=4)
+        log_print("💾 Zapisano zaktualizowany plik baza_userow.json.")
+
         if do_aktualizacji_wp:
             aktualizuj_tabelę_wp(slownik_aktualizacji=do_aktualizacji_wp)
+    else:
+        log_print("😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.")
+        
+        if not os.path.exists("tabela_backup.json"):
+            log_print("🛡️ Wykryto brak pliku 'tabela_backup.json'. Pobieram stan początkowy z WP...")
+            get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/116"
+            res = requests.get(get_url, headers=API_HEADERS)
+            if res.status_code == 200:
+                rows = res.json().get('data', [])
+                if rows:
+                    zrob_backup_przed_zmiana(rows)
 
 if __name__ == "__main__":
     main()
