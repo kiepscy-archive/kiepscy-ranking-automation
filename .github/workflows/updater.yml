@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       act:
-        description: 'Akcja z GUI (opcjonalnie)'
+        description: 'Akcja (add / delete)'
         required: false
         type: string
       ep:
@@ -47,7 +47,8 @@ jobs:
         run: |
           pip install requests beautifulsoup4
 
-      - name: Uruchomienie skryptu
+      - name: Uruchomienie skryptu (GUI / EXE)
+        if: ${{ github.event.inputs.act != '' && github.event.inputs.act != null }}
         env:
           ACT_INPUT: ${{ github.event.inputs.act }}
           EP_INPUT: ${{ github.event.inputs.ep }}
@@ -55,25 +56,33 @@ jobs:
           DEL_INPUT: ${{ github.event.inputs.deleterate }}
           USER_INPUT: ${{ github.event.inputs.fromuser }}
         run: |
-          # Jeśli wywołanie pochodzi z aplikacji EXE (jest ustawiony act lub ep)
-          if [ -n "$ACT_INPUT" ]; then
-            echo "Wywołanie z GUI (ACT): $ACT_INPUT"
-            if [ "$ACT_INPUT" = "add" ]; then
-              python updater.py --ep "$EP_INPUT" --newrate "$RATE_INPUT" --fromuser "$USER_INPUT"
-            elif [ "$ACT_INPUT" = "delete" ]; then
-              python updater.py --ep "$EP_INPUT" --deleterate "$DEL_INPUT" --fromuser "$USER_INPUT"
-            fi
-          elif [ -n "$EP_INPUT" ]; then
-            echo "Ręczne uruchomienie z inputami"
-            CMD="python updater.py --ep '$EP_INPUT'"
-            [ -n "$RATE_INPUT" ] && CMD="$CMD --newrate '$RATE_INPUT'"
-            [ -n "$DEL_INPUT" ] && CMD="$CMD --deleterate '$DEL_INPUT'"
-            [ -n "$USER_INPUT" ] && CMD="$CMD --fromuser '$USER_INPUT'"
-            eval $CMD
-          else
-            echo "Automatyczny obieg cykliczny - czysty start"
-            python updater.py
+          echo "Wywołanie z GUI/EXE o akcji: $ACT_INPUT"
+          if [ "$ACT_INPUT" = "add" ]; then
+            python updater.py --ep "$EP_INPUT" --newrate "$RATE_INPUT" --fromuser "$USER_INPUT"
+          elif [ "$ACT_INPUT" = "delete" ]; then
+            python updater.py --ep "$EP_INPUT" --deleterate "$DEL_INPUT" --fromuser "$USER_INPUT"
           fi
+
+      - name: Uruchomienie skryptu (Ręczne inputy bez act)
+        if: ${{ (github.event.inputs.act == '' || github.event.inputs.act == null) && github.event.inputs.ep != '' && github.event.inputs.ep != null }}
+        env:
+          EP_INPUT: ${{ github.event.inputs.ep }}
+          RATE_INPUT: ${{ github.event.inputs.newrate }}
+          DEL_INPUT: ${{ github.event.inputs.deleterate }}
+          USER_INPUT: ${{ github.event.inputs.fromuser }}
+        run: |
+          echo "Ręczne uruchomienie z inputami"
+          CMD="python updater.py --ep '$EP_INPUT'"
+          [ -n "$RATE_INPUT" ] && CMD="$CMD --newrate '$RATE_INPUT'"
+          [ -n "$DEL_INPUT" ] && CMD="$CMD --deleterate '$DEL_INPUT'"
+          [ -n "$USER_INPUT" ] && CMD="$CMD --fromuser '$USER_INPUT'"
+          eval $CMD
+
+      - name: Uruchomienie skryptu (Automatyczny Cron / Czysty Start)
+        if: ${{ github.event.schedule != '' || (github.event.inputs.ep == '' && github.event.inputs.act == '') || (github.event.inputs.ep == null && github.event.inputs.act == null) }}
+        run: |
+          echo "Automatyczny obieg cykliczny - czysty start"
+          python updater.py
 
       - name: Automatyczny commit zaktualizowanej bazy, logów i backupu
         uses: stefanzweifel/git-auto-commit-action@v5
