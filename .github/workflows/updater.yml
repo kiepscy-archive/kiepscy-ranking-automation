@@ -47,39 +47,32 @@ jobs:
         run: |
           pip install requests beautifulsoup4
 
-      - name: Uruchomienie skryptu (GUI / EXE)
-        if: ${{ github.event.inputs.act != '' && github.event.inputs.act != null }}
+      - name: Uruchomienie skryptu (Tryb GUI / EXE z parametrami)
+        if: ${{ (github.event.inputs.act != '' && github.event.inputs.act != null) || (github.event.inputs.ep != '' && github.event.inputs.ep != null) || github.event.client_payload.ep != null }}
         env:
           ACT_INPUT: ${{ github.event.inputs.act }}
-          EP_INPUT: ${{ github.event.inputs.ep }}
-          RATE_INPUT: ${{ github.event.inputs.newrate }}
-          DEL_INPUT: ${{ github.event.inputs.deleterate }}
-          USER_INPUT: ${{ github.event.inputs.fromuser }}
+          EP_INPUT: ${{ github.event.inputs.ep || github.event.client_payload.ep }}
+          RATE_INPUT: ${{ github.event.inputs.newrate || github.event.client_payload.newrate }}
+          DEL_INPUT: ${{ github.event.inputs.deleterate || github.event.client_payload.deleterate }}
+          USER_INPUT: ${{ github.event.inputs.fromuser || github.event.client_payload.fromuser }}
         run: |
-          echo "Wywołanie z GUI/EXE o akcji: $ACT_INPUT"
+          echo "Wywołanie z zewnętrznego źródła (EXE/GUI)"
+          echo "Akcja: $ACT_INPUT, Odcinek: $EP_INPUT, NewRate: $RATE_INPUT, DelRate: $DEL_INPUT, User: $USER_INPUT"
+          
           if [ "$ACT_INPUT" = "add" ]; then
             python updater.py --ep "$EP_INPUT" --newrate "$RATE_INPUT" --fromuser "$USER_INPUT"
           elif [ "$ACT_INPUT" = "delete" ]; then
             python updater.py --ep "$EP_INPUT" --deleterate "$DEL_INPUT" --fromuser "$USER_INPUT"
+          elif [ -n "$RATE_INPUT" ]; then
+            python updater.py --ep "$EP_INPUT" --newrate "$RATE_INPUT" --fromuser "$USER_INPUT"
+          elif [ -n "$DEL_INPUT" ]; then
+            python updater.py --ep "$EP_INPUT" --deleterate "$DEL_INPUT" --fromuser "$USER_INPUT"
+          elif [ -n "$EP_INPUT" ]; then
+            python updater.py --ep "$EP_INPUT"
           fi
 
-      - name: Uruchomienie skryptu (Ręczne inputy bez act)
-        if: ${{ (github.event.inputs.act == '' || github.event.inputs.act == null) && github.event.inputs.ep != '' && github.event.inputs.ep != null }}
-        env:
-          EP_INPUT: ${{ github.event.inputs.ep }}
-          RATE_INPUT: ${{ github.event.inputs.newrate }}
-          DEL_INPUT: ${{ github.event.inputs.deleterate }}
-          USER_INPUT: ${{ github.event.inputs.fromuser }}
-        run: |
-          echo "Ręczne uruchomienie z inputami"
-          CMD="python updater.py --ep '$EP_INPUT'"
-          [ -n "$RATE_INPUT" ] && CMD="$CMD --newrate '$RATE_INPUT'"
-          [ -n "$DEL_INPUT" ] && CMD="$CMD --deleterate '$DEL_INPUT'"
-          [ -n "$USER_INPUT" ] && CMD="$CMD --fromuser '$USER_INPUT'"
-          eval $CMD
-
-      - name: Uruchomienie skryptu (Automatyczny Cron / Czysty Start)
-        if: ${{ github.event.schedule != '' || (github.event.inputs.ep == '' && github.event.inputs.act == '') || (github.event.inputs.ep == null && github.event.inputs.act == null) }}
+      - name: Uruchomienie skryptu (Tylko automatyczny Cron)
+        if: ${{ github.event.schedule != '' || (github.event.inputs.act == '' && github.event.inputs.ep == '' && github.event.client_payload.ep == null) }}
         run: |
           echo "Automatyczny obieg cykliczny - czysty start"
           python updater.py
@@ -87,5 +80,5 @@ jobs:
       - name: Automatyczny commit zaktualizowanej bazy, logów i backupu
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Automatyczna / GUI aktualizacja rankingu"
+          commit_message: "Aktualizacja rankingu (Cron / GUI)"
           file_pattern: baza_userow.json log.log tabela_backup.json
