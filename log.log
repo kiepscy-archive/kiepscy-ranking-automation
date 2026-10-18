@@ -4671,3 +4671,14 @@
 [2026-10-18 20:16:02] ⚠️ Odrzucono ocenę: kacrudy ocenił '097 Kara Mustafa', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-18 20:16:02] ⚠️ Odrzucono ocenę: kafel ocenił '256 Marsz', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-18 20:16:02] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-18 20:17:17] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-17 do 2026-10-18
+[2026-10-18 20:17:17] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-18 20:17:39] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=74&sid=774b919c9d2132324a212260597f00d6: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Max retries exceeded with url: /viewforum.php?f=74&sid=774b919c9d2132324a212260597f00d6 (Caused by ConnectTimeoutError(<HTTPSConnection(host='forum.kiepscy.org.pl', port=443) at 0x7fdbb7627d90>, 'Connection to forum.kiepscy.org.pl timed out. (connect timeout=10)'))
+[2026-10-18 20:17:48] 🎯 Znaleziono 3 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-18 20:17:54] ℹ️ Post użytkownika Patt w temacie '482 100 jaj' z dnia 2026-10-17 nie zawiera poprawnej oceny na końcu.
+[2026-10-18 20:17:54] ℹ️ Post użytkownika Ferdek56 w temacie '482 100 jaj' z dnia 2026-10-18 nie zawiera poprawnej oceny na końcu.
+[2026-10-18 20:17:54] ℹ️ Post użytkownika Patt w temacie '482 100 jaj' z dnia 2026-10-18 nie zawiera poprawnej oceny na końcu.
+[2026-10-18 20:17:54] ℹ️ Post użytkownika WatcherOfTheKiepscy w temacie '482 100 jaj' z dnia 2026-10-18 nie zawiera poprawnej oceny na końcu.
+[2026-10-18 20:17:54] ⚠️ Odrzucono ocenę: kacrudy ocenił '097 Kara Mustafa', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-18 20:17:54] ⚠️ Odrzucono ocenę: kafel ocenił '256 Marsz', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-18 20:17:54] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
