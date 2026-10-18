@@ -3578,3 +3578,10 @@
 [2026-10-18 10:05:39] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Max retries exceeded with url: /viewforum.php?f=8 (Caused by ConnectTimeoutError(<HTTPSConnection(host='forum.kiepscy.org.pl', port=443) at 0x7f8adaa00ee0>, 'Connection to forum.kiepscy.org.pl timed out. (connect timeout=10)'))
 [2026-10-18 10:05:39] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-10-18 10:05:39] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-18 10:10:35] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-17 do 2026-10-18
+[2026-10-18 10:10:35] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-18 10:10:56] 🎯 Znaleziono 3 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-18 10:11:03] ℹ️ Post użytkownika Patt w temacie '482 100 jaj' z dnia 2026-10-17 nie zawiera poprawnej oceny na końcu.
+[2026-10-18 10:11:03] ⚠️ Odrzucono ocenę: kacrudy ocenił '097 Kara Mustafa', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-18 10:11:03] ⚠️ Odrzucono ocenę: kafel ocenił '256 Marsz', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-18 10:11:03] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
