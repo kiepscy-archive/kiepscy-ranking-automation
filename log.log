@@ -4345,3 +4345,9 @@
 [2026-10-18 17:37:10] 💾 Zaktualizowano plik baza_userow.json o wpis użytkownika.
 [2026-10-18 17:37:10] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-10-18 17:37:12] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-10-18 17:37:42] ➕ Uruchamianie doliczenia oceny 9.0 dla odcinka '482' od użytkownika 'Patt'...
+[2026-10-18 17:37:43] ➕ RĘCZNE DOLICZENIE OCENY dla odcinka '482 100 jaj': Doliczono ocenę 9.0. Nowa liczba ocen: 33, Nowa średnia: 8
+[2026-10-18 17:37:43] ✨ Przeniesiono odcinek '482 100 jaj' z nieocenionych do ocenionych dla użytkownika 'Patt'.
+[2026-10-18 17:37:44] 💾 Zaktualizowano plik baza_userow.json o wpis użytkownika.
+[2026-10-18 17:37:44] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-18 17:37:45] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
