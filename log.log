@@ -5693,3 +5693,9 @@
 [2026-10-19 15:51:37] ℹ️ Post użytkownika Patt w temacie '482 100 jaj' z dnia 2026-10-18 nie zawiera poprawnej oceny na końcu.
 [2026-10-19 15:51:40] ℹ️ Post użytkownika Patt w temacie '483 Cyceron' z dnia 2026-10-18 nie zawiera poprawnej oceny na końcu.
 [2026-10-19 15:51:40] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-19 15:54:14] ➕ Uruchamianie doliczenia oceny 7.0 dla odcinka '483' od użytkownika 'Patt'...
+[2026-10-19 15:54:15] ➕ RĘCZNE DOLICZENIE OCENY dla odcinka '483 Cyceron': Doliczono ocenę 7.0. Nowa liczba ocen: 37, Nowa średnia: 5,33
+[2026-10-19 15:54:15] ✨ Przeniesiono odcinek '483 Cyceron' z nieocenionych do ocenionych dla użytkownika 'Patt'.
+[2026-10-19 15:54:16] 💾 Zaktualizowano plik baza_userow.json o wpis użytkownika.
+[2026-10-19 15:54:16] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-19 15:54:18] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
