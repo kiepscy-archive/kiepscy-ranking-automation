@@ -4858,3 +4858,8 @@
 [2026-10-19 07:55:53] ℹ️ Post użytkownika Patt w temacie '482 100 jaj' z dnia 2026-10-18 nie zawiera poprawnej oceny na końcu.
 [2026-10-19 07:55:55] ℹ️ Post użytkownika Patt w temacie '483 Cyceron' z dnia 2026-10-18 nie zawiera poprawnej oceny na końcu.
 [2026-10-19 07:55:55] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-19 08:01:04] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-18 do 2026-10-19
+[2026-10-19 08:01:04] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-19 08:01:15] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Max retries exceeded with url: /viewforum.php?f=8 (Caused by ConnectTimeoutError(<HTTPSConnection(host='forum.kiepscy.org.pl', port=443) at 0x7f26ad2ecee0>, 'Connection to forum.kiepscy.org.pl timed out. (connect timeout=10)'))
+[2026-10-19 08:01:15] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
+[2026-10-19 08:01:15] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
