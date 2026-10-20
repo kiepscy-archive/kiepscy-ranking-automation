@@ -45,11 +45,14 @@ def log_print(komunikat):
         print(f"⚠️ Nie udało się zapisać do pliku log.log: {e}")
 
 def wyczysc_stare_logi(dni_wstecz=3):
-    """Usuwa z pliku log.log wpisy starsze niż określona liczba dni (domyślnie 3)."""
+    """Usuwa z pliku log.log wpisy starsze niż określona liczba dni (domyślnie 3).
+       Zatrzymuje wpisy z dzisiejszego dnia oraz z 'dni_wstecz' poprzednich dni.
+    """
     if not os.path.exists("log.log"):
         return
     
     dzis = datetime.now().date()
+    graniczna_data = dzis - timedelta(days=dni_wstecz)
     zostawione_linie = []
     
     try:
@@ -59,11 +62,13 @@ def wyczysc_stare_logi(dni_wstecz=3):
                 if m:
                     try:
                         data_wpisu = datetime.strptime(m.group(1), "%Y-%m-%d").date()
-                        if (dzis - data_wpisu).days <= dni_wstecz:
+                        # Warunek: zostawiamy wpisy od granicznej daty w przód (w tym dzisiejsze)
+                        if data_wpisu >= graniczna_data:
                             zostawione_linie.append(linia)
                     except ValueError:
                         zostawione_linie.append(linia)
                 else:
+                    # Linie bez daty na początku (np. kontynuacje) zachowujemy dla bezpieczeństwa
                     zostawione_linie.append(linia)
                     
         with open("log.log", "w", encoding="utf-8") as f:
@@ -115,9 +120,6 @@ def czysc_url(url):
     return f"{parsed.scheme}://{parsed.netloc}{parsed.path}" + (f"?{new_query}" if new_query else "")
 
 def pasuje_do_odcinka(tytul_tekst, szukany_ep_str):
-    """Sprawdza, czy tytuł odcinka pasuje do podanego argumentu (--ep).
-       Obsługuje zarówno numery (zapobiegając myleniu 22 z 220), jak i nazwy tekstowe.
-    """
     szukany_czysty = szukany_ep_str.strip()
     
     if szukany_czysty.isdigit():
@@ -210,7 +212,6 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
                 
                 if not tytul_odcinka:
                     h2 = soup.find('h2', class_='topic-title')
-                    # Normalizacja białych znaków i tabulacji w tytule
                     tytul_odcinka = re.sub(r'\s+', ' ', h2.text).strip() if h2 else "Nieznany"
                     if "ogólnie o sezonie" in tytul_odcinka.lower():
                         break
@@ -271,7 +272,6 @@ def formatuj_liczbe(wartosc):
     return text
 
 def zrob_backup_przed_zmiana(rows_data):
-    """Zapisuje lub nadpisuje plik kopii zapasowej przed zmodyfikowaniem tabeli."""
     backup_filename = "tabela_backup.json"
     try:
         with open(backup_filename, "w", encoding="utf-8") as f:
@@ -303,7 +303,6 @@ def testuj_polaczenie_wp():
         return False
 
 def napraw_pozycje_w_wp():
-    """Pobiera tabelę z WordPressa, przelicza pozycje ex aequo na podstawie obecnych średnich i zapisuje."""
     TABLE_ID = 116
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
     log_print("🛠️ Uruchamianie weryfikacji i naprawy pozycji ex aequo w tabeli WP...")
@@ -448,7 +447,6 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
                 zmieniono = True
                 log_print(f"➕ RĘCZNE DOLICZENIE OCENY dla odcinka '{tytul_tekst}': Doliczono ocenę {dodatkowa_ocena}. Nowa liczba ocen: {nowa_liczba_ocen}, Nowa średnia: {formatuj_liczbe(nowa_srednia)}")
 
-                # Obsługa przypisania oceny do konkretnego użytkownika (--fromuser)
                 from_user = manualne_dodanie_oceny.get('from_user')
                 if from_user:
                     if os.path.exists("baza_userow.json"):
@@ -497,7 +495,6 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
                     nowa_srednia = 0.0
                 zmieniono = True
                 log_print(f"➖ RĘCZNE USUNIĘCIE OCENY dla odcinka '{tytul_tekst}': Usunięto ocenę {ocena_do_usuniecia}. Nowa liczba ocen: {nowa_liczba_ocen}, Nowa średnia: {formatuj_liczbe(nowa_srednia)}")
-                # Celowo brak modyfikacji pliku baza_userow.json zgodnie z wymaganiem
 
         for tytul_odcinka_forum, list_ocen in slownik_aktualizacji.items():
             forum_czysty = tytul_odcinka_forum.strip()
@@ -585,6 +582,7 @@ def bezpieczna_aktualizacja_komorki(stary_html, nowa_wartosc):
 # ==============================================================================
 
 def main():
+    # Automatyczne czyszczenie logów starszych niż 3 dni podczas każdego startu skryptu
     wyczysc_stare_logi(dni_wstecz=3)
 
     parser = argparse.ArgumentParser(description="Kiepscy Ranking Updater")
