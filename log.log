@@ -3421,3 +3421,9 @@
 [2026-10-20 16:16:04]    • Po:    Liczba ocen=41, Średnia=7,63, Suma=313.00
 [2026-10-20 16:16:04] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-10-20 16:16:05] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-10-20 16:20:37] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-19 do 2026-10-20
+[2026-10-20 16:20:37] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-20 16:20:57] 🎯 Znaleziono 2 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-20 16:21:03] ⚠️ Odrzucono ocenę: Marciosss ocenił '210 Portier', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-20 16:21:03] ⚠️ Odrzucono ocenę: kafel ocenił '257 Puste butle', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-20 16:21:03] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
