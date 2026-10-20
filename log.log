@@ -3294,3 +3294,7 @@
 [2026-10-20 14:09:38] ➕ RĘCZNE DOLICZENIE OCENY dla odcinka '205 Afera kryminalna': Doliczono ocenę 10.0. Nowa liczba ocen: 64, Nowa średnia: 9,47
 [2026-10-20 14:09:38] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-10-20 14:09:40] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-10-20 14:10:48] 🛠️ Uruchamianie ręcznej korekty dla odcinka '205'...
+[2026-10-20 14:10:49] 🛠️ RĘCZNA KOREKTA dla odcinka '205 Afera kryminalna': Ustawiono średnią na 9,46 i liczbę ocen na 63
+[2026-10-20 14:10:49] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-20 14:10:51] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
