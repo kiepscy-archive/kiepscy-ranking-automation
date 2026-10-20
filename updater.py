@@ -45,8 +45,8 @@ def log_print(komunikat):
         print(f"⚠️ Nie udało się zapisać do pliku log.log: {e}")
 
 def wyczysc_stare_logi(dni_wstecz=3):
-    """Usuwa z pliku log.log wpisy starsze niż określona liczba dni (domyślnie 3).
-       Zatrzymuje wpisy z dzisiejszego dnia oraz z 'dni_wstecz' poprzednich dni.
+    """Usuwa z pliku log.log wpisy starsze niż określona liczba dni.
+       Dla np. 3 dni wstecz: jeśli dziś jest 20 października, usuwa wszystko, co starsze niż 17 października (zostają 18, 19, 20).
     """
     if not os.path.exists("log.log"):
         return
@@ -62,13 +62,12 @@ def wyczysc_stare_logi(dni_wstecz=3):
                 if m:
                     try:
                         data_wpisu = datetime.strptime(m.group(1), "%Y-%m-%d").date()
-                        # Warunek: zostawiamy wpisy od granicznej daty w przód (w tym dzisiejsze)
-                        if data_wpisu >= graniczna_data:
+                        # Używamy ścisłej nierówności (>), aby wpisy z dnia granicznego (np. 17.10) zostały usunięte
+                        if data_wpisu > graniczna_data:
                             zostawione_linie.append(linia)
                     except ValueError:
                         zostawione_linie.append(linia)
                 else:
-                    # Linie bez daty na początku (np. kontynuacje) zachowujemy dla bezpieczeństwa
                     zostawione_linie.append(linia)
                     
         with open("log.log", "w", encoding="utf-8") as f:
