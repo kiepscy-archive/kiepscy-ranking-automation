@@ -3410,3 +3410,14 @@
 [2026-10-20 16:11:05] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
 [2026-10-20 16:11:09] ⚠️ Odrzucono ocenę: Marciosss ocenił '210 Portier', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-20 16:11:09] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-20 16:15:34] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-19 do 2026-10-20
+[2026-10-20 16:15:34] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-20 16:15:57] 🎯 Znaleziono 2 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-20 16:16:02] ⚠️ Odrzucono ocenę: Marciosss ocenił '210 Portier', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-20 16:16:02] ✨ Akceptacja oceny: kafel ocenił '257 Puste butle' na 7/10
+[2026-10-20 16:16:03] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-10-20 16:16:04] 🎯 PODGLĄD DANYCH dla '257 Puste butle':
+[2026-10-20 16:16:04]    • Przed: Liczba ocen=40, Średnia=7.65, Suma=306.00
+[2026-10-20 16:16:04]    • Po:    Liczba ocen=41, Średnia=7,63, Suma=313.00
+[2026-10-20 16:16:04] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-20 16:16:05] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
