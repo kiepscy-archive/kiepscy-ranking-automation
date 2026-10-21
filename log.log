@@ -3996,3 +3996,8 @@
 [2026-10-21 00:10:59] ⚠️ Odrzucono ocenę: Marciosss ocenił '210 Portier', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-21 00:10:59] ⚠️ Odrzucono ocenę: kafel ocenił '257 Puste butle', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-21 00:10:59] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-21 00:15:36] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-20 do 2026-10-21
+[2026-10-21 00:15:36] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-21 00:15:46] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Max retries exceeded with url: /viewforum.php?f=8 (Caused by ConnectTimeoutError(<HTTPSConnection(host='forum.kiepscy.org.pl', port=443) at 0x7f0443780f10>, 'Connection to forum.kiepscy.org.pl timed out. (connect timeout=10)'))
+[2026-10-21 00:15:46] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
+[2026-10-21 00:15:46] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
