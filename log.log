@@ -3285,3 +3285,13 @@
 [2026-10-23 16:45:39] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
 [2026-10-23 16:46:26] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-10-23 16:46:26] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-23 16:50:33] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-22 do 2026-10-23
+[2026-10-23 16:50:33] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-23 16:51:01] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-23 16:51:04] ✨ Akceptacja oceny: kacrudy ocenił '073 Nie bój żaby' na 0/10
+[2026-10-23 16:51:04] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-10-23 16:51:09] 🎯 PODGLĄD DANYCH dla '073 Nie bój żaby':
+[2026-10-23 16:51:09]    • Przed: Liczba ocen=40, Średnia=7.57, Suma=302.80
+[2026-10-23 16:51:09]    • Po:    Liczba ocen=41, Średnia=7,39, Suma=302.80
+[2026-10-23 16:51:09] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-23 16:51:21] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
