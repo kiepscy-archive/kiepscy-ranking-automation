@@ -3295,3 +3295,8 @@
 [2026-10-23 16:51:09]    • Po:    Liczba ocen=41, Średnia=7,39, Suma=302.80
 [2026-10-23 16:51:09] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-10-23 16:51:21] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-10-23 16:55:32] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-22 do 2026-10-23
+[2026-10-23 16:55:33] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-23 16:55:59] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-23 16:56:02] ⚠️ Odrzucono ocenę: kacrudy ocenił '073 Nie bój żaby', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-23 16:56:02] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
