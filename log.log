@@ -3620,3 +3620,14 @@
 [2026-10-23 21:45:59] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
 [2026-10-23 21:45:59] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-10-23 21:45:59] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-23 21:50:39] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-22 do 2026-10-23
+[2026-10-23 21:50:39] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-23 21:51:31] 🎯 Znaleziono 2 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-23 21:51:40] ⚠️ Odrzucono ocenę: kacrudy ocenił '073 Nie bój żaby', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-23 21:51:40] ✨ Akceptacja oceny: Patt ocenił '484 Obserwator' na 7/10
+[2026-10-23 21:51:40] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-10-23 21:51:50] 🎯 PODGLĄD DANYCH dla '484 Obserwator':
+[2026-10-23 21:51:50]    • Przed: Liczba ocen=34, Średnia=8.79, Suma=298.86
+[2026-10-23 21:51:50]    • Po:    Liczba ocen=35, Średnia=8,74, Suma=305.86
+[2026-10-23 21:51:50] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-23 21:51:56] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
