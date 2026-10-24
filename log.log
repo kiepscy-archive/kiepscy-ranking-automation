@@ -3053,3 +3053,14 @@
 [2026-10-24 08:05:44] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
 [2026-10-24 08:05:44] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-10-24 08:05:44] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-24 08:10:38] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-23 do 2026-10-24
+[2026-10-24 08:10:38] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-24 08:11:30] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=43&sid=e84e20d6ea835286f067b4e55f54a216: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-24 08:11:40] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=44&sid=e84e20d6ea835286f067b4e55f54a216: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-24 08:11:51] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=45&sid=e84e20d6ea835286f067b4e55f54a216: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-24 08:12:01] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=46&sid=e84e20d6ea835286f067b4e55f54a216: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-24 08:12:11] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=47&sid=e84e20d6ea835286f067b4e55f54a216: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-24 08:13:07] 🎯 Znaleziono 2 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-24 08:13:13] ⚠️ Odrzucono ocenę: kacrudy ocenił '073 Nie bój żaby', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-24 08:13:13] ⚠️ Odrzucono ocenę: Patt ocenił '484 Obserwator', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-24 08:13:13] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
