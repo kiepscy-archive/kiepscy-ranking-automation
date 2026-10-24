@@ -2691,3 +2691,9 @@
 [2026-10-24 02:56:06] ⚠️ Odrzucono ocenę: kacrudy ocenił '073 Nie bój żaby', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-24 02:56:06] ⚠️ Odrzucono ocenę: Patt ocenił '484 Obserwator', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-24 02:56:06] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-24 03:01:05] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-23 do 2026-10-24
+[2026-10-24 03:01:05] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-24 03:01:50] 🎯 Znaleziono 2 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-24 03:02:15] ⚠️ Błąd podczas skanowania https://forum.kiepscy.org.pl/viewtopic.php?t=950&start=25: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-24 03:02:34] ⚠️ Błąd podczas skanowania https://forum.kiepscy.org.pl/viewtopic.php?t=6201: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-24 03:02:34] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
