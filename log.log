@@ -3207,3 +3207,11 @@
 [2026-10-24 10:26:06] ⚠️ Odrzucono ocenę: kacrudy ocenił '073 Nie bój żaby', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-24 10:26:06] ⚠️ Odrzucono ocenę: Patt ocenił '484 Obserwator', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-24 10:26:06] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-24 10:30:54] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-23 do 2026-10-24
+[2026-10-24 10:30:55] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-24 10:32:06] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=148&sid=e1f3af408eaf7937391fda0472df62a0: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-24 10:32:16] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=53&sid=e1f3af408eaf7937391fda0472df62a0: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-24 10:32:16] 🎯 Znaleziono 2 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-24 10:32:37] ⚠️ Błąd podczas skanowania https://forum.kiepscy.org.pl/viewtopic.php?t=950: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-24 10:32:47] ⚠️ Błąd podczas skanowania https://forum.kiepscy.org.pl/viewtopic.php?t=6201: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-24 10:32:47] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
