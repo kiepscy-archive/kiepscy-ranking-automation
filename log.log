@@ -3880,3 +3880,18 @@
 [2026-10-25 16:05:40] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
 [2026-10-25 16:05:40] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-10-25 16:05:40] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-25 16:10:37] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-24 do 2026-10-25
+[2026-10-25 16:10:37] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-25 16:11:29] 🎯 Znaleziono 3 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-25 16:11:43] ✨ Akceptacja oceny: Marciosss ocenił '073 Nie bój żaby' na 1/10
+[2026-10-25 16:11:43] ✨ Akceptacja oceny: Marciosss ocenił '395 Marzyciele' na 10/10
+[2026-10-25 16:11:43] ⚠️ Odrzucono ocenę: Patt ocenił '485 La la la', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-25 16:11:43] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-10-25 16:11:45] 🎯 PODGLĄD DANYCH dla '073 Nie bój żaby':
+[2026-10-25 16:11:45]    • Przed: Liczba ocen=41, Średnia=7.39, Suma=302.99
+[2026-10-25 16:11:45]    • Po:    Liczba ocen=42, Średnia=7,24, Suma=303.99
+[2026-10-25 16:11:45] 🎯 PODGLĄD DANYCH dla '395 Marzyciele':
+[2026-10-25 16:11:45]    • Przed: Liczba ocen=71, Średnia=5.06, Suma=359.26
+[2026-10-25 16:11:45]    • Po:    Liczba ocen=72, Średnia=5,13, Suma=369.26
+[2026-10-25 16:11:45] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-25 16:11:52] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
