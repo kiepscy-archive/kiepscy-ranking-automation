@@ -4366,3 +4366,16 @@
 [2026-10-25 21:45:52] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
 [2026-10-25 21:45:52] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-10-25 21:45:52] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-25 21:50:33] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-24 do 2026-10-25
+[2026-10-25 21:50:33] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-25 21:51:38] 🎯 Znaleziono 4 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-25 21:52:22] ⚠️ Odrzucono ocenę: Marciosss ocenił '073 Nie bój żaby', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-25 21:52:22] ⚠️ Odrzucono ocenę: Marciosss ocenił '395 Marzyciele', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-25 21:52:22] ✨ Akceptacja oceny: Patt ocenił '486 Maratończyk' na 5/10
+[2026-10-25 21:52:22] ⚠️ Odrzucono ocenę: Patt ocenił '485 La la la', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-25 21:52:23] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-10-25 21:52:39] 🎯 PODGLĄD DANYCH dla '486 Maratończyk':
+[2026-10-25 21:52:39]    • Przed: Liczba ocen=29, Średnia=5.21, Suma=151.09
+[2026-10-25 21:52:39]    • Po:    Liczba ocen=30, Średnia=5,2, Suma=156.09
+[2026-10-25 21:52:39] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-25 21:52:56] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
