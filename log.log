@@ -4470,3 +4470,8 @@
 [2026-10-25 23:12:01] ⚠️ Odrzucono ocenę: Patt ocenił '486 Maratończyk', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-25 23:12:01] ⚠️ Odrzucono ocenę: Patt ocenił '485 La la la', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-25 23:12:01] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-25 23:15:38] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-24 do 2026-10-25
+[2026-10-25 23:15:38] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-25 23:15:49] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-25 23:15:49] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
+[2026-10-25 23:15:49] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
