@@ -3828,3 +3828,25 @@
 [2026-10-26 07:46:28] ⚠️ Odrzucono ocenę: Marciosss ocenił '395 Marzyciele', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-26 07:46:28] ⚠️ Odrzucono ocenę: Patt ocenił '486 Maratończyk', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-26 07:46:28] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-26 07:50:33] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-25 do 2026-10-26
+[2026-10-26 07:50:33] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-26 07:50:50] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=24&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:51:01] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=39&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:51:11] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=40&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:51:22] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=41&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:51:32] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=42&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:51:43] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=43&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:51:53] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=44&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:52:04] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=45&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:52:15] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=46&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:52:25] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=47&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:52:35] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=48&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:52:46] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=49&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:52:57] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=50&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:53:07] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=54&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:53:17] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=67&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:53:28] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=74&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:53:38] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=75&sid=c89118a2e731748c1fee2f95fbc8c5c5: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 07:54:34] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-26 07:54:38] ⚠️ Odrzucono ocenę: Patt ocenił '486 Maratończyk', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-26 07:54:38] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
