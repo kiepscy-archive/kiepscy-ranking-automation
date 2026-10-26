@@ -4570,3 +4570,14 @@
 [2026-10-26 17:16:52] ⚠️ Odrzucono ocenę: Marciosss ocenił '395 Marzyciele', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-26 17:16:52] ⚠️ Odrzucono ocenę: Patt ocenił '486 Maratończyk', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-26 17:16:52] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-26 17:20:36] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-25 do 2026-10-26
+[2026-10-26 17:20:36] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-26 17:20:58] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=24&sid=5bf514f1bd92d5af81a3178870309f1f: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 17:21:09] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=39&sid=5bf514f1bd92d5af81a3178870309f1f: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 17:21:19] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=40&sid=5bf514f1bd92d5af81a3178870309f1f: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 17:21:30] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=41&sid=5bf514f1bd92d5af81a3178870309f1f: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 17:21:51] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=43&sid=5bf514f1bd92d5af81a3178870309f1f: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 17:24:05] 🎯 Znaleziono 2 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-26 17:24:58] ⚠️ Odrzucono ocenę: Marciosss ocenił '395 Marzyciele', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-26 17:24:58] ⚠️ Odrzucono ocenę: Patt ocenił '486 Maratończyk', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-26 17:24:58] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
