@@ -4123,3 +4123,16 @@
 [2026-10-26 11:06:03] ⚠️ Odrzucono ocenę: Marciosss ocenił '395 Marzyciele', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-26 11:06:03] ⚠️ Odrzucono ocenę: Patt ocenił '486 Maratończyk', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-26 11:06:03] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-26 11:10:36] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-25 do 2026-10-26
+[2026-10-26 11:10:36] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-26 11:10:55] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=24&sid=aa70f0ac2f5addb23e17455914b18b0a: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 11:11:06] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=39&sid=aa70f0ac2f5addb23e17455914b18b0a: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 11:11:17] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=40&sid=aa70f0ac2f5addb23e17455914b18b0a: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 11:11:28] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=41&sid=aa70f0ac2f5addb23e17455914b18b0a: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 11:11:38] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=42&sid=aa70f0ac2f5addb23e17455914b18b0a: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 11:11:49] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=43&sid=aa70f0ac2f5addb23e17455914b18b0a: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 11:12:00] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=44&sid=aa70f0ac2f5addb23e17455914b18b0a: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-26 11:12:51] 🎯 Znaleziono 2 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-26 11:12:59] ⚠️ Odrzucono ocenę: Marciosss ocenił '395 Marzyciele', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-26 11:12:59] ⚠️ Odrzucono ocenę: Patt ocenił '486 Maratończyk', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-26 11:12:59] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
