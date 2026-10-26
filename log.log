@@ -4237,3 +4237,10 @@
 [2026-10-26 12:25:43] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
 [2026-10-26 12:25:43] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-10-26 12:25:43] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-26 12:28:49] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-25 do 2026-10-26
+[2026-10-26 12:28:49] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-26 12:29:19] 🎯 Znaleziono 3 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-26 12:29:32] ⚠️ Odrzucono ocenę: Marciosss ocenił '073 Nie bój żaby', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-26 12:29:32] ⚠️ Odrzucono ocenę: Marciosss ocenił '395 Marzyciele', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-26 12:29:32] ⚠️ Odrzucono ocenę: Patt ocenił '486 Maratończyk', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-26 12:29:32] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
