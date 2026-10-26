@@ -4928,3 +4928,8 @@
 [2026-10-26 22:31:01] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
 [2026-10-26 22:31:01] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-10-26 22:31:01] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-26 22:35:29] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-25 do 2026-10-26
+[2026-10-26 22:35:29] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-26 22:35:40] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Max retries exceeded with url: /viewforum.php?f=8 (Caused by ConnectTimeoutError(<HTTPSConnection(host='forum.kiepscy.org.pl', port=443) at 0x77d28c5fceb0>, 'Connection to forum.kiepscy.org.pl timed out. (connect timeout=10)'))
+[2026-10-26 22:35:40] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
+[2026-10-26 22:35:40] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
