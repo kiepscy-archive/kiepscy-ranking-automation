@@ -155,25 +155,34 @@ def pobierz_aktywne_tematy(url_subforum, data_od, data_do):
             res = requests.get(curr, headers=HEADERS, timeout=15)
             soup = BeautifulSoup(res.text, 'html.parser')
             
-            for a in soup.find_all('a', class_='forumtitle'):
-                do_odwiedzenia.append(urljoin(curr, a.get('href')))
-            
-            wiersze_tematow = soup.find_all('li', class_=re.compile(r'row'))
-            for row in wiersze_tematow:
-                a_topic = row.find('a', class_='topictitle')
-                if not a_topic:
-                    continue
-
+            # Przeszukujemy wiersze (zarówno subfora, jak i tematy znajdują się w liście o klasie 'row')
+            wiersze = soup.find_all('li', class_=re.compile(r'row'))
+            for row in wiersze:
+                # Sprawdzamy datę ostatniego posta dla danego wiersza
                 lastpost_span = row.find(class_=re.compile(r'lastpost'))
                 data_ostatniego_posta = None
                 if lastpost_span:
                     data_ostatniego_posta = parsuj_datę_postu(lastpost_span.text)
 
-                if data_ostatniego_posta and data_ostatniego_posta >= data_od:
-                    href = urljoin(curr, a_topic.get('href'))
-                    clean_href = czysc_url(href)
-                    if clean_href not in aktywne_tematy:
-                        aktywne_tematy.append(clean_href)
+                # 1. Sprawdzenie, czy to subforum (forumtitle)
+                a_forum = row.find('a', class_='forumtitle')
+                if a_forum:
+                    # Wchodzimy do subforum TYLKO JEŚLI ostatni post w nim mieści się w badanym zakresie dat
+                    if data_ostatniego_posta and data_ostatniego_posta >= data_od:
+                        href = urljoin(curr, a_forum.get('href'))
+                        clean_href = czysc_url(href)
+                        if clean_href not in odwiedzone and clean_href not in do_odwiedzenia:
+                            do_odwiedzenia.append(clean_href)
+                    continue
+
+                # 2. Sprawdzenie, czy to zwykły temat (topictitle)
+                a_topic = row.find('a', class_='topictitle')
+                if a_topic:
+                    if data_ostatniego_posta and data_ostatniego_posta >= data_od:
+                        href = urljoin(curr, a_topic.get('href'))
+                        clean_href = czysc_url(href)
+                        if clean_href not in aktywne_tematy:
+                            aktywne_tematy.append(clean_href)
 
             time.sleep(0.5)
 
