@@ -8,6 +8,8 @@ import requests
 from datetime import datetime, timedelta
 from urllib.parse import urljoin, parse_qs, urlparse
 from bs4 import BeautifulSoup
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 # ==============================================================================
 # KONFIGURACJA (DANE WPISANE BEZPOŚREDNIO W KODZIE)
@@ -18,24 +20,39 @@ WP_URL = "http://kiepscy.org.pl"
 WP_PAGE_ID = 37                                            
 
 WP_USER = "kacrudy"                                       
-# Niestandardowy token bezpieczeństwa omijający blokady nagłówków serwera
 WP_CUSTOM_TOKEN = "fba8U57HyTvulhlJRh5uMdRe"                         
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) KiepskiUpdater/2.0'
 }
 
-# Pomocniczy słownik nagłówków autoryzacyjnych do zapytań HTTP
 API_HEADERS = {
     'X-Auth-Token': WP_CUSTOM_TOKEN
 }
+
+# ==============================================================================
+# SESJA HTTP Z AUTOMATYCZNYM PONAWIANIEM PRÓB (ODPORNOŚĆ NA TIMEOUT)
+# ==============================================================================
+
+def stworz_bezpieczna_sesje():
+    """Tworzy sesję HTTP, która w razie błędu serwera lub timeoutu automatycznie ponawia próbę."""
+    session = requests.Session()
+    retries = Retry(
+        total=3,                # Liczba ponowień
+        backoff_factor=2,       # Odstęp czasu rosnący między próbami (2s, 4s, 8s...)
+        status_forcelist=[500, 502, 503, 504], # Kiedy ponawiać
+        raise_on_status=False
+    )
+    adapter = HTTPAdapter(max_retries=retries)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+    return session
 
 # ==============================================================================
 # SYSTEM LOGOWANIA DO PLIKU I KONSOLI ORAZ AUTOCZYSZCZENIE
 # ==============================================================================
 
 def log_print(komunikat):
-    """Wypisuje komunikat w konsoli oraz dopisuje go do pliku log.log z znacznikiem czasu."""
     print(komunikat)
     timestamp = datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
     try:
@@ -45,9 +62,6 @@ def log_print(komunikat):
         print(f"⚠️ Nie udało się zapisać do pliku log.log: {e}")
 
 def wyczysc_stare_logi(dni_wstecz=3):
-    """Usuwa z pliku log.log wpisy starsze niż określona liczba dni.
-       Dla np. 3 dni wstecz: jeśli dziś jest 20 października, usuwa wszystko, co starsze niż 17 października (zostają 18, 19, 20).
-    """
     if not os.path.exists("log.log"):
         return
     
@@ -62,7 +76,6 @@ def wyczysc_stare_logi(dni_wstecz=3):
                 if m:
                     try:
                         data_wpisu = datetime.strptime(m.group(1), "%Y-%m-%d").date()
-                        # Używamy ścisłej nierówności (>), aby wpisy z dnia granicznego (np. 17.10) zostały usunięte
                         if data_wpisu > graniczna_data:
                             zostawione_linie.append(linia)
                     except ValueError:
@@ -148,6 +161,7 @@ def pobierz_aktywne_tematy(url_subforum, data_od, data_do):
     odwiedzone = set()
     do_odwiedzenia = [url_subforum]
     aktywne_tematy = []
+    session = stworz_bezpieczna_sesje()
 
     log_print("⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...")
 
@@ -159,7 +173,8 @@ def pobierz_aktywne_tematy(url_subforum, data_od, data_do):
         odwiedzone.add(curr_clean)
 
         try:
-            res = requests.get(curr, headers=HEADERS, timeout=10)
+            # Zwiększony timeout do 20 sekund dla powolnego hostingu
+            res = session.get(curr, headers=HEADERS, timeout=20)
             soup = BeautifulSoup(res.text, 'html.parser')
             
             for a in soup.find_all('a', class_='forumtitle'):
@@ -182,6 +197,9 @@ def pobierz_aktywne_tematy(url_subforum, data_od, data_do):
                     if clean_href not in aktywne_tematy:
                         aktywne_tematy.append(clean_href)
 
+            # Krótka pauza, by nie obciążać słabego hostingu
+            time.sleep(0.5)
+
         except Exception as e:
             log_print(f"⚠️ Błąd pobierania listy {curr}: {e}")
 
@@ -196,6 +214,7 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
 
     log_print(f"🎯 Znaleziono {len(linki_tematow)} temat(y) z nową aktywnością. Pobieranie postów...")
     nowe_oceny = {}
+    session = stworz_bezpieczna_sesje()
 
     for url_t in linki_tematow:
         start = 0
@@ -206,7 +225,8 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
             url_page = f"{url_t}{sep}start={start}" if start > 0 else url_t
             
             try:
-                res = requests.get(url_page, headers=HEADERS, timeout=10)
+                # Zwiększony timeout do 20 sekund
+                res = session.get(url_page, headers=HEADERS, timeout=20)
                 soup = BeautifulSoup(res.text, 'html.parser')
                 
                 if not tytul_odcinka:
@@ -252,7 +272,8 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
                 if not ma_nastepna:
                     break
                 start += 25
-                time.sleep(0.2)
+                # Zwiększona przerwa między stronami z 0.2s do 1.0s, żeby dać odetchnąć hostingowi
+                time.sleep(1.0)
 
             except Exception as e:
                 log_print(f"⚠️ Błąd podczas skanowania {url_page}: {e}")
@@ -284,8 +305,9 @@ def testuj_polaczenie_wp():
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
     log_print(f"🔍 Testowanie połączenia z WordPress API (Adres: {WP_URL}, Tabela ID: {TABLE_ID})...")
     
+    session = stworz_bezpieczna_sesje()
     try:
-        res = requests.get(get_url, headers=API_HEADERS, timeout=10)
+        res = session.get(get_url, headers=API_HEADERS, timeout=20)
         if res.status_code == 200:
             log_print("✅ Sukces! Połączenie nawiązane, uwierzytelnianie poprawne (Status 200).")
             data = res.json().get('data', [])
@@ -306,7 +328,8 @@ def napraw_pozycje_w_wp():
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
     log_print("🛠️ Uruchamianie weryfikacji i naprawy pozycji ex aequo w tabeli WP...")
     
-    res = requests.get(get_url, headers=API_HEADERS)
+    session = stworz_bezpieczna_sesje()
+    res = session.get(get_url, headers=API_HEADERS, timeout=20)
     if res.status_code != 200:
         log_print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
         return False
@@ -364,7 +387,7 @@ def napraw_pozycje_w_wp():
     update_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/update-table"
     payload = {'table_id': TABLE_ID, 'data': nowe_wiersze_tablepress}
 
-    res_post = requests.post(update_url, json=payload, headers=API_HEADERS)
+    res_post = session.post(update_url, json=payload, headers=API_HEADERS, timeout=25)
     
     if res_post.status_code == 200:
         log_print("✅ Pomyślnie zweryfikowano i naprawiono pozycje ex aequo w tabeli WordPress!")
@@ -378,8 +401,9 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
     if slownik_aktualizacji is None:
         slownik_aktualizacji = {}
     
+    session = stworz_bezpieczna_sesje()
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
-    res = requests.get(get_url, headers=API_HEADERS)
+    res = session.get(get_url, headers=API_HEADERS, timeout=20)
     
     if res.status_code != 200:
         log_print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
@@ -552,7 +576,7 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
     update_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/update-table"
     payload = {'table_id': TABLE_ID, 'data': nowe_wiersze_tablepress}
 
-    res_post = requests.post(update_url, json=payload, headers=API_HEADERS)
+    res_post = session.post(update_url, json=payload, headers=API_HEADERS, timeout=25)
     
     if res_post.status_code == 200:
         log_print("✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!")
@@ -581,7 +605,6 @@ def bezpieczna_aktualizacja_komorki(stary_html, nowa_wartosc):
 # ==============================================================================
 
 def main():
-    # Automatyczne czyszczenie logów starszych niż 3 dni podczas każdego startu skryptu
     wyczysc_stare_logi(dni_wstecz=3)
 
     parser = argparse.ArgumentParser(description="Kiepscy Ranking Updater")
@@ -717,12 +740,16 @@ def main():
         
         if not os.path.exists("tabela_backup.json"):
             log_print("🛡️ Wykryto brak pliku 'tabela_backup.json'. Pobieram stan początkowy z WP...")
+            session = stworz_bezpieczna_sesje()
             get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/116"
-            res = requests.get(get_url, headers=API_HEADERS)
-            if res.status_code == 200:
-                rows = res.json().get('data', [])
-                if rows:
-                    zrob_backup_przed_zmiana(rows)
+            try:
+                res = session.get(get_url, headers=API_HEADERS, timeout=20)
+                if res.status_code == 200:
+                    rows = res.json().get('data', [])
+                    if rows:
+                        zrob_backup_przed_zmiana(rows)
+            except Exception as e:
+                log_print(f"⚠️ Nie udało się pobrać backupu początkowego: {e}")
 
 if __name__ == "__main__":
     main()
