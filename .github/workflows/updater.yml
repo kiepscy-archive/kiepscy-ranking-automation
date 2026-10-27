@@ -46,7 +46,6 @@ jobs:
       - name: Uruchomienie skryptu (Wywołanie z GUI / EXE)
         if: ${{ github.event.client_payload.action != null || github.event.inputs.action != '' }}
         env:
-          PYTHONUNBUFFERED: "1" # <--- DODAJ TĘ LINIIĘ TUTAJ
           ACTION: ${{ github.event.inputs.action || github.event.client_payload.action }}
           EP: ${{ github.event.inputs.ep || github.event.client_payload.ep }}
           VAL: ${{ github.event.inputs.val || github.event.client_payload.val }}
@@ -64,8 +63,12 @@ jobs:
 
       - name: Uruchomienie skryptu (Automatyczny Cron / Czysty Start)
         if: ${{ github.event.schedule != '' || (github.event.client_payload.action == null && github.event.inputs.action == '') }}
-        env:
-          PYTHONUNBUFFERED: "1" # <--- I DODAJ TĘ LINIIĘ TUTAJ TEŻ
         run: |
           echo "Automatyczny obieg cykliczny - czysty start"
           python updater.py
+
+      - name: Automatyczny commit zaktualizowanej bazy, logów i backupu
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Aktualizacja rankingu (Automatyczna / GUI)"
+          file_pattern: baza_userow.json log.log tabela_backup.json
