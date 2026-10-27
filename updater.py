@@ -152,7 +152,7 @@ def pobierz_aktywne_tematy(url_subforum, data_od, data_do):
         odwiedzone.add(curr_clean)
 
         try:
-            res = requests.get(curr, headers=HEADERS, timeout=20)
+            res = requests.get(curr, headers=HEADERS, timeout=40)
             soup = BeautifulSoup(res.text, 'html.parser')
             
             for a in soup.find_all('a', class_='forumtitle'):
@@ -201,7 +201,7 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
             url_page = f"{url_t}{sep}start={start}" if start > 0 else url_t
             
             try:
-                res = requests.get(url_page, headers=HEADERS, timeout=20)
+                res = requests.get(url_page, headers=HEADERS, timeout=40)
                 soup = BeautifulSoup(res.text, 'html.parser')
                 
                 if not tytul_odcinka:
@@ -280,7 +280,7 @@ def testuj_polaczenie_wp():
     log_print(f"🔍 Testowanie połączenia z WordPress API (Adres: {WP_URL}, Tabela ID: {TABLE_ID})...")
     
     try:
-        res = requests.get(get_url, headers=API_HEADERS, timeout=20)
+        res = requests.get(get_url, headers=API_HEADERS, timeout=40)
         if res.status_code == 200:
             log_print("✅ Sukces! Połączenie nawiązane, uwierzytelnianie poprawne (Status 200).")
             data = res.json().get('data', [])
@@ -301,7 +301,7 @@ def napraw_pozycje_w_wp():
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
     log_print("🛠️ Uruchamianie weryfikacji i naprawy pozycji ex aequo w tabeli WP...")
     
-    res = requests.get(get_url, headers=API_HEADERS, timeout=20)
+    res = requests.get(get_url, headers=API_HEADERS, timeout=40)
     if res.status_code != 200:
         log_print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
         return False
@@ -359,7 +359,7 @@ def napraw_pozycje_w_wp():
     update_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/update-table"
     payload = {'table_id': TABLE_ID, 'data': nowe_wiersze_tablepress}
 
-    res_post = requests.post(update_url, json=payload, headers=API_HEADERS, timeout=25)
+    res_post = requests.post(update_url, json=payload, headers=API_HEADERS, timeout=40)
     
     if res_post.status_code == 200:
         log_print("✅ Pomyślnie zweryfikowano i naprawiono pozycje ex aequo w tabeli WordPress!")
@@ -547,7 +547,7 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
     update_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/update-table"
     payload = {'table_id': TABLE_ID, 'data': nowe_wiersze_tablepress}
 
-    res_post = requests.post(update_url, json=payload, headers=API_HEADERS, timeout=25)
+    res_post = requests.post(update_url, json=payload, headers=API_HEADERS, timeout=40)
     
     if res_post.status_code == 200:
         log_print("✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!")
@@ -713,7 +713,7 @@ def main():
             log_print("🛡️ Wykryto brak pliku 'tabela_backup.json'. Pobieram stan początkowy z WP...")
             get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/116"
             try:
-                res = requests.get(get_url, headers=API_HEADERS, timeout=20)
+                res = requests.get(get_url, headers=API_HEADERS, timeout=40)
                 if res.status_code == 200:
                     rows = res.json().get('data', [])
                     if rows:
