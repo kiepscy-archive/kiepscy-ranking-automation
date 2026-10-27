@@ -374,7 +374,7 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
         slownik_aktualizacji = {}
     
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
-    res = requests.get(get_url, headers=API_HEADERS, timeout=20)
+    res = requests.get(get_url, headers=API_HEADERS, timeout=40)
     
     if res.status_code != 200:
         log_print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
