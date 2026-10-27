@@ -3931,3 +3931,27 @@
 [2026-10-27 08:10:47] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
 [2026-10-27 08:10:47] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-10-27 08:10:47] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-27 08:15:36] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-26 do 2026-10-27
+[2026-10-27 08:15:36] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-27 08:15:55] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=24&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:16:06] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=39&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:16:16] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=40&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:16:27] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=41&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:16:38] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=42&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:16:58] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=44&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:17:09] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=45&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:17:20] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=46&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:17:31] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=47&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:17:41] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=48&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:18:02] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=50&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:18:12] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=54&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:18:23] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=67&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:18:33] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=74&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:18:43] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=75&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:18:54] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=76&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:19:04] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=78&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:19:15] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=79&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:19:26] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=80&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:20:03] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=105&sid=920ec6d37558f1cdba6f16f7f8cb3d76: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=10)
+[2026-10-27 08:20:54] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
+[2026-10-27 08:20:54] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
