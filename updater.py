@@ -8,8 +8,6 @@ import requests
 from datetime import datetime, timedelta
 from urllib.parse import urljoin, parse_qs, urlparse
 from bs4 import BeautifulSoup
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
 
 # ==============================================================================
 # KONFIGURACJA (DANE WPISANE BEZPOŚREDNIO W KODZIE)
@@ -29,7 +27,6 @@ HEADERS = {
 API_HEADERS = {
     'X-Auth-Token': WP_CUSTOM_TOKEN
 }
-
 
 # ==============================================================================
 # SYSTEM LOGOWANIA DO PLIKU I KONSOLI ORAZ AUTOCZYSZCZENIE
@@ -144,7 +141,6 @@ def pobierz_aktywne_tematy(url_subforum, data_od, data_do):
     odwiedzone = set()
     do_odwiedzenia = [url_subforum]
     aktywne_tematy = []
-    session = stworz_bezpieczna_sesje()
 
     log_print("⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...")
 
@@ -156,8 +152,7 @@ def pobierz_aktywne_tematy(url_subforum, data_od, data_do):
         odwiedzone.add(curr_clean)
 
         try:
-            # Zwiększony timeout do 20 sekund dla powolnego hostingu
-            res = session.get(curr, headers=HEADERS, timeout=20)
+            res = requests.get(curr, headers=HEADERS, timeout=20)
             soup = BeautifulSoup(res.text, 'html.parser')
             
             for a in soup.find_all('a', class_='forumtitle'):
@@ -180,7 +175,6 @@ def pobierz_aktywne_tematy(url_subforum, data_od, data_do):
                     if clean_href not in aktywne_tematy:
                         aktywne_tematy.append(clean_href)
 
-            # Krótka pauza, by nie obciążać słabego hostingu
             time.sleep(0.5)
 
         except Exception as e:
@@ -197,7 +191,6 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
 
     log_print(f"🎯 Znaleziono {len(linki_tematow)} temat(y) z nową aktywnością. Pobieranie postów...")
     nowe_oceny = {}
-    session = stworz_bezpieczna_sesje()
 
     for url_t in linki_tematow:
         start = 0
@@ -208,8 +201,7 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
             url_page = f"{url_t}{sep}start={start}" if start > 0 else url_t
             
             try:
-                # Zwiększony timeout do 20 sekund
-                res = session.get(url_page, headers=HEADERS, timeout=20)
+                res = requests.get(url_page, headers=HEADERS, timeout=20)
                 soup = BeautifulSoup(res.text, 'html.parser')
                 
                 if not tytul_odcinka:
@@ -255,7 +247,6 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
                 if not ma_nastepna:
                     break
                 start += 25
-                # Zwiększona przerwa między stronami z 0.2s do 1.0s, żeby dać odetchnąć hostingowi
                 time.sleep(1.0)
 
             except Exception as e:
@@ -288,9 +279,8 @@ def testuj_polaczenie_wp():
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
     log_print(f"🔍 Testowanie połączenia z WordPress API (Adres: {WP_URL}, Tabela ID: {TABLE_ID})...")
     
-    session = stworz_bezpieczna_sesje()
     try:
-        res = session.get(get_url, headers=API_HEADERS, timeout=20)
+        res = requests.get(get_url, headers=API_HEADERS, timeout=20)
         if res.status_code == 200:
             log_print("✅ Sukces! Połączenie nawiązane, uwierzytelnianie poprawne (Status 200).")
             data = res.json().get('data', [])
@@ -311,8 +301,7 @@ def napraw_pozycje_w_wp():
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
     log_print("🛠️ Uruchamianie weryfikacji i naprawy pozycji ex aequo w tabeli WP...")
     
-    session = stworz_bezpieczna_sesje()
-    res = session.get(get_url, headers=API_HEADERS, timeout=20)
+    res = requests.get(get_url, headers=API_HEADERS, timeout=20)
     if res.status_code != 200:
         log_print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
         return False
@@ -370,7 +359,7 @@ def napraw_pozycje_w_wp():
     update_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/update-table"
     payload = {'table_id': TABLE_ID, 'data': nowe_wiersze_tablepress}
 
-    res_post = session.post(update_url, json=payload, headers=API_HEADERS, timeout=25)
+    res_post = requests.post(update_url, json=payload, headers=API_HEADERS, timeout=25)
     
     if res_post.status_code == 200:
         log_print("✅ Pomyślnie zweryfikowano i naprawiono pozycje ex aequo w tabeli WordPress!")
@@ -384,9 +373,8 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
     if slownik_aktualizacji is None:
         slownik_aktualizacji = {}
     
-    session = stworz_bezpieczna_sesje()
     get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/{TABLE_ID}"
-    res = session.get(get_url, headers=API_HEADERS, timeout=20)
+    res = requests.get(get_url, headers=API_HEADERS, timeout=20)
     
     if res.status_code != 200:
         log_print(f"❌ Nie udało się pobrać tabeli z API (Status: {res.status_code}) - {res.text}")
@@ -559,7 +547,7 @@ def aktualizuj_tabelę_wp(slownik_aktualizacji=None, manualna_korekta=None, manu
     update_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/update-table"
     payload = {'table_id': TABLE_ID, 'data': nowe_wiersze_tablepress}
 
-    res_post = session.post(update_url, json=payload, headers=API_HEADERS, timeout=25)
+    res_post = requests.post(update_url, json=payload, headers=API_HEADERS, timeout=25)
     
     if res_post.status_code == 200:
         log_print("✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!")
@@ -723,10 +711,9 @@ def main():
         
         if not os.path.exists("tabela_backup.json"):
             log_print("🛡️ Wykryto brak pliku 'tabela_backup.json'. Pobieram stan początkowy z WP...")
-            session = stworz_bezpieczna_sesje()
             get_url = f"{WP_URL.rstrip('/')}/wp-json/custom/v1/get-table/116"
             try:
-                res = session.get(get_url, headers=API_HEADERS, timeout=20)
+                res = requests.get(get_url, headers=API_HEADERS, timeout=20)
                 if res.status_code == 200:
                     rows = res.json().get('data', [])
                     if rows:
