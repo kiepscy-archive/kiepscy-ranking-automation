@@ -4220,3 +4220,8 @@
 [2026-10-27 19:47:27] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=24: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=15)
 [2026-10-27 19:47:27] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-10-27 19:47:27] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-27 19:48:54] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-26 do 2026-10-27
+[2026-10-27 19:48:54] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-27 19:49:27] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-27 19:50:39] ⚠️ Odrzucono ocenę: WKCM ocenił '070 Waldek w krainie czarów', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-27 19:50:39] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
