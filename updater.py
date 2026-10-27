@@ -159,7 +159,7 @@ def pobierz_aktywne_tematy(url_subforum, data_od, data_do):
         odwiedzone.add(curr_clean)
 
         try:
-            res = requests.get(curr, headers=HEADERS, timeout=15)
+            res = requests.get(curr, headers=HEADERS, timeout=40)
             soup = BeautifulSoup(res.text, 'html.parser')
             
             # Przeszukujemy wiersze (zarówno subfora, jak i tematy znajdują się w liście o klasie 'row')
@@ -217,7 +217,7 @@ def pobierz_dzisiejsze_i_wczorajsze_oceny(url_subforum, data_od, data_do):
             url_page = f"{url_t}{sep}start={start}" if start > 0 else url_t
             
             try:
-                res = requests.get(url_page, headers=HEADERS, timeout=10)
+                res = requests.get(url_page, headers=HEADERS, timeout=40)
                 soup = BeautifulSoup(res.text, 'html.parser')
                 
                 if not tytul_odcinka:
@@ -296,7 +296,7 @@ def testuj_polaczenie_wp():
     log_print(f"🔍 Testowanie połączenia z WordPress API (Adres: {WP_URL}, Tabela ID: {TABLE_ID})...")
     
     try:
-        res = requests.get(get_url, headers=API_HEADERS, timeout=10)
+        res = requests.get(get_url, headers=API_HEADERS, timeout=40)
         if res.status_code == 200:
             log_print("✅ Sukces! Połączenie nawiązane, uwierzytelnianie poprawne (Status 200).")
             data = res.json().get('data', [])
