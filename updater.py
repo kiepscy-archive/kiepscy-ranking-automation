@@ -30,23 +30,6 @@ API_HEADERS = {
     'X-Auth-Token': WP_CUSTOM_TOKEN
 }
 
-# ==============================================================================
-# SESJA HTTP Z AUTOMATYCZNYM PONAWIANIEM PRÓB (ODPORNOŚĆ NA TIMEOUT)
-# ==============================================================================
-
-def stworz_bezpieczna_sesje():
-    """Tworzy sesję HTTP, która w razie błędu serwera lub timeoutu automatycznie ponawia próbę."""
-    session = requests.Session()
-    retries = Retry(
-        total=3,                # Liczba ponowień
-        backoff_factor=2,       # Odstęp czasu rosnący między próbami (2s, 4s, 8s...)
-        status_forcelist=[500, 502, 503, 504], # Kiedy ponawiać
-        raise_on_status=False
-    )
-    adapter = HTTPAdapter(max_retries=retries)
-    session.mount("http://", adapter)
-    session.mount("https://", adapter)
-    return session
 
 # ==============================================================================
 # SYSTEM LOGOWANIA DO PLIKU I KONSOLI ORAZ AUTOCZYSZCZENIE
