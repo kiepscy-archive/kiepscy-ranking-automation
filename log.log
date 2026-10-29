@@ -2109,3 +2109,13 @@
 [2026-10-29 20:10:41] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
 [2026-10-29 20:10:59] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-10-29 20:10:59] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-29 20:20:43] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-28 do 2026-10-29
+[2026-10-29 20:20:43] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-29 20:21:18] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-29 20:22:18] ✨ Akceptacja oceny: Marciosss ocenił '023 Spółdzielnia radiowęzeł' na 0/10
+[2026-10-29 20:22:18] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-10-29 20:22:29] 🎯 PODGLĄD DANYCH dla '023 Spółdzielnia radiowęzeł':
+[2026-10-29 20:22:29]    • Przed: Liczba ocen=82, Średnia=9.36, Suma=767.52
+[2026-10-29 20:22:29]    • Po:    Liczba ocen=83, Średnia=9,25, Suma=767.52
+[2026-10-29 20:22:29] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-29 20:22:38] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
