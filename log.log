@@ -2119,3 +2119,8 @@
 [2026-10-29 20:22:29]    • Po:    Liczba ocen=83, Średnia=9,25, Suma=767.52
 [2026-10-29 20:22:29] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-10-29 20:22:38] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-10-29 20:31:05] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-28 do 2026-10-29
+[2026-10-29 20:31:05] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-29 20:31:35] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-29 20:33:13] ⚠️ Odrzucono ocenę: Marciosss ocenił '023 Spółdzielnia radiowęzeł', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-29 20:33:13] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
