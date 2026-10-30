@@ -1929,3 +1929,15 @@
 [2026-10-30 19:21:34]    • Po:    Liczba ocen=36, Średnia=5,22, Suma=188.05
 [2026-10-30 19:21:34] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-10-30 19:21:50] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-10-30 19:31:00] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-29 do 2026-10-30
+[2026-10-30 19:31:00] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-30 19:32:09] 🎯 Znaleziono 3 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-30 19:35:03] ⚠️ Odrzucono ocenę: Marciosss ocenił '023 Spółdzielnia radiowęzeł', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-30 19:35:03] ✨ Akceptacja oceny: kafel ocenił '258 Kicha kręcona' na 9/10
+[2026-10-30 19:35:03] ⚠️ Odrzucono ocenę: Patt ocenił '487 Śrubka', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-30 19:35:03] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-10-30 19:36:32] 🎯 PODGLĄD DANYCH dla '258 Kicha kręcona':
+[2026-10-30 19:36:32]    • Przed: Liczba ocen=48, Średnia=8.48, Suma=407.04
+[2026-10-30 19:36:32]    • Po:    Liczba ocen=49, Średnia=8,49, Suma=416.04
+[2026-10-30 19:36:32] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-30 19:38:36] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
