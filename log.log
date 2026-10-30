@@ -2086,3 +2086,13 @@
 [2026-10-30 22:48:26]    • Po:    Liczba ocen=24, Średnia=6,12, Suma=147.00
 [2026-10-30 22:48:26] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-10-30 22:50:16] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-10-30 22:50:40] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-29 do 2026-10-30
+[2026-10-30 22:50:40] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-30 22:52:05] 🎯 Znaleziono 6 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-30 22:55:57] ℹ️ Post użytkownika Pabfer w temacie '503 Motywator' z dnia 2026-10-30 nie zawiera poprawnej oceny na końcu.
+[2026-10-30 22:56:36] ℹ️ Post użytkownika Pabfer w temacie '588 Dzień Wszystkich Kiepskich' z dnia 2026-10-30 nie zawiera poprawnej oceny na końcu.
+[2026-10-30 22:56:36] ⚠️ Odrzucono ocenę: Marciosss ocenił '023 Spółdzielnia radiowęzeł', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-30 22:56:36] ⚠️ Odrzucono ocenę: kafel ocenił '258 Kicha kręcona', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-30 22:56:36] ⚠️ Odrzucono ocenę: Patt ocenił '488 Zimne nóżki', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-30 22:56:36] ⚠️ Odrzucono ocenę: Patt ocenił '487 Śrubka', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-30 22:56:36] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
