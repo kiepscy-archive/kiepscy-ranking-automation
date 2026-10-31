@@ -2017,3 +2017,12 @@
 [2026-10-31 10:41:27] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Max retries exceeded with url: /viewforum.php?f=8 (Caused by ConnectTimeoutError(<HTTPSConnection(host='forum.kiepscy.org.pl', port=443) at 0x7563f4bfce80>, 'Connection to forum.kiepscy.org.pl timed out. (connect timeout=40)'))
 [2026-10-31 10:41:27] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-10-31 10:41:27] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-31 10:50:39] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-30 do 2026-10-31
+[2026-10-31 10:50:39] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-31 10:52:00] 🎯 Znaleziono 5 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-31 10:54:18] ℹ️ Post użytkownika Pabfer w temacie '503 Motywator' z dnia 2026-10-30 nie zawiera poprawnej oceny na końcu.
+[2026-10-31 10:55:04] ℹ️ Post użytkownika Pabfer w temacie '588 Dzień Wszystkich Kiepskich' z dnia 2026-10-30 nie zawiera poprawnej oceny na końcu.
+[2026-10-31 10:55:04] ⚠️ Odrzucono ocenę: kafel ocenił '258 Kicha kręcona', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-31 10:55:04] ⚠️ Odrzucono ocenę: Patt ocenił '488 Zimne nóżki', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-31 10:55:04] ⚠️ Odrzucono ocenę: Patt ocenił '487 Śrubka', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-31 10:55:04] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
