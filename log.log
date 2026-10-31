@@ -2685,3 +2685,26 @@
 [2026-10-31 22:17:11] ⚠️ Odrzucono ocenę: Patt ocenił '488 Zimne nóżki', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-31 22:17:11] ⚠️ Odrzucono ocenę: Patt ocenił '487 Śrubka', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-10-31 22:17:11] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-10-31 22:30:53] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-30 do 2026-10-31
+[2026-10-31 22:30:53] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-10-31 22:32:31] 🎯 Znaleziono 9 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-10-31 22:38:42] ℹ️ Post użytkownika Pabfer w temacie '503 Motywator' z dnia 2026-10-30 nie zawiera poprawnej oceny na końcu.
+[2026-10-31 22:39:29] ℹ️ Post użytkownika Pabfer w temacie '588 Dzień Wszystkich Kiepskich' z dnia 2026-10-30 nie zawiera poprawnej oceny na końcu.
+[2026-10-31 22:39:29] ⚠️ Odrzucono ocenę: Patt ocenił '049 Spirytyści', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-31 22:39:29] ⚠️ Odrzucono ocenę: Patt ocenił '009 Kiepski mózg', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-31 22:39:29] ⚠️ Odrzucono ocenę: kafel ocenił '042 Proca Amora', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-31 22:39:29] ⚠️ Odrzucono ocenę: kafel ocenił '258 Kicha kręcona', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-31 22:39:29] ✨ Akceptacja oceny: Patt ocenił '489 Diabelski młyn' na 9/10
+[2026-10-31 22:39:29] ⚠️ Odrzucono ocenę: Patt ocenił '488 Zimne nóżki', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-31 22:39:29] ⚠️ Odrzucono ocenę: Patt ocenił '487 Śrubka', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-10-31 22:39:29] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-10-31 22:40:57] 🎯 PODGLĄD DANYCH dla '489 Diabelski młyn':
+[2026-10-31 22:40:57]    • Przed: Liczba ocen=29, Średnia=8.34, Suma=241.86
+[2026-10-31 22:40:57]    • Po:    Liczba ocen=30, Średnia=8,36, Suma=250.86
+[2026-10-31 22:40:57] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-10-31 22:45:59] ❌ Błąd zapisu do TablePress: 500 - <html><head><title>500 Internal Server Error</title><style>@media (prefers-color-scheme:dark){body{background-color:#000!important}}</style></head><body>
+<h2>Request Timeout</h2>
+<p>This request takes too long to process, it is timed out by the server. If it should not be timed out, please contact administrator of this web site to increase 'Connection Timeout'.
+</p>
+</body></html>
+
