@@ -3273,3 +3273,12 @@
 [2026-11-01 20:58:41] ⚠️ Odrzucono ocenę: Patt ocenił '490 Robak', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-01 20:58:41] ⚠️ Odrzucono ocenę: Patt ocenił '489 Diabelski młyn', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-01 20:58:41] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-01 21:01:08] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-31 do 2026-11-01
+[2026-11-01 21:01:09] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-01 21:03:04] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=92: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=40)
+[2026-11-01 21:03:04] 🎯 Znaleziono 4 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-01 21:04:11] ⚠️ Błąd podczas skanowania https://forum.kiepscy.org.pl/viewtopic.php?t=1112: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=40)
+[2026-11-01 21:05:37] ⚠️ Błąd podczas skanowania https://forum.kiepscy.org.pl/viewtopic.php?t=1224&start=25: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=40)
+[2026-11-01 21:09:28] ⚠️ Odrzucono ocenę: Patt ocenił '009 Kiepski mózg', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 21:09:28] ⚠️ Odrzucono ocenę: kafel ocenił '259 Z odzysku', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 21:09:28] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
