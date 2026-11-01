@@ -2352,3 +2352,8 @@
 [2026-11-01 03:24:23] ⚠️ Odrzucono ocenę: kafel ocenił '042 Proca Amora', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-01 03:24:23] ⚠️ Odrzucono ocenę: Patt ocenił '489 Diabelski młyn', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-01 03:24:23] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-01 03:30:56] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-31 do 2026-11-01
+[2026-11-01 03:30:56] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-01 03:32:03] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=40)
+[2026-11-01 03:32:03] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
+[2026-11-01 03:32:03] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
