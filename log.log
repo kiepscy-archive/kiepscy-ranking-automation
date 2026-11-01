@@ -2980,3 +2980,18 @@
 [2026-11-01 16:22:18] ⚠️ Odrzucono ocenę: Patt ocenił '490 Robak', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-01 16:22:18] ⚠️ Odrzucono ocenę: Patt ocenił '489 Diabelski młyn', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-01 16:22:18] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-01 16:30:54] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-31 do 2026-11-01
+[2026-11-01 16:30:54] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-01 16:31:00] 🎯 Znaleziono 5 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-01 16:31:29] ⚠️ Odrzucono ocenę: kafel ocenił '042 Proca Amora', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 16:31:29] ✨ Akceptacja oceny: Marciosss ocenił '042 Proca Amora' na 0/10
+[2026-11-01 16:31:29] ⚠️ Odrzucono ocenę: Patt ocenił '049 Spirytyści', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 16:31:29] ⚠️ Odrzucono ocenę: Patt ocenił '009 Kiepski mózg', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 16:31:29] ⚠️ Odrzucono ocenę: Patt ocenił '490 Robak', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 16:31:29] ⚠️ Odrzucono ocenę: Patt ocenił '489 Diabelski młyn', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 16:31:30] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-11-01 16:31:33] 🎯 PODGLĄD DANYCH dla '042 Proca Amora':
+[2026-11-01 16:31:33]    • Przed: Liczba ocen=57, Średnia=7.23, Suma=412.11
+[2026-11-01 16:31:33]    • Po:    Liczba ocen=58, Średnia=7,11, Suma=412.11
+[2026-11-01 16:31:33] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-11-01 16:31:45] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
