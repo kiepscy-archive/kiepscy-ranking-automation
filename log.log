@@ -3418,3 +3418,16 @@
 [2026-11-01 23:10:51]    • Po:    Liczba ocen=26, Średnia=4,58, Suma=119.00
 [2026-11-01 23:10:51] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-11-01 23:12:57] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-11-01 23:20:42] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-31 do 2026-11-01
+[2026-11-01 23:20:42] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-01 23:21:47] 🎯 Znaleziono 8 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-01 23:28:47] ⚠️ Odrzucono ocenę: kafel ocenił '042 Proca Amora', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 23:28:47] ⚠️ Odrzucono ocenę: Marciosss ocenił '042 Proca Amora', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 23:28:47] ⚠️ Odrzucono ocenę: Patt ocenił '049 Spirytyści', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 23:28:47] ⚠️ Odrzucono ocenę: Patt ocenił '009 Kiepski mózg', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 23:28:47] ⚠️ Odrzucono ocenę: kafel ocenił '259 Z odzysku', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 23:28:47] ⚠️ Odrzucono ocenę: Patt ocenił '492 Moby Dick', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 23:28:47] ⚠️ Odrzucono ocenę: Patt ocenił '491 Tadeusz Surowy', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 23:28:47] ⚠️ Odrzucono ocenę: Patt ocenił '490 Robak', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 23:28:47] ⚠️ Odrzucono ocenę: Patt ocenił '489 Diabelski młyn', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 23:28:47] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
