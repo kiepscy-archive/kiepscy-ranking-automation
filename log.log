@@ -3105,3 +3105,28 @@
 [2026-11-01 18:26:19] ⚠️ Odrzucono ocenę: Patt ocenił '490 Robak', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-01 18:26:19] ⚠️ Odrzucono ocenę: Patt ocenił '489 Diabelski młyn', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-01 18:26:19] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-01 18:30:58] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-31 do 2026-11-01
+[2026-11-01 18:30:58] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-01 18:32:00] 🎯 Znaleziono 6 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-01 18:37:36] ⚠️ Odrzucono ocenę: kafel ocenił '042 Proca Amora', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 18:37:36] ⚠️ Odrzucono ocenę: Marciosss ocenił '042 Proca Amora', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 18:37:36] ⚠️ Odrzucono ocenę: Patt ocenił '049 Spirytyści', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 18:37:36] ⚠️ Odrzucono ocenę: Patt ocenił '009 Kiepski mózg', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 18:37:36] ✨ Akceptacja oceny: kafel ocenił '259 Z odzysku' na 7/10
+[2026-11-01 18:37:36] ⚠️ Odrzucono ocenę: Patt ocenił '490 Robak', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 18:37:36] ⚠️ Odrzucono ocenę: Patt ocenił '489 Diabelski młyn', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 18:37:36] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-11-01 18:41:55] ❌ Nie udało się pobrać tabeli z API (Status: 503) - <!DOCTYPE html>
+<html style="height:100%">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title> 503 Service Unavailable
+</title><style>@media (prefers-color-scheme:dark){body{background-color:#000!important}}</style></head>
+<body style="color: #444; margin:0;font: normal 14px/20px Arial, Helvetica, sans-serif; height:100%; background-color: #fff;">
+<div style="height:auto; min-height:100%; ">     <div style="text-align: center; width:800px; margin-left: -400px; position:absolute; top: 30%; left:50%;">
+        <h1 style="margin:0; font-size:150px; line-height:150px; font-weight:bold;">503</h1>
+<h2 style="margin-top:20px;font-size: 30px;">Service Unavailable
+</h2>
+<p>The server is temporarily busy, try again later!</p>
+</div></div></body></html>
+
