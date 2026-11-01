@@ -2357,3 +2357,11 @@
 [2026-11-01 03:32:03] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=40)
 [2026-11-01 03:32:03] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-11-01 03:32:03] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-01 03:40:39] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-31 do 2026-11-01
+[2026-11-01 03:40:40] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-01 03:41:44] 🎯 Znaleziono 4 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-01 03:46:35] ⚠️ Odrzucono ocenę: Patt ocenił '049 Spirytyści', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 03:46:35] ⚠️ Odrzucono ocenę: Patt ocenił '009 Kiepski mózg', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 03:46:35] ⚠️ Odrzucono ocenę: kafel ocenił '042 Proca Amora', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 03:46:35] ⚠️ Odrzucono ocenę: Patt ocenił '489 Diabelski młyn', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 03:46:35] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
