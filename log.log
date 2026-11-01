@@ -2995,3 +2995,13 @@
 [2026-11-01 16:31:33]    • Po:    Liczba ocen=58, Średnia=7,11, Suma=412.11
 [2026-11-01 16:31:33] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-11-01 16:31:45] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-11-01 16:40:42] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-31 do 2026-11-01
+[2026-11-01 16:40:42] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-01 16:40:48] 🎯 Znaleziono 5 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-01 16:41:12] ⚠️ Odrzucono ocenę: kafel ocenił '042 Proca Amora', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 16:41:12] ⚠️ Odrzucono ocenę: Marciosss ocenił '042 Proca Amora', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 16:41:12] ⚠️ Odrzucono ocenę: Patt ocenił '049 Spirytyści', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 16:41:12] ⚠️ Odrzucono ocenę: Patt ocenił '009 Kiepski mózg', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 16:41:12] ⚠️ Odrzucono ocenę: Patt ocenił '490 Robak', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 16:41:12] ⚠️ Odrzucono ocenę: Patt ocenił '489 Diabelski młyn', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 16:41:12] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
