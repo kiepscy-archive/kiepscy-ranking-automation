@@ -2930,3 +2930,17 @@
 [2026-11-01 15:35:14] ⚠️ Odrzucono ocenę: kafel ocenił '042 Proca Amora', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-01 15:35:14] ⚠️ Odrzucono ocenę: Patt ocenił '489 Diabelski młyn', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-01 15:35:14] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-01 15:40:41] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-10-31 do 2026-11-01
+[2026-11-01 15:40:41] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-01 15:41:26] 🎯 Znaleziono 5 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-01 15:45:51] ⚠️ Odrzucono ocenę: Patt ocenił '049 Spirytyści', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 15:45:51] ⚠️ Odrzucono ocenę: Patt ocenił '009 Kiepski mózg', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 15:45:51] ⚠️ Odrzucono ocenę: kafel ocenił '042 Proca Amora', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 15:45:51] ✨ Akceptacja oceny: Patt ocenił '490 Robak' na 9/10
+[2026-11-01 15:45:51] ⚠️ Odrzucono ocenę: Patt ocenił '489 Diabelski młyn', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-01 15:45:51] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-11-01 15:47:04] 🎯 PODGLĄD DANYCH dla '490 Robak':
+[2026-11-01 15:47:04]    • Przed: Liczba ocen=31, Średnia=7.0, Suma=217.00
+[2026-11-01 15:47:04]    • Po:    Liczba ocen=32, Średnia=7,06, Suma=226.00
+[2026-11-01 15:47:04] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-11-01 15:48:56] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
