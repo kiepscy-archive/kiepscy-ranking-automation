@@ -1,6 +1,6 @@
 {
   "latest_version": "1.2.0",
-  "mandatory": true,
+  "mandatory": false,
   "download_url": "https://github.com/kiepscy-archive/kiepscy-ranking-automation/releases/latest/download/kiep_ranking.exe",
   "changelog": " "
 }
