@@ -1564,3 +1564,8 @@
 [2026-11-08 14:40:50]    • Po:    Liczba ocen=44, Średnia=9, Suma=396.14
 [2026-11-08 14:40:50] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-11-08 14:41:01] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-11-08 14:50:40] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-11-07 do 2026-11-08
+[2026-11-08 14:50:40] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-08 14:50:44] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-08 14:50:49] ⚠️ Odrzucono ocenę: kafel ocenił '260 Podróżnik', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-08 14:50:49] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
