@@ -2374,3 +2374,7 @@
 [2026-11-09 13:15:55] ⚠️ Odrzucono ocenę: kafel ocenił '261 Dom kultury', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-09 13:15:55] ⚠️ Odrzucono ocenę: kafel ocenił '260 Podróżnik', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-09 13:15:55] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-09 13:18:55] ➖ Uruchamianie usunięcia oceny 0.0 dla odcinka '042' (użytkownik: Marciosss)...
+[2026-11-09 13:18:57] ➖ RĘCZNE USUNIĘCIE OCENY dla odcinka '042 Proca Amora': Usunięto ocenę 0.0. Nowa liczba ocen: 57, Nowa średnia: 7,23
+[2026-11-09 13:18:57] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-11-09 13:19:09] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
