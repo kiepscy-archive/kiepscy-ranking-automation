@@ -2720,3 +2720,10 @@
 [2026-11-09 17:51:02]    • Po:    Liczba ocen=44, Średnia=7,48, Suma=329.07
 [2026-11-09 17:51:02] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-11-09 17:51:13] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-11-09 17:55:35] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-11-08 do 2026-11-09
+[2026-11-09 17:55:35] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-09 17:55:39] 🎯 Znaleziono 3 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-09 17:55:53] ⚠️ Odrzucono ocenę: kafel ocenił '262 Żyć kolorowo', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-09 17:55:53] ⚠️ Odrzucono ocenę: kafel ocenił '261 Dom kultury', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-09 17:55:53] ⚠️ Odrzucono ocenę: kafel ocenił '260 Podróżnik', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-09 17:55:53] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
