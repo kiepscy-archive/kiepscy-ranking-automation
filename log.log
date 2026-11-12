@@ -3537,3 +3537,8 @@
 [2026-11-12 18:55:38] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
 [2026-11-12 18:55:40] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-11-12 18:55:40] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-12 19:01:10] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-11-11 do 2026-11-12
+[2026-11-12 19:01:10] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-12 19:01:13] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Max retries exceeded with url: /viewforum.php?f=8 (Caused by NameResolutionError("HTTPSConnection(host='forum.kiepscy.org.pl', port=443): Failed to resolve 'forum.kiepscy.org.pl' ([Errno -5] No address associated with hostname)"))
+[2026-11-12 19:01:13] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
+[2026-11-12 19:01:13] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
