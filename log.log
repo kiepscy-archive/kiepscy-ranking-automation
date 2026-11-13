@@ -3195,3 +3195,8 @@
 [2026-11-13 17:10:58]    • Po:    Liczba ocen=41, Średnia=8,21, Suma=336.80
 [2026-11-13 17:10:58] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-11-13 17:11:09] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-11-13 17:15:49] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-11-12 do 2026-11-13
+[2026-11-13 17:15:50] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-13 17:15:53] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-13 17:15:59] ⚠️ Odrzucono ocenę: kafel ocenił '264 Zerwane więzi', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-13 17:15:59] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
