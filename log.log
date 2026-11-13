@@ -3185,3 +3185,13 @@
 [2026-11-13 17:05:42] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
 [2026-11-13 17:05:44] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-11-13 17:05:44] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-13 17:10:46] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-11-12 do 2026-11-13
+[2026-11-13 17:10:47] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-13 17:10:50] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-13 17:10:55] ✨ Akceptacja oceny: kafel ocenił '264 Zerwane więzi' na 8/10
+[2026-11-13 17:10:55] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-11-13 17:10:58] 🎯 PODGLĄD DANYCH dla '264 Zerwane więzi':
+[2026-11-13 17:10:58]    • Przed: Liczba ocen=40, Średnia=8.22, Suma=328.80
+[2026-11-13 17:10:58]    • Po:    Liczba ocen=41, Średnia=8,21, Suma=336.80
+[2026-11-13 17:10:58] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-11-13 17:11:09] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
