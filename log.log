@@ -3129,3 +3129,7 @@
 [2026-11-13 16:01:13] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
 [2026-11-13 16:01:15] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-11-13 16:01:15] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-13 16:01:56] ➖ Uruchamianie usunięcia oceny 10.0 dla odcinka '185' (użytkownik: davidmiller)...
+[2026-11-13 16:02:00] ➖ RĘCZNE USUNIĘCIE OCENY dla odcinka '185 Korumpcja': Usunięto ocenę 10.0. Nowa liczba ocen: 40, Nowa średnia: 8,7
+[2026-11-13 16:02:00] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-11-13 16:02:11] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
