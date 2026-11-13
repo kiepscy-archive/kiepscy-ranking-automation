@@ -3133,3 +3133,7 @@
 [2026-11-13 16:02:00] ➖ RĘCZNE USUNIĘCIE OCENY dla odcinka '185 Korumpcja': Usunięto ocenę 10.0. Nowa liczba ocen: 40, Nowa średnia: 8,7
 [2026-11-13 16:02:00] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-11-13 16:02:11] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-11-13 16:05:46] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-11-12 do 2026-11-13
+[2026-11-13 16:05:47] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-13 16:05:48] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
+[2026-11-13 16:05:48] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
