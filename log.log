@@ -3055,3 +3055,8 @@
 [2026-11-13 14:45:48] 🆕 Wykryto nowego użytkownika: 'davidmiller'. Automatyczne dodawanie do bazy z bazową pulą odcinków.
 [2026-11-13 14:45:48] ℹ️ Użytkownik davidmiller napisał post w temacie '185 Korumpcja', ale ten odcinek nie figuruje w bazie wzorcowej.
 [2026-11-13 14:45:49] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-11-13 14:50:44] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-11-12 do 2026-11-13
+[2026-11-13 14:50:44] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-13 14:50:47] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-13 14:50:50] ℹ️ Użytkownik davidmiller napisał post w temacie '185 Korumpcja', ale ten odcinek nie figuruje w bazie wzorcowej.
+[2026-11-13 14:50:50] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
