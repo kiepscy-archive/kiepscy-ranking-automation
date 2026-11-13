@@ -3076,3 +3076,8 @@
 [2026-11-13 15:05:43]    • Po:    Liczba ocen=41, Średnia=8,73, Suma=358.00
 [2026-11-13 15:05:43] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-11-13 15:05:56] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-11-13 15:10:47] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-11-12 do 2026-11-13
+[2026-11-13 15:10:47] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-13 15:10:51] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-13 15:10:54] ⚠️ Odrzucono ocenę: davidmiller ocenił '185 Korumpcja', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-13 15:10:54] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
