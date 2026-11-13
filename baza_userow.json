@@ -502614,8 +502614,10 @@
             "\"500+\" z rodzinką Kiepskich!"
         ]
     },
-	"davidmiller": {
-        "ocenione": [],
+    "davidmiller": {
+        "ocenione": [
+            "185 Korumpcja"
+        ],
         "nieocenione": [
             "Zasady dyskusji na podforum \"Odcinki\"",
             "022 Chłopaki okej",
@@ -502803,7 +502805,6 @@
             "197 IQ",
             "196 Redaktor naczelny",
             "186 Śmietnik historii",
-            "185 Korumpcja",
             "195 Galareta społeczna",
             "184 Tyrtum pyrtum",
             "183 Pląs",
@@ -503215,5 +503216,5 @@
             "Reportaż - Efekty specjalne",
             "\"500+\" z rodzinką Kiepskich!"
         ]
-	}
+    }
 }
