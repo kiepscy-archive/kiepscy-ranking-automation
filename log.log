@@ -3417,3 +3417,8 @@
 [2026-11-14 15:26:14] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Max retries exceeded with url: /viewforum.php?f=8 (Caused by ConnectTimeoutError(<HTTPSConnection(host='forum.kiepscy.org.pl', port=443) at 0x7e7d38bf8e80>, 'Connection to forum.kiepscy.org.pl timed out. (connect timeout=40)'))
 [2026-11-14 15:26:14] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-11-14 15:26:14] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-14 15:31:01] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-11-13 do 2026-11-14
+[2026-11-14 15:31:01] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-14 15:31:05] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-14 15:31:10] ⚠️ Odrzucono ocenę: kafel ocenił '264 Zerwane więzi', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-14 15:31:10] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
