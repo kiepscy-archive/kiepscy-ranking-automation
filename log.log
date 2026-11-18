@@ -5360,3 +5360,8 @@
 [2026-11-18 20:25:51]    • Po:    Liczba ocen=44, Średnia=8,23, Suma=362.03
 [2026-11-18 20:25:51] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
 [2026-11-18 20:26:06] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
+[2026-11-18 20:31:09] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-11-17 do 2026-11-18
+[2026-11-18 20:31:09] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-18 20:31:13] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-18 20:31:15] ⚠️ Odrzucono ocenę: kafel ocenił '265 Impreza', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-18 20:31:15] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
