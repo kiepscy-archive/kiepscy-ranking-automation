@@ -5350,3 +5350,13 @@
 [2026-11-18 20:20:47] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
 [2026-11-18 20:20:49] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
 [2026-11-18 20:20:49] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-18 20:25:42] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-11-17 do 2026-11-18
+[2026-11-18 20:25:43] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-18 20:25:45] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-18 20:25:48] ✨ Akceptacja oceny: kafel ocenił '265 Impreza' na 9/10
+[2026-11-18 20:25:48] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-11-18 20:25:51] 🎯 PODGLĄD DANYCH dla '265 Impreza':
+[2026-11-18 20:25:51]    • Przed: Liczba ocen=43, Średnia=8.21, Suma=353.03
+[2026-11-18 20:25:51]    • Po:    Liczba ocen=44, Średnia=8,23, Suma=362.03
+[2026-11-18 20:25:51] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-11-18 20:26:06] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
