@@ -4511,3 +4511,14 @@
 [2026-11-22 12:25:44] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
 [2026-11-22 12:25:49] ⚠️ Odrzucono ocenę: Marciosss ocenił '049 Spirytyści', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-22 12:25:49] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-22 12:31:03] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-11-21 do 2026-11-22
+[2026-11-22 12:31:03] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-22 12:31:08] 🎯 Znaleziono 2 temat(y) z nową aktywnością. Pobieranie postów...
+[2026-11-22 12:31:15] ⚠️ Odrzucono ocenę: Marciosss ocenił '049 Spirytyści', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
+[2026-11-22 12:31:15] ✨ Akceptacja oceny: Patt ocenił '505 Złoty pociąg' na 8/10
+[2026-11-22 12:31:15] 💾 Zapisano zaktualizowany plik baza_userow.json.
+[2026-11-22 12:31:19] 🎯 PODGLĄD DANYCH dla '505 Złoty pociąg':
+[2026-11-22 12:31:19]    • Przed: Liczba ocen=27, Średnia=2.81, Suma=75.87
+[2026-11-22 12:31:19]    • Po:    Liczba ocen=28, Średnia=3, Suma=83.87
+[2026-11-22 12:31:19] 💾 Utworzono/zaktualizowano lokalną kopię zapasową w pliku: tabela_backup.json
+[2026-11-22 12:31:32] ✅ Pomyślnie zaktualizowano tabelę i przeliczono ranking ex aequo!
