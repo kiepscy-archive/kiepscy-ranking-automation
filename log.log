@@ -3276,3 +3276,8 @@
 [2026-11-26 13:01:16] 🎯 Znaleziono 1 temat(y) z nową aktywnością. Pobieranie postów...
 [2026-11-26 13:01:19] ⚠️ Odrzucono ocenę: kafel ocenił '263 Inwestor', ale ma już ten odcinek na liście ocenionych (ocena nie została policzona ponownie).
 [2026-11-26 13:01:19] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
+[2026-11-26 13:05:33] 🚀 Uruchamianie aktualizatora. Szukam ocen z zakresu: 2026-11-25 do 2026-11-26
+[2026-11-26 13:05:34] ⚡ Szybkie skanowanie listy tematów pod kątem nowej aktywności...
+[2026-11-26 13:06:14] ⚠️ Błąd pobierania listy https://forum.kiepscy.org.pl/viewforum.php?f=8: HTTPSConnectionPool(host='forum.kiepscy.org.pl', port=443): Read timed out. (read timeout=40)
+[2026-11-26 13:06:14] 😴 Brak jakiejkolwiek aktywności w tematach z wczorajszego i dzisiejszego dnia. Koniec.
+[2026-11-26 13:06:14] 😴 Brak nowych, ważnych ocen z wczorajszego lub dzisiejszego dnia.
